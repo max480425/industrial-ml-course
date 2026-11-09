@@ -851,593 +851,857 @@ LESSONS_DATA = [
     # MODULES 5 TO 7 (Existing Rich Curriculum Retained & Standardized)
     # =========================================================================
     {
-        "id": "m05_l01_time_vs_frequency",
-        "module_id": "mod-5",
-        "module_number": 5,
-        "lesson_number": 1,
-        "title_en": "Time Domain vs Frequency Domain Vibration",
-        "title_pl": "Dziedzina Czasu a Dziedzina Częstotliwości w Drganiach",
-        "summary_en": "Discover why microscopic bearing race spalling is completely invisible in time signals but shines brightly in the frequency spectrum.",
-        "summary_pl": "Zobacz, dlaczego mikropęknięcie bieżni jest niewidoczne w czasie, lecz tworzy potężny pik w widmie częstotliwości.",
-        "visual_widget": "fft_anomaly_sandbox",
-        "colab_notebook": "m05_l01_time_vs_frequency.ipynb",
-        "estimated_minutes": 20,
-        "checklist": [
-            {"id": "chk-m5-1-1", "textEn": "Plot continuous accelerometer vibration waveform in time domain", "textPl": "Wykreśl surowy sygnał przyspieszenia drgań w dziedzinie czasu"},
-            {"id": "chk-m5-1-2", "textEn": "Superimpose multiple sine waves to observe composite interference", "textPl": "Nałóż na siebie kilka sinusoid, aby zaobserwować interferencję"},
-            {"id": "chk-m5-1-3", "textEn": "Demonstrate how spectral decomposition untangles complex machinery vibrations", "textPl": "Pokaż, jak dekompozycja widmowa rozplątuje drgania złożonych maszyn"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Time Domain vs Frequency Domain",
-                "titlePl": "Dziedzina Czasu a Częstotliwości",
-                "en": "Looking at raw accelerometer readings in the {{term:time_domain}} often reveals nothing more than a noisy, jagged line. However, complex rotating equipment consists of multiple distinct physical components: the main motor shaft, a 17-tooth gearbox, cooling fans, and rolling element bearings. In the {{term:frequency_domain}}, each rotating element generates a distinct peak at its exact mechanical rotational speed.",
-                "pl": "Analiza sygnału z akcelerometru w {{term:time_domain}} ukazuje jedynie zaszumiony, poszarpany wykres. Jednak maszyna wirnikowa składa się z wielu odrębnych części: wału silnika, 17-zębnej przekładni, wentylatora i łożysk tocznych. W {{term:frequency_domain}} każdy z tych podzespołów generuje odrębny, czysty pik odpowiadający jego prędkości mechanicznej."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m5-1-1",
-                "questionEn": "If an industrial motor runs at 1,800 RPM, at what frequency will its fundamental 1X unbalance peak appear?",
-                "questionPl": "Jeśli silnik przemysłowy obraca się z prędkością 1800 obr/min, przy jakiej częstotliwości pojawi się jego podstawowy pik niewyważenia 1X?",
-                "optionsEn": ["1,800 Hz", "30 Hz", "60 Hz", "100 Hz"],
-                "optionsPl": ["1800 Hz", "30 Hz", "60 Hz", "100 Hz"],
-                "correctIndex": 1,
-                "explanationEn": "Frequency in Hertz is revolutions per second: 1,800 RPM / 60 seconds = 30 Hz.",
-                "explanationPl": "Częstotliwość w hercach to liczba obrotów na sekundę: 1800 RPM / 60 sekund = 30 Hz."
-            }
-        ]
-    },
-    {
-        "id": "m05_l02_fft_and_windowing",
-        "module_id": "mod-5",
-        "module_number": 5,
-        "lesson_number": 2,
-        "title_en": "Fast Fourier Transform (FFT) & Windowing",
-        "title_pl": "Szybka Transformata Fouriera (FFT) i Okienkowanie",
-        "summary_en": "Calculate magnitude spectra using numpy.fft, prevent spectral leakage using Hanning windows, and calibrate frequency bins.",
-        "summary_pl": "Obliczaj widmo amplitudowe w numpy.fft, eliminuj przeciek widmowy oknem Hanninga i kalibruj osie częstotliwości.",
-        "visual_widget": "fft_anomaly_sandbox",
-        "colab_notebook": "m05_l02_fft_and_windowing.ipynb",
-        "estimated_minutes": 25,
-        "checklist": [
-            {"id": "chk-m5-2-1", "textEn": "Compute discrete FFT using numpy.fft.rfft", "textPl": "Wylicz dyskretną transformatę FFT za pomocą numpy.fft.rfft"},
-            {"id": "chk-m5-2-2", "textEn": "Construct the exact frequency axis vector using np.fft.rfftfreq", "textPl": "Zbuduj oś częstotliwości za pomocą np.fft.rfftfreq"},
-            {"id": "chk-m5-2-3", "textEn": "Apply a Hanning window to eliminate sharp boundary discontinuities", "textPl": "Zastosuj okno Hanninga, aby zlikwidować nieciągłości na brzegach okna"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Preventing Spectral Leakage with Windowing",
-                "titlePl": "Eliminacja Przecieku Widmowego Okienkowaniem",
-                "en": "The {{term:fft}} algorithm is one of the greatest mathematical breakthroughs in computing. To apply it accurately in predictive maintenance, one must avoid {{term:leakage_spectral}}: slicing a continuous physical waveform at non-integer cycle boundaries creates artificial discontinuity steps that splatter energy across neighboring frequency bins. Multiplying by a smooth {{term:windowing}} curve like Hanning resolves this issue.",
-                "pl": "Algorytm {{term:fft}} to jedno z najważniejszych osiągnięć obliczeniowych w inżynierii. Aby stosować go poprawnie w diagnostyce maszyn, należy unikać zjawiska {{term:leakage_spectral}}: ucięcie sygnału w ułamku cyklu tworzy sztuczny skok na brzegach okna, który rozmywa energię po całym widmie. Zastosowanie funkcji {{term:windowing}} (np. okna Hanninga) eliminuje ten problem."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m5-2-1",
-                "questionEn": "What causes spectral leakage when computing an FFT on an unwindowed signal?",
-                "questionPl": "Co jest przyczyną przecieku widmowego (spectral leakage) podczas liczenia FFT na sygnale bez okienka?",
-                "optionsEn": [
-                    "The GPU overheating during matrix multiplication",
-                    "Non-integer periodicity across the window, creating an artificial step discontinuity between start and end",
-                    "Too high sampling frequency exceeding 1 MHz",
-                    "Using 64-bit floating point numbers"
-                ],
-                "optionsPl": [
-                    "Przegrzanie karty graficznej podczas mnożenia macierzy",
-                    "Niepełna liczba cykli w oknie, tworząca sztuczną nieciągłość (skok) między początkiem a końcem próbki",
-                    "Zbyt wysoka częstotliwość próbkowania przekraczająca 1 MHz",
-                    "Użycie 64-bitowych liczb zmiennoprzecinkowych"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "FFT assumes the analyzed block repeats infinitely. If the end of the block doesn't smoothly match the beginning, the sharp transition splatters energy across all frequencies.",
-                "explanationPl": "FFT zakłada, że badany odcinek powtarza się w nieskończoność. Jeśli koniec odcinka nie schodzi się płynnie z początkiem, powstaje sztuczny skok rozmywający energię."
-            }
-        ]
-    },
-    {
-        "id": "m05_l03_bearing_kinematics",
-        "module_id": "mod-5",
-        "module_number": 5,
-        "lesson_number": 3,
-        "title_en": "Bearing Fault Frequencies: BPFO & BPFI Kinematics",
-        "title_pl": "Częstotliwości Uszkodzeń Łożysk: Kinematyka BPFO i BPFI",
-        "summary_en": "Derive defect impact frequencies from bearing internal geometry: ball count, pitch diameter, roller diameter, and contact angle.",
-        "summary_pl": "Wyliczaj częstotliwości uderzeń z geometrii łożyska: liczby kulek, średnicy podziałowej i kąta działania.",
-        "visual_widget": "fft_anomaly_sandbox",
-        "colab_notebook": "m05_l03_bearing_kinematics.ipynb",
-        "estimated_minutes": 30,
-        "checklist": [
-            {"id": "chk-m5-3-1", "textEn": "Implement kinematic equations for BPFO, BPFI, BSF, and FTF", "textPl": "Zaimplementuj równania kinematyczne dla BPFO, BPFI, BSF oraz FTF"},
-            {"id": "chk-m5-3-2", "textEn": "Identify defective outer race peak emergence in real vibration datasets", "textPl": "Zlokalizuj pojawienie się piku uszkodzenia bieżni zewnętrznej w danych"},
-            {"id": "chk-m5-3-3", "textEn": "Track harmonic sidebands spaced at running speed (1X)", "textPl": "Śledź wstęgi boczne oddalone o częstotliwość obrotową (1X)"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Bearing Geometric Fault Signatures",
-                "titlePl": "Kinematyka Uszkodzeń Łożysk Tocznych",
-                "en": "Rolling element bearings degrade in predictable metallurgical stages: microscopic subsurface fatigue leads to flaking, creating tiny pits on the outer or inner race. Every time a steel roller passes over this defect, it generates a sharp impact pulse. The exact rate of these impacts is governed by bearing geometry, generating the famous {{term:bpfo}} and {{term:bpfi}} frequencies.",
-                "pl": "Łożyska toczne ulegają zużyciu w przewidywalny sposób: mikroskopijne zmęczenie podpowierzchniowe prowadzi do wykruszenia materiału (spalling) na bieżni. Każde przetoczenie się wałeczka po wyrwie generuje mikro-uderzenie. Dokładna częstotliwość tych uderzeń wynika z geometrii łożyska i definiuje wskaźniki {{term:bpfo}} oraz {{term:bpfi}}."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m5-3-1",
-                "questionEn": "What does a sharp new spectral peak at exactly BPFO indicate in vibration analysis?",
-                "questionPl": "Co oznacza pojawienie się nowego, ostrego piku widmowego przy częstotliwości BPFO w wibrodiagnostyce?",
-                "optionsEn": [
-                    "The motor is running backwards",
-                    "A localized fatigue spall has formed on the bearing outer race",
-                    "The cooling fan filter is clogged with dust",
-                    "The electrical grid voltage dropped by 10%"
-                ],
-                "optionsPl": [
-                    "Silnik obraca się w przeciwnym kierunku",
-                    "Na bieżni zewnętrznej łożyska pojawiło się lokalne wykruszenie zmęczeniowe",
-                    "Filtr wentylatora chłodzącego został zatkany kurzem",
-                    "Napięcie w sieci zasilającej fabrykę spadło o 10%"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "BPFO stands for Ball Pass Frequency Outer race. Energy concentrating at this exact frequency is empirical proof of outer ring damage.",
-                "explanationPl": "BPFO (Ball Pass Frequency Outer race) to częstotliwość przejścia elementów tocznych po bieżni zewnętrznej. Pik w tym punkcie dowodzi uszkodzenia bieżni zewnętrznej."
-            }
-        ]
-    },
-    {
-        "id": "m05_l04_rul_forecasting",
-        "module_id": "mod-5",
-        "module_number": 5,
-        "lesson_number": 4,
-        "title_en": "Remaining Useful Life (RUL) & Wear Forecasting",
-        "title_pl": "Szacowanie Pozostałego Czasu Pracy (RUL)",
-        "summary_en": "Fit degradation curves and train regression models on NASA C-MAPSS turbofan data to forecast component failure hours.",
-        "summary_pl": "Dopasuj krzywe degradacji i trenuj modele regresyjne na danych NASA C-MAPSS do prognozowania godzin do awarii.",
-        "visual_widget": "fft_anomaly_sandbox",
-        "colab_notebook": "m05_l04_rul_forecasting.ipynb",
-        "estimated_minutes": 30,
-        "checklist": [
-            {"id": "chk-m5-4-1", "textEn": "Construct health index trajectories from multi-sensor degradation", "textPl": "Zbuduj trajektorię wskaźnika stanu technicznego (Health Index)"},
-            {"id": "chk-m5-4-2", "textEn": "Fit exponential wear models onto NASA turbofan degradation curves", "textPl": "Dopasuj wykładniczy model zużycia do danych degradacji turbin NASA"},
-            {"id": "chk-m5-4-3", "textEn": "Predict Remaining Useful Life (RUL) with confidence intervals", "textPl": "Wylicz pozostały czas eksploatacji (RUL) z przedziałami ufności"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Forecasting Time-to-Failure",
-                "titlePl": "Prognozowanie Czasu do Awarii",
-                "en": "Predictive maintenance reaches its full potential when transitioning from binary failure detection to continuous time-to-failure forecasting. {{term:rul}} estimates the exact number of cycles or operating hours remaining before critical breakdown occurs. This allows plant managers to order spare parts just-in-time and schedule overhauls during planned weekend shutdowns.",
-                "pl": "Prawdziwa moc predykcyjnego utrzymania ruchu ujawnia się przy przejściu z prostej detekcji wad na prognozowanie czasu do awarii. {{term:rul}} szacuje dokładną liczbę godzin pracy, jaka pozostała do osiągnięcia stanu krytycznego. Umożliwia to zamówienie części zamiennych just-in-time i zaplanowanie serwisu na weekend."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m5-4-1",
-                "questionEn": "Why is piecewise-linear target clipping (e.g. max RUL = 125 cycles) commonly applied when training RUL models?",
-                "questionPl": "Dlaczego podczas trenowania modeli RUL stosuje się obcinanie etykiety (np. max RUL = 125 cykli)?",
-                "optionsEn": [
-                    "Because neural networks cannot represent numbers greater than 125",
-                    "A brand new component in early life does not exhibit observable physical degradation; its health is constant until wear begins",
-                    "To make the dataset compatible with 8-bit microcontrollers",
-                    "It prevents the GPU from running out of CUDA memory"
-                ],
-                "optionsPl": [
-                    "Ponieważ sieci neuronowe nie potrafią przetwarzać liczb większych niż 125",
-                    "Nowe urządzenie przez długi czas nie wykazuje oznak zużycia; jego stan jest stały aż do zainicjowania procesu degradacji",
-                    "Aby zbiór danych zmieścił się w pamięci 8-bitowego mikrokontrolera",
-                    "Zapobiega to przepełnieniu pamięci CUDA karty graficznej"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "Equipment in pristine condition does not show wear in sensor telemetry. Trying to distinguish between 300 vs 400 cycles of remaining life introduces noise; clipping caps the target to observable degradation.",
-                "explanationPl": "Nowa maszyna nie wykazuje zmian w telemetrii. Próba rozróżnienia między 300 a 400 cyklami do awarii uczy model szumu; ucięcie skupia model na rzeczywistej fazie zużycia."
-            }
-        ]
-    },
-
-    # =========================================================================
-    # MODULE 6: Computer Vision & Edge Optical Quality Inspection
-    # =========================================================================
-    {
-        "id": "m06_l01_industrial_vision_intro",
-        "module_id": "mod-6",
-        "module_number": 6,
-        "lesson_number": 1,
-        "title_en": "Industrial Computer Vision & Surface Defects",
-        "title_pl": "Wizja Przemysłowa i Wady Powierzchniowe",
-        "summary_en": "Formulate optical quality control on moving sheet metal, PCB assemblies, and automotive paint surfaces.",
-        "summary_pl": "Projektuj optyczną kontrolę jakości na walcowanej blasze, płytkach PCB i lakierowanych karoseriach.",
-        "visual_widget": "cnn_iou_sandbox",
-        "colab_notebook": "m06_l01_industrial_vision_intro.ipynb",
-        "estimated_minutes": 20,
-        "checklist": [
-            {"id": "chk-m6-1-1", "textEn": "Inspect factory line-scan camera image pipeline", "textPl": "Zbadaj potok akwizycji obrazu z przemysłowej kamery linijkowej"},
-            {"id": "chk-m6-1-2", "textEn": "Label surface scratch, pitting, and void defect classes", "textPl": "Sklasyfikuj wady powierzchniowe: rysy, wżery i pęcherze"},
-            {"id": "chk-m6-1-3", "textEn": "Implement color and lighting normalization under shifting plant sunlight", "textPl": "Wdróż normalizację oświetlenia kompensującą światło słoneczne na hali"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Automated Visual Inspection",
-                "titlePl": "Automatyczna Inspekcja Wizyjna",
-                "en": "{{term:computer_vision}} has replaced tedious, error-prone human eye inspection in high-speed manufacturing. High-resolution industrial cameras photograph every stamped car door, semiconductor wafer, or fabric roll at speeds up to 50 frames per second to flag microscopic {{term:surface_defect}} formations.",
-                "pl": "{{term:computer_vision}} zastępuje męczącą i podatną na pomyłki kontrolę wzrokową na szybkich liniach produkcyjnych. Przemysłowe kamery o wysokiej rozdzielczości fotografują wytłoczki karoserii, krzemowe wafle scalone czy bele tkaniny z prędkością do 50 klatek na sekundę, wykrywając {{term:surface_defect}} w ułamku sekundy."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m6-1-1",
-                "questionEn": "What is the primary operational challenge for computer vision systems deployed on factory shop floors?",
-                "questionPl": "Co stanowi największe wyzwanie operacyjne dla systemów wizyjnych na hali produkcyjnej?",
-                "optionsEn": [
-                    "Cameras cannot record digital pixels in industrial buildings",
-                    "Lighting variability: shifting daylight from skylights, shadows from cranes, and oil mist on lenses",
-                    "Robots refuse to inspect colored components",
-                    "Neural networks only run when connected to cloud data centers"
-                ],
-                "optionsPl": [
-                    "Kamery nie potrafią rejestrować cyfrowych pikseli w budynkach przemysłowych",
-                    "Zmienne oświetlenie: słońce wpadające przez świetliki, cienie suwnic i mgła olejowa na obiektywach",
-                    "Roboty odmawiają inspekcji kolorowych detali",
-                    "Sieci neuronowe działają wyłącznie przy stałym połączeniu z chmurą"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "Factory environments suffer from shifting natural lighting, flickering fluorescent fixtures, vibrations shaking camera mounts, and airborne dust settling on optics.",
-                "explanationPl": "Fabryki borykają się ze zmieniającym się światłem dziennym, migotaniem lamp, drganiami konstrukcji i osadzaniem się pyłu oraz oleju na optyce."
-            }
-        ]
-    },
-    {
-        "id": "m06_l02_bounding_boxes",
-        "module_id": "mod-6",
-        "module_number": 6,
-        "lesson_number": 2,
-        "title_en": "Object Detection & Defect Bounding Boxes",
-        "title_pl": "Detekcja Obiektów i Ramki Ograniczające (Bounding Boxes)",
-        "summary_en": "Master bounding box parameterization [xmin, ymin, xmax, ymax] and understand multi-task classification + regression loss.",
-        "summary_pl": "Opanuj parametryzację ramek ograniczających i zrozum łączoną funkcję straty klasyfikacji i regresji pozycji.",
-        "visual_widget": "cnn_iou_sandbox",
-        "colab_notebook": "m06_l02_bounding_boxes.ipynb",
-        "estimated_minutes": 25,
-        "checklist": [
-            {"id": "chk-m6-2-1", "textEn": "Parse Pascal VOC and YOLO format bounding box coordinate annotations", "textPl": "Wczytaj współrzędne ramek w formatach Pascal VOC oraz YOLO"},
-            {"id": "chk-m6-2-2", "textEn": "Render bounding box overlays on defective sheet metal images", "textPl": "Wyrysuj ramki defektów na zdjęciach uszkodzonej blachy"},
-            {"id": "chk-m6-2-3", "textEn": "Construct multi-loss target vectors (box coords + defect class)", "textPl": "Zbuduj wektory straty łączące błąd lokalizacji ramki z klasą wady"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Spatial Defect Coordinates",
-                "titlePl": "Przestrzenna Lokalizacja Wad",
-                "en": "Simply knowing that an image contains a defect is insufficient for automated plant repair. An object detection network outputs exact {{term:bounding_box}} coordinates identifying the spatial coordinates [x, y, width, height] of each scratch. This spatial coordinate allows a downstream polishing robot to navigate directly to the flaw.",
-                "pl": "Sama informacja, że na zdjęciu jest wada, to za mało dla automatycznej linii. Model detekcji wyznacza dokładne współrzędne {{term:bounding_box}} [x, y, szerokość, wysokość] dla każdej rysy. Te współrzędne przestrzenne pozwalają robotowi polerskiemu skierować narzędzie dokładnie w miejsce uszkodzenia."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m6-2-1",
-                "questionEn": "In YOLO format, how are bounding box coordinates normalized?",
-                "questionPl": "W jaki sposób normalizowane są współrzędne ramek w formacie YOLO?",
-                "optionsEn": [
-                    "As raw integer pixel coordinates from 0 to 4096",
-                    "As floating point ratios [x_center, y_center, width, height] relative to total image width and height in range [0.0, 1.0]",
-                    "In millimeters relative to the robot gripper origin",
-                    "As hex strings"
-                ],
-                "optionsPl": [
-                    "Jako surowe całkowite piksele w przedziale od 0 do 4096",
-                    "Jako względne wartości zmiennoprzecinkowe [x_środek, y_środek, szerokość, wysokość] w przedziale [0.0, 1.0]",
-                    "W milimetrach względem punktu bazowego chwytaka robota",
-                    "Jako ciągi znaków szesnastkowych HEX"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "YOLO normalizes coordinates between 0.0 and 1.0 by dividing by image width and height, ensuring independence from camera sensor resolution.",
-                "explanationPl": "Format YOLO dzieli współrzędne przez wymiary zdjęcia, dając liczby od 0.0 do 1.0 niezależne od fizycznej rozdzielczości kamery."
-            }
-        ]
-    },
-    {
-        "id": "m06_l03_iou_evaluation",
-        "module_id": "mod-6",
-        "module_number": 6,
-        "lesson_number": 3,
-        "title_en": "Intersection over Union (IoU) & Model Validation",
-        "title_pl": "Wskaźnik IoU (Intersection over Union) i Ewaluacja",
-        "summary_en": "Compute IoU between ground truth annotations and model predictions to assess defect localization precision.",
-        "summary_pl": "Obliczaj wskaźnik IoU między wzorcem a predykcją, by precyzyjnie ocenić jakość lokalizacji wad.",
-        "visual_widget": "cnn_iou_sandbox",
-        "colab_notebook": "m06_l03_iou_evaluation.ipynb",
-        "estimated_minutes": 25,
-        "checklist": [
-            {"id": "chk-m6-3-1", "textEn": "Implement numpy vectorized IoU calculation function", "textPl": "Zaimplementuj zwektoryzowaną funkcję wyliczania IoU w numpy"},
-            {"id": "chk-m6-3-2", "textEn": "Analyze the impact of IoU thresholding (e.g. 0.50 vs 0.75)", "textPl": "Przeanalizuj wpływ progu IoU (np. 0.50 vs 0.75) na wyniki"},
-            {"id": "chk-m6-3-3", "textEn": "Calculate mean Average Precision (mAP@0.50) on test inspection batch", "textPl": "Wylicz wskaźnik mean Average Precision (mAP@0.50) na partii testowej"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Measuring Localization Precision",
-                "titlePl": "Mierzenie Precyzji Lokalizacji Wad",
-                "en": "{{term:iou}} measures the overlap between the human inspector's {{term:ground_truth}} bounding box and the neural network's predicted box. It is calculated as the area of overlap divided by the area of union. An IoU of 1.0 represents a flawless pixel-perfect match, while an IoU < 0.50 typically fails industrial certification.",
-                "pl": "Wskaźnik {{term:iou}} mierzy stopień pokrycia między zaznaczeniem wzorcowym {{term:ground_truth}} inżyniera jakości a ramką wyznaczoną przez sieć neuronową. Wylicza się go jako pole części wspólnej podzielone przez pole sumy obu obszarów. Wartość 1.0 to idealne dopasowanie, natomiast IoU < 0.50 dyskwalifikuje algorytm w testach odbiorczych."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m6-3-1",
-                "questionEn": "What is the IoU of two bounding boxes that touch at a single line edge without overlapping internal area?",
-                "questionPl": "Ile wynosi IoU dwóch ramek stykających się jedynie krawędzią bez wspólnego pola wewnętrznego?",
-                "optionsEn": ["0.0", "0.5", "1.0", "-1.0"],
-                "optionsPl": ["0.0", "0.5", "1.0", "-1.0"],
-                "correctIndex": 0,
-                "explanationEn": "Because the area of intersection is zero, the numerator is 0, yielding IoU = 0 / Union = 0.0.",
-                "explanationPl": "Pole części wspólnej wynosi 0, zatem licznik ułamka jest równy zero, co daje wynik IoU = 0.0."
-            }
-        ]
-    },
-    {
-        "id": "m06_l04_cnn_transfer_learning",
-        "module_id": "mod-6",
-        "module_number": 6,
-        "lesson_number": 4,
-        "title_en": "Transfer Learning with Lightweight CNNs",
-        "title_pl": "Uczenie Transferowe z Lekką Siecią CNN",
-        "summary_en": "Fine-tune pretrained MobileNetV3 backbones with PyTorch for sub-10ms defect classification on embedded vision hardware.",
-        "summary_pl": "Dotrenuj sieć MobileNetV3 w PyTorch, osiągając czas wnioskowania poniżej 10 ms na komputerze brzegowym.",
-        "visual_widget": "cnn_iou_sandbox",
-        "colab_notebook": "m06_l04_cnn_transfer_learning.ipynb",
-        "estimated_minutes": 30,
-        "checklist": [
-            {"id": "chk-m6-4-1", "textEn": "Load pretrained MobileNetV3 backbone and freeze early convolutional layers", "textPl": "Wczytaj architekturę MobileNetV3 i zamroź początkowe warstwy splotowe"},
-            {"id": "chk-m6-4-2", "textEn": "Replace classification head with custom 3-class industrial defect output", "textPl": "Zastąp warstwę wyjściową klasyfikatorem 3 typów wad produkcyjnych"},
-            {"id": "chk-m6-4-3", "textEn": "Train with AdamW optimizer and evaluate latency benchmarks", "textPl": "Wytrenuj sieć optymalizatorem AdamW i zmierz czas odpowiedzi (latencję)"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Fine-Tuning on Scarce Factory Samples",
-                "titlePl": "Uczenie Transferowe na Małych Zbiorach Fabrycznych",
-                "en": "Manufacturing engineers rarely have the luxury of 100,000 labeled defect images to train deep networks from scratch. Through {{term:transfer_learning}}, we take a network pretrained on ImageNet (which already understands basic geometry, edges, and textures) and fine-tune its final layers using only 50 to 100 factory samples.",
-                "pl": "Inżynierowie w fabrykach rzadko mają komfort posiadania 100 000 zdjęć wad do trenowania potężnych sieci od zera. Dzięki metodzie {{term:transfer_learning}} bierzemy model wytrenowany na bazie ImageNet (który potrafi już rozpoznawać krawędzie i cienie) i dostrajamy jego ostatnie warstwy na zaledwie 50-100 fotografiach wad z hali."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m6-4-1",
-                "questionEn": "Why is MobileNet preferred over giant architectures like Vision Transformers for on-line edge sorting?",
-                "questionPl": "Dlaczego MobileNet jest lepszym wyborem niż ogromne transformery wizyjne do sortowania detali na linii?",
-                "optionsEn": [
-                    "MobileNet runs only on solar power",
-                    "Depthwise separable convolutions minimize parameter count and memory bandwidth, enabling < 10ms inference on low-power industrial PCs",
-                    "Vision Transformers are illegal in automotive manufacturing",
-                    "MobileNet does not require backpropagation during training"
-                ],
-                "optionsPl": [
-                    "MobileNet działa wyłącznie na zasilaniu słonecznym",
-                    "Sploty separowalne redukują liczbę parametrów i narzut pamięciowy, dając czas odpowiedzi < 10 ms na tanich komputerach przemysłowych",
-                    "Transformery wizyjne są prawnie zakazane w przemyśle",
-                    "MobileNet nie wymaga propagacji wstecznej podczas nauki"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "MobileNet's depthwise separable convolutions drastically cut floating-point operations (FLOPs), fitting comfortably inside tight factory latency budgets.",
-                "explanationPl": "Sploty rozdzielne MobileNet drastycznie redukują liczbę operacji FLOPs, mieszcząc się w rygorystycznym budżecie czasu reakcji linii produkcyjnej."
-            }
-        ]
-    },
-
-    # =========================================================================
-    # MODULE 7: MLOps, Model Drift & Factory Deployment
-    # =========================================================================
-    {
-        "id": "m07_l01_drift_fundamentals",
-        "module_id": "mod-7",
-        "module_number": 7,
-        "lesson_number": 1,
-        "title_en": "Concept Drift vs Data Drift in Manufacturing",
-        "title_pl": "Dryf Pojęcia (Concept Drift) a Dryf Danych w Fabryce",
-        "summary_en": "Differentiate between ambient environmental sensor shifts (data drift) and fundamental changes in machine failure physics (concept drift).",
-        "summary_pl": "Rozróżniaj wpływ upałów na hali (dryf danych) od fundamentalnej zmiany fizyki awarii maszyny (dryf pojęcia).",
-        "visual_widget": "drift_latency_sandbox",
-        "colab_notebook": "m07_l01_drift_fundamentals.ipynb",
-        "estimated_minutes": 20,
-        "checklist": [
-            {"id": "chk-m7-1-1", "textEn": "Simulate summer ambient heat shift (+15°C baseline)", "textPl": "Zasymuluj letni wzrost temperatury otoczenia (+15°C na linii bazowej)"},
-            {"id": "chk-m7-1-2", "textEn": "Simulate a change in raw material steel hardness (concept drift)", "textPl": "Zasymuluj zmianę twardości stali od nowego dostawcy (dryf pojęcia)"},
-            {"id": "chk-m7-1-3", "textEn": "Track degrading model F1-score across production quarters", "textPl": "Zbadaj spadek wskaźnika F1 modelu na przestrzeni kolejnych kwartałów"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Model Decay in Factory Environments",
-                "titlePl": "Degradacja Modeli w Warunkach Przemysłowych",
-                "en": "A machine learning model deployed to production immediately begins to decay. In manufacturing, decay takes two forms: {{term:data_drift}} occurs when input sensor distributions shift due to external environmental changes (e.g. summer factory heat). In contrast, {{term:concept_drift}} occurs when the physical relationship between sensor values and breakdown labels fundamentally mutates, such as when tool steel suppliers are switched.",
-                "pl": "Model uczenia maszynowego wdrożony na produkcję od pierwszego dnia traci na aktualności. W przemyśle zjawisko to ma dwa oblicza: {{term:data_drift}} ma miejsce, gdy zmienia się rozkład wejść z powodu otoczenia (np. letnie upały na hali). Z kolei {{term:concept_drift}} oznacza fundamentalną zmianę fizycznej relacji między odczytami a awarią, np. po zmianie gatunku obrabianej stali."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m7-1-1",
-                "questionEn": "Which scenario is a classic example of Data Drift rather than Concept Drift?",
-                "questionPl": "Który scenariusz jest klasycznym przykładem Dryfu Danych (Data Drift), a nie Dryfu Pojęcia?",
-                "optionsEn": [
-                    "A new cutting tool geometry completely alters the vibration signature of a dull blade",
-                    "Summer temperatures cause all hydraulic oil temperature sensors to read 8°C higher, but the failure threshold relationship remains identical",
-                    "The factory rewires from 50 Hz European grid to 60 Hz US generators",
-                    "Management redefines what constitutes a quality rejection defect"
-                ],
-                "optionsPl": [
-                    "Nowa geometria frezu całkowicie zmienia charakterystykę drgań stępionego ostrza",
-                    "Letnie upały podnoszą odczyt czujników oleju hydraulicznego o 8°C, ale relacja definiująca awarię pozostaje bez zmian",
-                    "Fabryka przechodzi z sieci europejskiej 50 Hz na zasilanie 60 Hz",
-                    "Zarząd fabryki zmienia normy jakościowe definiujące wadliwy wyrób"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "Data drift (covariate shift) means P(X) changes while P(Y|X) remains constant. Ambient temperature increases input values without changing the mechanical failure physics.",
-                "explanationPl": "W dryfie danych zmienia się rozkład wejściowy P(X), podczas gdy funkcja awarii P(Y|X) jest stała. Temperatura podnosi pomiary, nie zmieniając fizyki uszkodzenia pompy."
-            }
-        ]
-    },
-    {
-        "id": "m07_l02_ks_drift_detection",
-        "module_id": "mod-7",
-        "module_number": 7,
-        "lesson_number": 2,
-        "title_en": "Automated Drift Detection with Kolmogorov-Smirnov Tests",
-        "title_pl": "Automatyczna Detekcja Dryfu Testem Kołmogorowa-Smirnowa",
-        "summary_en": "Run statistical hypothesis tests comparing baseline reference distributions against live production streaming telemetry.",
-        "summary_pl": "Wykonuj testy statystyczne porównujące rozkład referencyjny z bieżącą telemetrią produkcyjną.",
-        "visual_widget": "drift_latency_sandbox",
-        "colab_notebook": "m07_l02_ks_drift_detection.ipynb",
-        "estimated_minutes": 25,
-        "checklist": [
-            {"id": "chk-m7-2-1", "textEn": "Extract reference baseline distribution from verified training set", "textPl": "Wyodrębnij rozkład referencyjny z poprawnego zbioru treningowego"},
-            {"id": "chk-m7-2-2", "textEn": "Run scipy.stats.ks_2samp across incoming daily telemetry windows", "textPl": "Uruchamiaj scipy.stats.ks_2samp dla kolejnych dziennych okien danych"},
-            {"id": "chk-m7-2-3", "textEn": "Trigger automated alert when KS p-value drops below 0.01", "textPl": "Wywołaj powiadomienie alarmowe, gdy wartość p-value testu KS spadnie poniżej 0.01"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Statistical Drift Guardrails",
-                "titlePl": "Statystyczne Strażniki Dryfu Danych",
-                "en": "Plant engineers cannot wait for catastrophic machine breakdowns to discover that an ML model has gone out of calibration. By running the non-parametric {{term:ks_test}} on daily sensor logs, we compare the cumulative distribution function of live telemetry against the golden baseline. When the statistical distance exceeds safety thresholds, an automated maintenance ticket is raised.",
-                "pl": "Inżynierowie utrzymania ruchu nie mogą czekać na katastrofalną awarię, by zorientować się, że model utracił dokładność. Uruchamiając nieparametryczny {{term:ks_test}} na dziennych logach, porównujemy dystrybuantę bieżącej telemetrii z profilem wzorcowym. Gdy odległość statystyczna przekroczy normę, system generuje zlecenie kalibracji."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m7-2-1",
-                "questionEn": "What does a Kolmogorov-Smirnov p-value of 0.0001 (alpha = 0.05) indicate?",
-                "questionPl": "Co oznacza wynik p-value = 0.0001 (dla poziomu istotności alpha = 0.05) w teście Kołmogorowa-Smirnowa?",
-                "optionsEn": [
-                    "The distributions are identical and the model is healthy",
-                    "Reject the null hypothesis: there is statistically significant drift between the baseline and live telemetry",
-                    "The sensor has lost electrical power",
-                    "The test has timed out"
-                ],
-                "optionsPl": [
-                    "Rozkłady są identyczne, a model jest w pełni zdatny do pracy",
-                    "Odrzucenie hipotezy zerowej: wystąpił istotny statystycznie dryf parametrów między bazą a produkcją",
-                    "Czujnik utracił zasilanie elektryczne",
-                    "Test przekroczył limit czasu wykonania"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "A very small p-value indicates that the probability of observing this distributional difference under the null hypothesis (identical distributions) is near zero, proving significant data drift.",
-                "explanationPl": "Bardzo małe p-value oznacza, że prawdopodobieństwo zaobserwowania takich różnic przy braku dryfu jest bliskie zeru, co stanowi dowód na rozkalibrowanie parametrów."
-            }
-        ]
-    },
-    {
-        "id": "m07_l03_onnx_quantization",
-        "module_id": "mod-7",
-        "module_number": 7,
-        "lesson_number": 3,
-        "title_en": "Edge Model Optimization: ONNX & INT8 Quantization",
-        "title_pl": "Optymalizacja Modeli Brzegowych: ONNX i Kwantyzacja INT8",
-        "summary_en": "Export PyTorch models to portable ONNX format and quantize weights from FP32 to INT8 to slash inference latency.",
-        "summary_pl": "Eksportuj modele do formatu ONNX i kwantyzuj wagi z FP32 do INT8, drastycznie skracając czas odpowiedzi.",
-        "visual_widget": "drift_latency_sandbox",
-        "colab_notebook": "m07_l03_onnx_quantization.ipynb",
-        "estimated_minutes": 30,
-        "checklist": [
-            {"id": "chk-m7-3-1", "textEn": "Export PyTorch defect classification model to ONNX runtime format", "textPl": "Wyeksportuj model detekcji wad z PyTorch do formatu ONNX"},
-            {"id": "chk-m7-3-2", "textEn": "Apply post-training dynamic INT8 quantization using onnxruntime", "textPl": "Zastosuj post-trainingową kwantyzację dynamiczną INT8 w onnxruntime"},
-            {"id": "chk-m7-3-3", "textEn": "Benchmark throughput and latency on edge ARM CPU architecture", "textPl": "Zmierz przepustowość i czas odpowiedzi na architekturze procesora ARM"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Sub-10ms Inference on Industrial PCs",
-                "titlePl": "Czas Odpowiedzi Poniżej 10 ms na Komputerach Przemysłowych",
-                "en": "Cloud data centers have immense GPU compute, but industrial machines need decisions in milliseconds right on the plant floor. Through model {{term:quantization}}, we convert model weight tensors from 32-bit floating point ({{term:fp32}}) to compact 8-bit integers ({{term:int8}}). Standardized via {{term:onnx}} and {{term:tensorrt}}, this slashes memory footprints by 75% and speeds up inference by 3x on rugged edge controllers.",
-                "pl": "Serwery chmurowe oferują olbrzymią moc obliczeniową, lecz maszyny na linii wymagają decyzji w ułamku milisekundy. Dzięki procesowi {{term:quantization}} konwertujemy wagi sieci z 32-bitowych liczb zmiennoprzecinkowych ({{term:fp32}}) do 8-bitowych liczb całkowitych ({{term:int8}}). Standard {{term:onnx}} i silnik {{term:tensorrt}} zmniejszają rozmiar modelu o 75% i przyspieszają działanie 3-krotnie na sterownikach przemysłowych."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m7-3-1",
-                "questionEn": "What is the primary trade-off when applying INT8 post-training quantization?",
-                "questionPl": "Jaki jest główny kompromis przy stosowaniu kwantyzacji post-trainingowej INT8?",
-                "optionsEn": [
-                    "Massive speedup and 4x memory reduction in exchange for a tiny (typically < 0.5%) loss in numerical precision",
-                    "The model becomes completely untrainable in Python",
-                    "Inference latency increases by 10x",
-                    "It can only run on quantum computers"
-                ],
-                "optionsPl": [
-                    "Ogromne przyspieszenie i 4-krotne zmniejszenie pamięci kosztem minimalnej (zazwyczaj < 0.5%) utraty precyzji obliczeń",
-                    "Model traci możliwość jakiegokolwiek dalszego trenowania w Pythonie",
-                    "Opóźnienie wnioskowania rośnie 10-krotnie",
-                    "Działa wyłącznie na komputerach kwantowych"
-                ],
-                "correctIndex": 0,
-                "explanationEn": "Quantization rounds continuous weights to 256 discrete integer values. This slight loss in precision is heavily outweighed by the massive reduction in RAM and cache misses.",
-                "explanationPl": "Kwantyzacja zaokrągla wagi do 256 dyskretnych wartości całkowitych. Minimalny spadek dokładności jest z nawiązką rekompensowany 4-krotną redukcją zapotrzebowania na pamięć."
-            }
-        ]
-    },
-    {
-        "id": "m07_l04_mlops_pipeline",
-        "module_id": "mod-7",
-        "module_number": 7,
-        "lesson_number": 4,
-        "title_en": "Factory Deployment & Continuous Retraining Pipelines",
-        "title_pl": "Wdrożenie Fabryczne i Zautomatyzowane Potoki Dotrenowania",
-        "summary_en": "Architect an end-to-end industrial MLOps loop: stream edge telemetry, trigger drift alerts, and automate retraining on false alarms.",
-        "summary_pl": "Zaprojektuj pełną pętlę przemysłowego MLOps: zbieraj telemetrię, wyłapuj dryf i automatycznie dotrenowuj model na fałszywych alarmach.",
-        "visual_widget": "drift_latency_sandbox",
-        "colab_notebook": "m07_l04_mlops_pipeline.ipynb",
-        "estimated_minutes": 25,
-        "checklist": [
-            {"id": "chk-m7-4-1", "textEn": "Design edge telemetry ingestion queue buffer using MQTT/Kafka", "textPl": "Zaprojektuj kolejkę buforującą odczyty maszyn w oparciu o MQTT/Kafka"},
-            {"id": "chk-m7-4-2", "textEn": "Build human-in-the-loop operator feedback interface for false alarms", "textPl": "Stwórz panel operatora do weryfikacji i oznaczania fałszywych alarmów"},
-            {"id": "chk-m7-4-3", "textEn": "Automate scheduled weekly retraining and model registry deployment", "textPl": "Zautomatyzuj cotygodniowe dotrenowanie i rejestrację nowego modelu"}
-        ],
-        "sections": [
-            {
-                "id": "b1",
-                "type": "paragraph",
-                "titleEn": "Closing the MLOps Loop on the Shop Floor",
-                "titlePl": "Domknięcie Pętli MLOps na Hali Fabrycznej",
-                "en": "A successful industrial AI system is not a static Python script—it is a continuous operational lifecycle. By deploying {{term:model_monitoring}}, production telemetry is continuously validated. When the line quality supervisor marks a false alarm, that verified edge sample is queued into the {{term:pipeline_retraining}} workflow, ensuring the model adapts gracefully to mechanical tool wear over the lifespan of the manufacturing line.",
-                "pl": "Skuteczny przemysłowy system AI to nie statyczny skrypt w Pythonie, lecz ciągły cykl życia. Wdrażając {{term:model_monitoring}}, nieustannie weryfikujemy telemetrię z hali. Gdy brygadzista jakości zweryfikuje fałszywy alarm, ten sprawdzony przykład trafia do kolejki w {{term:pipeline_retraining}}, dzięki czemu model samoczynnie adaptuje się do naturalnego zużywania się maszyn."
-            }
-        ],
-        "quiz": [
-            {
-                "id": "q-m7-4-1",
-                "questionEn": "Why is 'Human-in-the-Loop' operator feedback essential for automated retraining pipelines in manufacturing?",
-                "questionPl": "Dlaczego pętla zwrotna od operatora (Human-in-the-Loop) jest kluczowa w potokach dotrenowania modeli w fabrykach?",
-                "optionsEn": [
-                    "Operators write the C++ code for the PLC drivers",
-                    "Plant technicians provide the ground-truth verification on whether flagged anomalies were genuine breakdowns or harmless false alarms",
-                    "Without humans, computers cannot run cron jobs",
-                    "To slow down the manufacturing line"
-                ],
-                "optionsPl": [
-                    "Operatorzy piszą kod sterowników PLC w języku C++",
-                    "Technicy na linii dostarczają bezspornej prawdy referencyjnej: czy zaalarmowany detal był rzeczywistą wadą, czy nieszkodliwym błędem czujnika",
-                    "Bez człowieka serwer nie potrafi uruchomić zaplanowanego zadania w cronie",
-                    "Aby celowo spowolnić tempo pracy taśmociągu"
-                ],
-                "correctIndex": 1,
-                "explanationEn": "Automating retraining without human validation causes the model to learn its own errors (feedback loop collapse). Operator confirmation provides the verified ground truth.",
-                "explanationPl": "Dotrenowywanie bez ludzkiej weryfikacji prowadzi do utrwalania własnych błędów modelu. Potwierdzenie technika daje wiarygodny punkt odniesienia (ground truth)."
-            }
-        ]
-    }
+    "id": "m05_l01_time_series_stationarity_rolling_stats",
+    "module_id": "mod-5",
+    "module_number": 5,
+    "lesson_number": 1,
+    "title_en": "Time-Series Stationarity & Rolling Window Statistics",
+    "title_pl": "Stacjonarność Szeregów Czasowych i Ruchome Statystyki Okienne",
+    "summary_en": "Diagnose non-stationarity in factory telemetry using the Augmented Dickey-Fuller test, differencing, and rolling statistics.",
+    "summary_pl": "Diagnozuj niestacjonarność w telemetrii fabrycznej za pomocą testu ADF, różnicowania i ruchomych statystyk okiennych.",
+    "visual_widget": "fft_anomaly_sandbox",
+    "colab_notebook": "m05_l01_time_series_stationarity_rolling_stats.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m5-1-1",
+            "textEn": "Execute Augmented Dickey-Fuller (ADF) hypothesis test on raw boiler pressure telemetry",
+            "textPl": "Wykonaj test hipotezy Dickeya-Fullera (ADF) na surowej telemetrii ciśnienia kotła"
+        },
+        {
+            "id": "chk-m5-1-2",
+            "textEn": "Apply first-order differencing to eliminate non-stationary drift",
+            "textPl": "Zastosuj różnicowanie pierwszego rzędu, aby wyeliminować niestacjonarny dryf"
+        },
+        {
+            "id": "chk-m5-1-3",
+            "textEn": "Compute and plot Autocorrelation (ACF) and Partial Autocorrelation (PACF) lag plots",
+            "textPl": "Oblicz i wykreśl autokorelację (ACF) oraz częściową autokorelację (PACF)"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "The Physics of Stationarity in Manufacturing",
+            "titlePl": "Fizyka Stacjonarności w Środowisku Produkcyjnym",
+            "en": "A time series exhibits {{term:stationarity}} when its mean, variance, and autocovariance remain constant across time. In industrial plant operations, raw sensor signals are almost universally non-stationary: ambient summer temperatures cause thermal baselines to drift upward, furnace refractory linings thin over months, and pneumatic regulators experience gradual mechanical pressure decay. Applying standard machine learning or regression algorithms to non-stationary data leads to spurious statistical correlations and rampant false alarms.",
+            "pl": "Szereg czasowy wykazuje {{term:stationarity}}, gdy jego średnia, wariancja i autokowariancja pozostają niezmienne w czasie. W zakładach produkcyjnych surowe sygnały czujników są niemal zawsze niestacjonarne: letnie upały powodują dryf temperatur bazowych, wymurówka pieców ulega stopniowej degradacji, a reduktory ciśnienia wykazują powolne spadki. Stosowanie algorytmów uczenia maszynowego na niestacjonarnych danych prowadzi do fałszywych korelacji i licznych błędnych alarmów."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Hypothesis Testing: Augmented Dickey-Fuller (ADF)",
+            "titlePl": "Weryfikacja Hipotez: Rozszerzony Test Dickeya-Fullera (ADF)",
+            "en": "Before fitting predictive models, reliability engineers perform the {{term:adf_test}}. The null hypothesis $H_0$ states that the telemetry has a unit root (is non-stationary). If the resulting p-value is strictly below $0.05$, we reject $H_0$ and conclude the signal is stationary. If $p \\ge 0.05$, we apply first-order differencing $\\Delta y_t = y_t - y_{t-1}$ to transform drifting trends into stationary delta increments.",
+            "pl": "Przed trenowaniem modeli inżynierowie wykonują {{term:adf_test}}. Hipoteza zerowa $H_0$ zakłada, że sygnał posiada pierwiastek jednostkowy (jest niestacjonarny). Jeśli wartość p-value jest niższa niż $0.05$, odrzucamy $H_0$ i uznajemy szereg za stacjonarny. W przeciwnym razie stosujemy różnicowanie pierwszego rzędu $\\Delta y_t = y_t - y_{t-1}$, przekształcając dryfujący trend w stacjonarne przyrosty."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m5-1-1",
+            "questionEn": "An ADF test on furnace thermocouple telemetry yields a p-value of 0.38. What engineering action is required before forecasting?",
+            "questionPl": "Test ADF na danych z termopary pieca dał wartość p-value równą 0.38. Jakie działanie inżynierskie jest wymagane przed modelowaniem?",
+            "optionsEn": [
+                "Proceed immediately; 0.38 indicates perfect stationarity",
+                "Apply first-order differencing (Δy = y_t - y_{t-1}) to remove the non-stationary trend and re-test",
+                "Multiply readings by 100 to increase numerical precision",
+                "Replace the thermocouple with a higher-frequency sensor"
+            ],
+            "optionsPl": [
+                "Kontynuować bez zmian; 0.38 oznacza idealną stacjonarność",
+                "Zastosować różnicowanie pierwszego rzędu (Δy = y_t - y_{t-1}), aby usunąć niestacjonarny trend, a następnie powtórzyć test",
+                "Pomnożyć odczyty przez 100 w celu zwiększenia precyzji numerycznej",
+                "Wymienić termoparę na czujnik o wyższej częstotliwości próbkowania"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "A p-value of 0.38 fails to reject the unit-root null hypothesis (p >= 0.05). Differencing eliminates the non-stationary drift.",
+            "explanationPl": "Wartość p-value = 0.38 nie pozwala odrzucić hipotezy zerowej o pierwiastku jednostkowym. Różnicowanie eliminuje dryfujący trend."
+        }
+    ]
+},
+{
+    "id": "m05_l02_fft_frequency_domain_vibration",
+    "module_id": "mod-5",
+    "module_number": 5,
+    "lesson_number": 2,
+    "title_en": "FFT Frequency-Domain Vibration & Bearing Kinematics",
+    "title_pl": "Analiza Drgań w Dziedzinie Częstotliwości (FFT) i Kinematyka Łożysk",
+    "summary_en": "Decompose raw accelerometer signals with FFT, apply Hanning windowing to stop leakage, and isolate bearing outer race defect peaks.",
+    "summary_pl": "Rozłóż sygnały z akcelerometru za pomocą FFT, zastosuj okno Hanninga i zidentyfikuj piki uszkodzenia bieżni łożyska.",
+    "visual_widget": "fft_anomaly_sandbox",
+    "colab_notebook": "m05_l02_fft_frequency_domain_vibration.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m5-2-1",
+            "textEn": "Synthesize multi-harmonic vibration signal with bearing defect frequencies",
+            "textPl": "Wygeneruj sygnał drgań z harmonicznymi i częstotliwością uszkodzenia łożyska"
+        },
+        {
+            "id": "chk-m5-2-2",
+            "textEn": "Apply Hanning window function to suppress spectral boundary leakage",
+            "textPl": "Zastosuj funkcję okna Hanninga, aby stłumić przeciek widmowy na brzegach"
+        },
+        {
+            "id": "chk-m5-2-3",
+            "textEn": "Calculate Fast Fourier Transform (FFT) and detect Ball Pass Frequency Outer Race (BPFO) peak",
+            "textPl": "Oblicz szybką transformatę Fouriera (FFT) i zlokalizuj pik częstotliwości BPFO"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Vibration Analysis & Spectral Decomposition",
+            "titlePl": "Analiza Wibracji i Dekompozycja Widmowa",
+            "en": "Looking at raw accelerometer readings in the time domain reveals nothing more than a noisy, chaotic oscillation. However, rotating machinery operates under strict geometric kinematics: motor shafts rotate at rotational frequency $f_{shaft}$, gear meshes mesh at $N_{teeth} \\cdot f_{shaft}$, and bearing balls impact defects at characteristic kinematic frequencies. Using the {{term:fft}}, we project the time signal into the frequency domain, where discrete mechanical components appear as sharp spectral peaks.",
+            "pl": "Analiza sygnału z akcelerometru w dziedzinie czasu ukazuje jedynie chaotyczny, zaszumiony przebieg. Jednak maszyny wirnikowe podlegają ścisłym prawom kinematyki: wał obraca się z częstotliwością $f_{shaft}$, zęby przekładni stykają się z częstością $N_{teeth} \\cdot f_{shaft}$, a kulki łożysk uderzają w mikropęknięcia z charakterystyczną częstotliwością. Używając {{term:fft}}, rzutujemy sygnał w dziedzinę częstotliwości, gdzie każdy element tworzy wyraźny pik."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Bearing Defect Kinematics: BPFO & BPFI",
+            "titlePl": "Kinematyka Uszkodzeń Łożysk: BPFO i BPFI",
+            "en": "When a microscopic fatigue spall forms on the stationary outer ring of a rolling element bearing, every passing ball produces an impact shock at the Ball Pass Frequency Outer Race ({{term:bpfo}}): $f_{BPFO} = \\frac{N_{balls}}{2} f_{shaft} \\left(1 - \\frac{d}{D}\\cos\\alpha\\right)$. A defect on the rotating inner ring generates the Ball Pass Frequency Inner Race ({{term:bpfi}}). Detecting these spectral peaks weeks before audible noise occurs is the hallmark of modern predictive maintenance.",
+            "pl": "Gdy na nieruchomej bieżni zewnętrznej łożyska tocznego powstanie mikropęknięcie zmęczeniowe, każda tocząca się kulka generuje impuls uderzeniowy z częstotliwością {{term:bpfo}}: $f_{BPFO} = \\frac{N_{balls}}{2} f_{shaft} \\left(1 - \\frac{d}{D}\\cos\\alpha\\right)$. Uszkodzenie bieżni wewnętrznej generuje z kolei częstotliwość {{term:bpfi}}. Wykrycie tych pików na tygodnie przed pojawieniem się hałasu stanowi fundament nowoczesnego predykcyjnego utrzymania ruchu."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m5-2-1",
+            "questionEn": "Why is a Hanning or Hamming window applied to vibration telemetry before calculating the FFT?",
+            "questionPl": "Dlaczego przed obliczeniem FFT na sygnał drgań nakłada się okno Hanninga lub Hamminga?",
+            "optionsEn": [
+                "To amplify high-frequency electrical sensor noise",
+                "To prevent spectral leakage caused by non-periodic truncation at signal sample boundaries",
+                "To convert the signal from acceleration to velocity automatically",
+                "To downsample the signal from 10 kHz to 1 kHz"
+            ],
+            "optionsPl": [
+                "Aby wzmocnić zakłócenia elektromagnetyczne w wysokich częstotliwościach",
+                "Aby zapobiec przeciekowi widmowemu wywołanemu nieciągłością sygnału na brzegach okna czasowego",
+                "Aby automatycznie przekształcić przyspieszenie w prędkość drgań",
+                "Aby zredukować częstotliwość próbkowania z 10 kHz do 1 kHz"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Window functions smoothly taper signal endpoints to zero, eliminating artificial boundary discontinuities that smear spectral energy.",
+            "explanationPl": "Funkcje okna łagodnie wygaszają końce sygnału do zera, eliminując sztuczne nieciągłości powodujące rozmycie energii widma."
+        }
+    ]
+},
+{
+    "id": "m05_l03_forecasting_consumption_pressure_drift",
+    "module_id": "mod-5",
+    "module_number": 5,
+    "lesson_number": 3,
+    "title_en": "Forecasting Consumption & Pressure Drift: ARIMA vs XGBoost",
+    "title_pl": "Prognozowanie Zużycia i Dryfu Ciśnienia: ARIMA kontra XGBoost",
+    "summary_en": "Forecast factory compressed air and natural gas demand using statistical ARIMA and machine learning XGBoost with temporal lag features.",
+    "summary_pl": "Prognozuj zapotrzebowanie na sprężone powietrze i gaz przy użyciu statystycznego modelu ARIMA oraz algorytmu XGBoost z cechami opóźnionymi.",
+    "visual_widget": "fft_anomaly_sandbox",
+    "colab_notebook": "m05_l03_forecasting_consumption_pressure_drift.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m5-3-1",
+            "textEn": "Fit statistical ARIMA model on hourly factory gas consumption logs",
+            "textPl": "Dopasuj model statystyczny ARIMA do godzinowych logów zużycia gazu w fabryce"
+        },
+        {
+            "id": "chk-m5-3-2",
+            "textEn": "Construct autoregressive lag features and calendar encodings for XGBoost regression",
+            "textPl": "Zbuduj cechy opóźnione autoregresyjnie i kodowanie kalendarzowe dla modelu XGBoost"
+        },
+        {
+            "id": "chk-m5-3-3",
+            "textEn": "Evaluate multi-step walk-forward forecast horizon using Mean Absolute Percentage Error (MAPE)",
+            "textPl": "Oceń wielokrokowy horyzont prognozy za pomocą błędu MAPE w walidacji kroczącej"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Industrial Utility & Fluid Pressure Forecasting",
+            "titlePl": "Prognozowanie Mediów Przemysłowych i Ciśnień Płynów",
+            "en": "Industrial manufacturing plants consume massive quantities of natural gas, electric power, and compressed air. Accurately forecasting utility demand 8 to 24 hours in advance allows energy managers to avoid expensive peak-demand surcharges and optimize compressor staging. Classical time-series modeling relies on {{term:arima}} (AutoRegressive Integrated Moving Average), which models linear relationships between lagged values and moving average error residuals.",
+            "pl": "Zakłady produkcyjne zużywają ogromne ilości gazu ziemnego, energii elektrycznej i sprężonego powietrza. Dokładne prognozowanie zapotrzebowania z 8-24 godzinnym wyprzedzeniem pozwala uniknąć kar za przekroczenie mocy zamówionej i zoptymalizować pracę sprężarek. Klasyczne podejście opiera się na modelu {{term:arima}}, który opisuje liniowe zależności między przeszłymi wartościami i resztami średniej ruchomej."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "ARIMA vs XGBoost with Lag Variables",
+            "titlePl": "ARIMA kontra XGBoost z Zmiennymi Opóźnionymi",
+            "en": "While ARIMA assumes linear Gaussian dynamics, non-linear machine learning models like {{term:xgboost}} excel when paired with engineered lag features ($t-1, t-24$), rolling standard deviations, and exogenous variables (ambient temperature, production tonnage). In practice, XGBoost typically achieves 15-25% lower MAPE on complex multi-shift factory consumption profiles.",
+            "pl": "Podczas gdy ARIMA zakłada liniową dynamikę Gaussa, nieliniowe modele uczenia maszynowego, takie jak {{term:xgboost}}, doskonale sprawdzają się w połączeniu z cechami opóźnionymi ($t-1, t-24$), ruchomymi odchyleniami standardowymi i zmiennymi zewnętrznymi (temperatura otoczenia, tonaż produkcji). W praktyce XGBoost osiąga o 15-25% niższy błąd MAPE na złożonych profilach zmianowych."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m5-3-1",
+            "questionEn": "When formatting time-series data for XGBoost multi-step forecasting, why must lag features strictly reference historical timestamps?",
+            "questionPl": "Dlaczego podczas przygotowywania cech dla XGBoost w prognozowaniu szeregów czasowych cechy opóźnione muszą odwoływać się wyłącznie do przeszłości?",
+            "optionsEn": [
+                "To prevent future data leakage that would create unrealistically optimistic offline training scores",
+                "To comply with European electrical grid frequency regulations (50 Hz)",
+                "Because gradient boosting trees cannot accept floating-point numbers",
+                "To force all predictions to sum to zero"
+            ],
+            "optionsPl": [
+                "Aby zapobiec wyciekowi danych z przyszłości (data leakage), który prowadzi do nierealistycznie optymistycznych wyników treningowych",
+                "Aby spełnić wymogi regulacji częstotliwości europejskiej sieci energetycznej (50 Hz)",
+                "Ponieważ drzewa gradientowe nie potrafią przetwarzać liczb zmiennoprzecinkowych",
+                "Aby wymusić, by suma wszystkich predykcji wynosiła zero"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Referencing future timestamps during feature engineering constitutes lookahead leakage, rendering the model useless in live streaming production.",
+            "explanationPl": "Odwołanie do przyszłych próbek w procesie inżynierii cech stanowi wyciek danych (lookahead leakage), uniemożliwiający poprawne działanie modelu na produkcji."
+        }
+    ]
+},
+{
+    "id": "m05_l04_realtime_anomaly_capstone2_leak_detector",
+    "module_id": "mod-5",
+    "module_number": 5,
+    "lesson_number": 4,
+    "title_en": "Capstone 2: Real-Time Anomaly & Hydraulic Leak Detector",
+    "title_pl": "Projekt Zwieńczeniowy 2: Detektor Wycieków Oleju i Spadków Ciśnienia w Czasie Rzeczywistym",
+    "summary_en": "Build an end-to-end hydraulic leak detector using CUSUM and EWMA to detect micro-fissures and trigger automated safety shutdown alarms.",
+    "summary_pl": "Zbuduj kompletny detektor wycieków hydraulicznych wykorzystujący algorytmy CUSUM i EWMA do wykrywania mikropęknięć i wyzwalania alarmów.",
+    "visual_widget": "fft_anomaly_sandbox",
+    "colab_notebook": "m05_l04_realtime_anomaly_capstone2_leak_detector.ipynb",
+    "estimated_minutes": 30,
+    "checklist": [
+        {
+            "id": "chk-m5-4-1",
+            "textEn": "Simulate high-pressure hydraulic loop telemetry (inlet/outlet flow and pressure)",
+            "textPl": "Zasymuluj telemetrię układu hydraulicznego wysokiego ciśnienia (przepływ i ciśnienie)"
+        },
+        {
+            "id": "chk-m5-4-2",
+            "textEn": "Implement Cumulative Sum (CUSUM) change-point detector for micro-leak tracking",
+            "textPl": "Zaimplementuj algorytm CUSUM do wykrywania mikroskopijnych wycieków magistrali"
+        },
+        {
+            "id": "chk-m5-4-3",
+            "textEn": "Deploy multi-state safety state machine (NORMAL, WATCH, ALARM, EMERGENCY_SHUTDOWN)",
+            "textPl": "Wdróż wielostanowy automat bezpieczeństwa (NORMAL, WATCH, ALARM, EMERGENCY_SHUTDOWN)"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Hydraulic System Dynamics & Micro-Leak Hazards",
+            "titlePl": "Dynamika Układów Hydraulicznych i Ryzyko Mikro-Wycieków",
+            "en": "Industrial hydraulic power units (HPUs) operating at 200–350 bar drive metal presses, injection molders, and robotic arms. A ruptured hydraulic hose sprays flammable oil mist, presenting severe fire hazards and catastrophic environmental fines. Standard PLC low-pressure pressure switches only trigger after $30\\%$ pressure loss—far too late. By pairing mass balance differential telemetry ($Q_{in} - Q_{out}$) with statistical process control, we detect incipient micro-fissures leaking less than $50\\text{ ml/min}$.",
+            "pl": "Przemysłowe agregaty hydrauliczne (HPU) pracujące pod ciśnieniem 200–350 bar napędzają prasy, wtryskarki i ramiona robotów. Pęknięcie węża rozpyla łatwopalną mgłę olejową, stwarzając ryzyko pożaru i ogromne kary środowiskowe. Standardowe presostaty PLC reagują dopiero przy spadku ciśnienia o $30\\%$—zdecydowanie za późno. Łącząc bilans masowy ($Q_{in} - Q_{out}$) ze statystyczną kontrolą procesu, wykrywamy mikropęknięcia o wycieku poniżej $50\\text{ ml/min}$."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Sequential Analysis: CUSUM & EWMA",
+            "titlePl": "Analiza Sekwencyjna: Algorytmy CUSUM i EWMA",
+            "en": "The Cumulative Sum ({{term:cusum}}) algorithm accumulates sequential deviations from the reference mean: $S_t = \\max(0, S_{t-1} + (x_t - \\mu_0 - k))$. By filtering transient pressure pulsations with {{term:ewma}} and accumulating persistent flow discrepancies in CUSUM, the system triggers a WATCH warning within 10 seconds of leak initiation and an automated EMERGENCY_SHUTDOWN command before oil pools on the factory floor.",
+            "pl": "Algorytm {{term:cusum}} (Sum Skumulowanych) akumuluje sekwencyjne odchylenia od średniej referencyjnej: $S_t = \\max(0, S_{t-1} + (x_t - \\mu_0 - k))$. Filtrując chwilowe pulsacje ciśnienia za pomocą {{term:ewma}} i akumulując trwałe różnice przepływu w CUSUM, system wyzwala ostrzeżenie WATCH w ciągu 10 sekund od pojawienia się nieszczelności i wysyła sygnał EMERGENCY_SHUTDOWN przed rozlaniem oleju."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m5-4-1",
+            "questionEn": "Why is CUSUM superior to standard static threshold alarms for hydraulic leak detection?",
+            "questionPl": "Dlaczego algorytm CUSUM jest lepszy od statycznych progów alarmowych w detekcji wycieków hydraulicznych?",
+            "optionsEn": [
+                "CUSUM accumulates small, persistent systematic shifts over time that remain below static alarm limits",
+                "CUSUM eliminates the need for physical pressure sensors entirely",
+                "CUSUM only works when the factory is completely shut down on weekends",
+                "CUSUM automatically repairs severed hydraulic hoses using software commands"
+            ],
+            "optionsPl": [
+                "CUSUM akumuluje niewielkie, lecz trwałe przesunięcia średniej, które nigdy nie przekroczyłyby statycznego progu",
+                "CUSUM całkowicie eliminuje potrzebę stosowania fizycznych czujników ciśnienia",
+                "CUSUM działa wyłącznie podczas weekendowych przestojów fabryki",
+                "CUSUM automatycznie naprawia pęknięte węże hydrauliczne za pomocą oprogramowania"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Static thresholds must be set wide to avoid false alarms from normal pump ripple; CUSUM detects subtle persistent shifts by integrating cumulative error.",
+            "explanationPl": "Statyczne progi muszą być szerokie z uwagi na pulsacje pompy; CUSUM całkuje drobne, systematyczne odchylenia, wykrywając wyciek natychmiast."
+        }
+    ]
+},
+{
+    "id": "m06_l01_neural_network_mechanics_pytorch_keras",
+    "module_id": "mod-6",
+    "module_number": 6,
+    "lesson_number": 1,
+    "title_en": "Neural Network Mechanics in PyTorch 2.x & Keras 3",
+    "title_pl": "Mechanika Sieci Neuronowych w PyTorch 2.x i Keras 3",
+    "summary_en": "Master deep neural network mechanics: tensors, backpropagation, AdamW optimization, and training MLPs on multi-channel sensor arrays.",
+    "summary_pl": "Opanuj mechanikę sieci głębokich: tensory, propagację wsteczną, optymalizator AdamW i trenowanie sieci MLP na danych z czujników.",
+    "visual_widget": "cnn_iou_sandbox",
+    "colab_notebook": "m06_l01_neural_network_mechanics_pytorch_keras.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m6-1-1",
+            "textEn": "Construct multi-layer perceptron (MLP) architecture using PyTorch 2.x nn.Module",
+            "textPl": "Zbuduj architekturę perceptronu wielowarstwowego (MLP) w PyTorch 2.x nn.Module"
+        },
+        {
+            "id": "chk-m6-1-2",
+            "textEn": "Implement forward pass with ReLU and GELU activation functions",
+            "textPl": "Zaimplementuj przejście w przód (forward pass) z funkcjami aktywacji ReLU i GELU"
+        },
+        {
+            "id": "chk-m6-1-3",
+            "textEn": "Train model with AdamW optimizer and plot cross-entropy loss convergence curve",
+            "textPl": "Wytrenuj model optymalizatorem AdamW i wykreśl krzywą zbieżności funkcji straty"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Neural Network Architecture for Industrial Sensor Fusion",
+            "titlePl": "Architektura Sieci Neuronowych w Fuzji Danych z Czujników",
+            "en": "When industrial systems stream dozens of heterogeneous sensors simultaneously (accelerometers, thermocouples, acoustic emissions, servo motor torques), linear models and manual feature engineering hit scaling limits. Deep neural networks learn complex, non-linear representations directly from raw multi-channel tensors. In modern industrial stacks, {{term:pytorch}} and {{term:keras}} provide the standard foundation for defining computation graphs, automated differentiation (Autograd), and GPU-accelerated training.",
+            "pl": "Gdy systemy przemysłowe transmitują dziesiątki zróżnicowanych czujników jednocześnie (akcelerometry, termopary, emisję akustyczną, momenty serwomotorów), modele liniowe i ręczna inżynieria cech napotykają ograniczenia. Głębokie sieci neuronowe uczą się złożonych, nieliniowych reprezentacji bezpośrednio z wielokanałowych tensorów. W nowoczesnych wdrożeniach {{term:pytorch}} i {{term:keras}} stanowią standard budowy grafów obliczeniowych i akcelerowanego treningu."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Backpropagation & Preventing Factory Overfitting",
+            "titlePl": "Propagacja Wsteczna i Zapobieganie Przeuczeniu Modeli",
+            "en": "Backpropagation calculates the gradient of the loss function with respect to every model weight using the mathematical chain rule: $\\frac{\\partial \\mathcal{L}}{\\partial W} = \\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial W}$. Because factory datasets frequently contain repetitive operational states, deep networks can easily memorize steady-state cycles rather than physical degradation dynamics. Reliability engineers enforce Dropout ($p=0.2$), Weight Decay ($L_2$ regularization in AdamW), and Early Stopping based on validation loss.",
+            "pl": "Propagacja wsteczna (backpropagation) oblicza gradient funkcji straty względem każdej wagi w sieci przy użyciu reguły łańcuchowej: $\\frac{\\partial \\mathcal{L}}{\\partial W} = \\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial W}$. Ponieważ dane fabryczne cechują się powtarzalnością, sieci mogą łatwo nauczyć się stanów ustalonych na pamięć. Aby temu zapobiec, stosuje się warstwy Dropout ($p=0.2$), regularyzację wag w optymalizatorze AdamW oraz Early Stopping."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m6-1-1",
+            "questionEn": "What occurs if an industrial neural network is trained without validation early stopping or weight decay?",
+            "questionPl": "Co się stanie, jeśli przemysłowa sieć neuronowa zostanie wytrenowana bez techniki wczesnego zatrzymania (early stopping) lub regularyzacji wag?",
+            "optionsEn": [
+                "The model overfits the training data, memorizing normal baseline noise while failing to generalize to real machine breakdowns",
+                "The physical PLC hardware burns out due to excessive GPU calculations",
+                "The model automatically converts itself into ladder logic",
+                "Training speeds up by 100x with zero accuracy loss"
+            ],
+            "optionsPl": [
+                "Model ulega przeuczeniu (overfitting), zapamiętując szum treningowy i tracąc zdolność wykrywania rzeczywistych awarii",
+                "Sterownik PLC ulega fizycznemu spaleniu z powodu przeciążenia obliczeniami GPU",
+                "Model automatycznie konwertuje się do języka drabinkowego PLC",
+                "Trening przyspiesza 100-krotnie bez jakiejkolwiek utraty dokładności"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Overfitting causes the model to memorize the training set perfectly while failing completely on unseen production anomalies.",
+            "explanationPl": "Przeuczenie powoduje, że model idealnie odwzorowuje zbiór treningowy, lecz traci zdolność generalizacji na nowe, unseen anomalie."
+        }
+    ]
+},
+{
+    "id": "m06_l02_cnns_surface_defect_inspection",
+    "module_id": "mod-6",
+    "module_number": 6,
+    "lesson_number": 2,
+    "title_en": "Convolutional Neural Networks (CNNs) for Surface Defect Inspection",
+    "title_pl": "Konwolucyjne Sieci Neuronowe (CNN) w Inspekcji Wad Powierzchniowych",
+    "summary_en": "Build 2D convolutional neural networks with Sobel edge filters and pooling layers to automatically detect surface defects on manufactured parts.",
+    "summary_pl": "Buduj konwolucyjne sieci neuronowe z filtrami Sobela i warstwami poolingu, aby automatycznie wykrywać wady powierzchniowe wyrobów.",
+    "visual_widget": "cnn_iou_sandbox",
+    "colab_notebook": "m06_l02_cnns_surface_defect_inspection.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m6-2-1",
+            "textEn": "Synthesize synthetic surface defect images (scratches, pits, oil inclusions)",
+            "textPl": "Wygeneruj syntetyczne obrazy wad powierzchniowych (rysy, wżery, plamy olejowe)"
+        },
+        {
+            "id": "chk-m6-2-2",
+            "textEn": "Apply 2D spatial convolution kernels (Sobel and Laplacian edge detectors)",
+            "textPl": "Zastosuj dwuwymiarowe jądra splotu (filtry krawędziowe Sobela i Laplace'a)"
+        },
+        {
+            "id": "chk-m6-2-3",
+            "textEn": "Train a multi-class CNN surface inspection classifier and evaluate confusion matrix",
+            "textPl": "Wytrenuj wieloklasowy klasyfikator CNN inspekcji jakości i oceń macierz pomyłek"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Automated Optical Inspection (AOI) on the Factory Floor",
+            "titlePl": "Automatyczna Inspekcja Optyczna (AOI) na Linii Produkcyjnej",
+            "en": "Manual visual inspection by human operators is slow, subjective, and prone to severe fatigue errors after long factory shifts. In high-speed manufacturing (cold-rolled steel coils, automotive stamping, semiconductor wafers), automated optical inspection stations capture high-resolution camera frames under strobe lighting. {{term:cnn}} (Convolutional Neural Networks) process these images using localized 2D filter kernels that slide across the image tensor, detecting microscopic scratches, dents, and voids regardless of their spatial location.",
+            "pl": "Ręczna kontrola wizualna prowadzona przez operatorów jest powolna, subiektywna i podatna na błędy wynikające ze zmęczenia. W produkcji wielkoseryjnej (walcowanie blach, tłoczenie karoserii, płytki krzemowe) stacje automatycznej inspekcji optycznej rejestrują kadry w oświetleniu stroboskopowym. Sieci {{term:cnn}} przetwarzają te obrazy za pomocą lokalnych filtrów splotowych, wykrywając mikrorysy, wżery i pory niezależnie od ich położenia w kadrze."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Convolution Mechanics: Kernels, Stride & Pooling",
+            "titlePl": "Mechanika Konwolucji: Jądra Splotu, Krok i Warstwy Poolingu",
+            "en": "A 2D convolution computes the element-wise dot product between an $n \\times n$ kernel matrix and local image patches: $S(i, j) = (I * K)(i, j) = \\sum_m \\sum_n I(i-m, j-n) K(m, n)$. Shallow layers learn low-level primitives like edges and texture gradients; deeper layers combine these into semantic defect signatures (e.g. longitudinal cracks vs circular blowholes). Max pooling layers reduce spatial dimensions, conferring translation invariance so a scratch is recognized anywhere in the camera field of view.",
+            "pl": "Konwolucja 2D oblicza iloczyn skalarny jądra $n \\times n$ z wycinkiem obrazu: $S(i, j) = (I * K)(i, j) = \\sum_m \\sum_n I(i-m, j-n) K(m, n)$. Płytkie warstwy wykrywają krawędzie i gradienty jasności; głębsze łączą je w cechy semantyczne (np. pęknięcia wzdłużne vs pęcherze gazowe). Warstwy Max Pooling redukują wymiary przestrzenne, zapewniając niezmienniczość translacyjną."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m6-2-1",
+            "questionEn": "What is the primary benefit of Max Pooling layers in an industrial surface inspection CNN?",
+            "questionPl": "Jaka jest główna korzyść ze stosowania warstw Max Pooling w przemysłowej sieci CNN do inspekcji powierzchni?",
+            "optionsEn": [
+                "They reduce spatial dimensionality and provide translation invariance so defects are recognized regardless of slight conveyor belt shifts",
+                "They convert RGB color images into 1-bit monochrome binary arrays",
+                "They eliminate the need to collect training images from the production line",
+                "They increase image resolution by 4x using generative interpolation"
+            ],
+            "optionsPl": [
+                "Redukują wymiarowość przestrzenną i zapewniają niezmienniczość względem przesunięć wyrobu na taśmie przenośnika",
+                "Konwertują kolorowe obrazy RGB na 1-bitowe tablice monochromatyczne",
+                "Eliminują konieczność zbierania zdjęć treningowych z linii produkcyjnej",
+                "Zwiększają rozdzielczość obrazu 4-krotnie za pomocą interpolacji generatywnej"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Max pooling downsamples feature maps, preserving the strongest activations while creating robustness against minor spatial vibrations.",
+            "explanationPl": "Max pooling redukuje wymiarowość map cech, zachowując najsilniejsze aktywacje i uodparniając model na drgania taśmy transportowej."
+        }
+    ]
+},
+{
+    "id": "m06_l03_transfer_learning_yolo_conveyor_inspection",
+    "module_id": "mod-6",
+    "module_number": 6,
+    "lesson_number": 3,
+    "title_en": "Transfer Learning & Ultralytics YOLO on Conveyor Inspection",
+    "title_pl": "Transfer Learning i Ultralytics YOLO w Inspekcji Linii Przenośnikowej",
+    "summary_en": "Leverage transfer learning and single-stage YOLO object detection to locate and classify packaging and machining defects on moving conveyor lines.",
+    "summary_pl": "Wykorzystaj transfer learning i detekcję obiektów YOLO do lokalizowania i klasyfikacji wad wyrobów na ruchomych liniach przenośnikowych.",
+    "visual_widget": "cnn_iou_sandbox",
+    "colab_notebook": "m06_l03_transfer_learning_yolo_conveyor_inspection.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m6-3-1",
+            "textEn": "Configure pretrained vision backbone weights using transfer learning",
+            "textPl": "Skonfiguruj wagi wytrenowanego modelu wizyjnego za pomocą uczenia transferowego"
+        },
+        {
+            "id": "chk-m6-3-2",
+            "textEn": "Format defect bounding boxes in normalized coordinates [x_center, y_center, w, h]",
+            "textPl": "Sformatuj ramki ograniczające defektów w znormalizowanych współrzędnych [x, y, w, h]"
+        },
+        {
+            "id": "chk-m6-3-3",
+            "textEn": "Calculate Intersection over Union (IoU) and evaluate mAP@0.50 detection metrics",
+            "textPl": "Oblicz metrykę Intersection over Union (IoU) i oceń jakość detekcji mAP@0.50"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "The Data Scarcity Dilemma in Quality Assurance",
+            "titlePl": "Dylemat Małej Liczby Danych w Zapewnieniu Jakości",
+            "en": "In mature production lines, manufacturing defects occur rarely (often fewer than 50 examples per month across thousands of produced units). Training deep neural networks from scratch on 50 images yields severe overfitting. Using {{term:transfer_learning}}, we take a neural network pretrained on millions of diverse images and fine-tune only its final classification and regression heads on our small factory defect dataset, cutting training time from days to minutes while drastically improving accuracy.",
+            "pl": "Na dojrzałych liniach produkcyjnych wady występują rzadko (często poniżej 50 przypadków miesięcznie na tysiące sztuk). Trening głębokich sieci od zera na 50 zdjęciach kończy się natychmiastowym przeuczeniem. Stosując {{term:transfer_learning}}, wykorzystujemy sieć wytrenowaną na milionach zróżnicowanych obrazów i dotrenowujemy jedynie warstwy końcowe na naszych danych fabrycznych, skracając czas treningu z dni do minut."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Real-Time Detection with Ultralytics YOLO & IoU",
+            "titlePl": "Detekcja w Czasie Rzeczywistym z Modelem YOLO i Metryką IoU",
+            "en": "Conveyor belts travel at speeds of $1.0 - 2.5\\text{ m/s}$. Inspection systems must locate defects within 30 milliseconds to trigger pneumatic rejection arms. Single-stage object detectors like {{term:yolo}} predict bounding box coordinates $[x, y, w, h]$ and defect class probabilities in a single forward pass. Detections are evaluated using {{term:iou}} (Intersection over Union): predictions with $\\text{IoU} \\ge 0.50$ against human expert annotations count as valid True Positives.",
+            "pl": "Przenośniki taśmowe poruszają się z prędkością $1.0 - 2.5\\text{ m/s}$. System inspekcji musi zlokalizować wadę w czasie poniżej 30 milisekund, aby pneumatyczny spychacz zdążył odrzucić detal. Jednoetapowe detektory, takie jak {{term:yolo}}, wyznaczają współrzędne ramek $[x, y, w, h]$ i klasy w jednym przejściu sieci. Jakość oceniana jest metryką {{term:iou}} (Intersection over Union): predykcje z $\\text{IoU} \\ge 0.50$ uznawane są za poprawne."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m6-3-1",
+            "questionEn": "On a manufacturing conveyor line moving at 1.5 m/s, what happens if an object detection model has an inference latency of 450 ms?",
+            "questionPl": "Na linii produkcyjnej poruszającej się z prędkością 1.5 m/s, co się stanie, jeśli czas wnioskowania modelu detekcji wynosi 450 ms?",
+            "optionsEn": [
+                "The part travels 67.5 cm past the rejection actuator before the model finishes inference, causing a missed defect ejection",
+                "The conveyor belt automatically stops and reverses direction",
+                "The image resolution increases to compensate for motion blur",
+                "The bounding box coordinates automatically shift backward in time"
+            ],
+            "optionsPl": [
+                "Detal przesunie się o 67.5 cm za pneumatyczny spychacz, zanim model zakończy predykcję, co uniemożliwi odrzucenie wadliwej sztuki",
+                "Taśma przenośnika automatycznie zatrzyma się i zacznie cofać",
+                "Rozdzielczość obrazu wzrośnie, aby skompensować rozmycie w ruchu",
+                "Współrzędne ramki ograniczającej automatycznie cofną się w czasie"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "In 450 ms, a 1.5 m/s line travels 0.675 m (67.5 cm). High latency causes pneumatic kickers to strike empty air, missing the defective part.",
+            "explanationPl": "W czasie 450 ms detal przemieszcza się o 67.5 cm. Zbyt wysokie opóźnienie sprawia, że odrzutnik uderza w puste miejsce za wyrobem."
+        }
+    ]
+},
+{
+    "id": "m06_l04_exporting_quantizing_onnx_capstone3",
+    "module_id": "mod-6",
+    "module_number": 6,
+    "lesson_number": 4,
+    "title_en": "Capstone 3: Exporting & Quantizing Models to ONNX for Edge Hardware",
+    "title_pl": "Projekt Zwieńczeniowy 3: Eksport i Kwantyzacja Modeli do ONNX na Urządzenia Brzegowe",
+    "summary_en": "Convert deep vision models to open ONNX format, apply INT8 post-training quantization, and benchmark sub-5ms edge inference on industrial IPCs.",
+    "summary_pl": "Konwertuj modele do formatu ONNX, zastosuj kwantyzację INT8 i osiągnij opóźnienie poniżej 5ms na komputerach przemysłowych IPC.",
+    "visual_widget": "cnn_iou_sandbox",
+    "colab_notebook": "m06_l04_exporting_quantizing_onnx_capstone3.ipynb",
+    "estimated_minutes": 30,
+    "checklist": [
+        {
+            "id": "chk-m6-4-1",
+            "textEn": "Export trained PyTorch model to Open Neural Network Exchange (ONNX) graph",
+            "textPl": "Wyeksportuj wytrenowany model PyTorch do otwartego formatu ONNX"
+        },
+        {
+            "id": "chk-m6-4-2",
+            "textEn": "Apply INT8 Post-Training Quantization (PTQ) to compress weights and activations",
+            "textPl": "Zastosuj kwantyzację INT8 po treningu (PTQ), redukując wagi i aktywacje"
+        },
+        {
+            "id": "chk-m6-4-3",
+            "textEn": "Benchmark latency and throughput (FPS) in ONNX Runtime across FP32 and INT8",
+            "textPl": "Zmierz opóźnienie i przepustowość (FPS) w ONNX Runtime dla wersji FP32 i INT8"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Edge Computing Constraints in Manufacturing Plants",
+            "titlePl": "Ograniczenia Przemysłowych Urządzeń Brzegowych (Edge Computing)",
+            "en": "Factory shop floors cannot stream high-bandwidth camera feeds to cloud data centers due to cybersecurity air-gapping, unpredictable network jitter, and strict microsecond cycle times. Computer vision models must run locally on DIN-rail industrial PCs (IPCs) or edge embedded accelerators (e.g. Siemens IPC, NVIDIA Jetson, Intel OpenVINO). These ruggedized fanless units possess strict thermal envelopes ($< 25\\text{ W}$) and limited RAM.",
+            "pl": "Hale produkcyjne nie mogą przesyłać strumieni wideo do chmury ze względów cyberbezpieczeństwa (odcięcie od Internetu), opóźnień sieciowych oraz wymogów czasu rzeczywistego. Modele wizyjne muszą być uruchamiane lokalnie na przemysłowych komputerach montowanych na szynie DIN (IPC) lub akceleratorach brzegowych (np. Siemens IPC, NVIDIA Jetson). Te pasywnie chłodzone urządzenia charakteryzują się ścisłym budżetem termicznym ($< 25\\text{ W}$) i ograniczoną pamięcią RAM."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "ONNX Graph Optimization & INT8 Quantization",
+            "titlePl": "Optymalizacja Grafu ONNX i Kwantyzacja INT8",
+            "en": "Exporting models to the Open Neural Network Exchange (ONNX) enables deployment via {{term:onnx_runtime}}, eliminating Python runtime overhead and unlocking hardware-specific C++ SIMD optimizations. Applying {{term:int8_quantization}} maps 32-bit floating point weights into 8-bit signed integers ($[-128, 127]$). This slashes model memory footprint by $75\\%$ and accelerates inference by $3\\times-4\\times$ on edge CPU/VPU cores with negligible ($<0.5\\%$) drop in defect detection accuracy.",
+            "pl": "Eksport modeli do formatu ONNX pozwala na ich uruchamianie w silniku {{term:onnx_runtime}}, eliminując narzut interpretera Pythona i wykorzystując sprzętowe instrukcje C++ SIMD. Zastosowanie {{term:int8_quantization}} mapuje 32-bitowe wagi zmiennoprzecinkowe na 8-bitowe liczby całkowite ($[-128, 127]$). Zmniejsza to rozmiar modelu o $75\\%$ i przyspiesza wnioskowanie $3\\times-4\\times$ przy znikomym ($<0.5\\%$) spadku dokładności."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m6-4-1",
+            "questionEn": "What is the primary operational advantage of converting a PyTorch inspection model to an INT8 ONNX Runtime engine?",
+            "questionPl": "Jaka jest główna zaleta operacyjna konwersji modelu inspekcyjnego z PyTorch do silnika INT8 w ONNX Runtime?",
+            "optionsEn": [
+                "A 3x to 4x reduction in inference latency and 75% memory reduction, enabling high-FPS execution on fanless industrial IPCs",
+                "The ability to run the model without supplying any electricity to the edge computer",
+                "Automatic generation of 3D CAD engineering drawings from camera frames",
+                "Guaranteed 100.0% accuracy on every manufactured component"
+            ],
+            "optionsPl": [
+                "3-krotne do 4-krotne skrócenie czasu wnioskowania i redukcja pamięci o 75%, umożliwiające pracę na komputerach bezwentylatorowych IPC",
+                "Możliwość zasilania komputera brzegowego bez dostarczania energii elektrycznej",
+                "Automatyczne generowanie rysunków wykonawczych CAD 3D z obrazu kamery",
+                "Gwarancja 100.0% bezbłędności na każdym wyprodukowanym wyrobie"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "INT8 quantization slashes memory bandwidth bottlenecks and activates fast integer arithmetic units, providing major latency reductions on edge hardware.",
+            "explanationPl": "Kwantyzacja INT8 eliminuje wąskie gardła przepustowości pamięci i uruchamia szybkie jednostki obliczeń całkowitoliczbowych, drastycznie skracając czas inferencji."
+        }
+    ]
+},
+{
+    "id": "m07_l01_experiment_tracking_mlflow",
+    "module_id": "mod-7",
+    "module_number": 7,
+    "lesson_number": 1,
+    "title_en": "Industrial Experiment Tracking & Governance with MLflow",
+    "title_pl": "Śledzenie Eksperymentów i Zarządzanie Modelami Przemysłowymi w MLflow",
+    "summary_en": "Establish rigorous MLOps experiment tracking and audit trails: log metrics, artifacts, and manage the Model Registry lifecycle.",
+    "summary_pl": "Wdróż przemysłowy system MLOps: śledź metryki, rejestruj artefakty i zarządzaj cyklem życia modeli w rejestrze MLflow.",
+    "visual_widget": "drift_latency_sandbox",
+    "colab_notebook": "m07_l01_experiment_tracking_mlflow.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m7-1-1",
+            "textEn": "Initialize MLflow tracking server and create dedicated manufacturing experiment",
+            "textPl": "Zainicjalizuj serwer śledzenia MLflow i utwórz dedykowany eksperyment produkcyjny"
+        },
+        {
+            "id": "chk-m7-1-2",
+            "textEn": "Log hyperparameters, financial loss matrices, and serialized model artifacts",
+            "textPl": "Zarejestruj hiperparametry, macierze strat finansowych i zserializowane artefakty"
+        },
+        {
+            "id": "chk-m7-1-3",
+            "textEn": "Promote candidate model across Model Registry stages: Staging to Production",
+            "textPl": "Przeprowadź model przez etapy rejestru modeli: od Staging do Production"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Traceability & Regulatory Governance in Industrial AI",
+            "titlePl": "Identyfikowalność i Wymogi Regulacyjne w Przemysłowym AI",
+            "en": "In ISO 9001 and IATF 16949 certified manufacturing facilities, every process parameter affecting product quality must be strictly documented and auditable. Ad-hoc Jupyter notebook experiments without version control represent unacceptable operational risk. Open-source MLOps platforms like {{term:mlflow}} provide centralized tracking: every training run logs code commits, exact training dataset hashes, hyperparameters, and operational performance metrics.",
+            "pl": "W zakładach certyfikowanych według norm ISO 9001 i IATF 16949 każdy parametr wpływający na jakość wyrobu musi być udokumentowany i audytowalny. Prowadzenie eksperymentów w niesformalizowanych notatnikach Jupyter bez kontroli wersji stanowi niedopuszczalne ryzyko. Platforma {{term:mlflow}} zapewnia centralne repozytorium: każdy trening zapisuje wersję kodu, hash zbioru danych, hiperparametry i metryki jakości."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "The Model Registry: Staging, Production & Rollback",
+            "titlePl": "Rejestr Modeli: Fazy Staging, Production i Procedury Rollback",
+            "en": "The MLflow Model Registry provides formal lifecycle gates. Newly trained models enter `Staging` for shadow testing against live PLC telemetry. Once reliability engineers verify that False Negative rates remain zero for 72 consecutive hours, the model is promoted to `Production`. If sensor drift or mechanical wear causes model degradation, automated rollback triggers instantaneously reinstate the previous verified model version.",
+            "pl": "Rejestr modeli MLflow definiuje formalne bramki wdrożeniowe. Nowe modele trafiają do fazy `Staging` na testy równoległe (shadow testing) z rzeczywistą telemetrią PLC. Dopiero po potwierdzeniu przez inżynierów braku błędów drugiego rodzaju (False Negative) przez 72 godziny, model przechodzi do fazy `Production`. W razie wystąpienia dryfu czujników procedura rollback natychmiast przywraca poprzednią wersję."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m7-1-1",
+            "questionEn": "Why must every industrial ML model training run log the exact dataset hash and git commit hash in MLflow?",
+            "questionPl": "Dlaczego każdy trening przemysłowego modelu ML musi rejestrować w MLflow dokładny hash zbioru danych i commitu git?",
+            "optionsEn": [
+                "To guarantee full regulatory auditability and exact numerical reproducibility in case of customer quality recalls",
+                "To automatically double the training speed of scikit-learn models",
+                "To compress the size of the production database by 50%",
+                "Because Python requires git hashes to execute mathematical functions"
+            ],
+            "optionsPl": [
+                "Aby zagwarantować pełną audytowalność i powtarzalność wyników w razie reklamacji jakościowej klienta lub audytu",
+                "Aby automatycznie podwoić prędkość treningu modeli w scikit-learn",
+                "Aby zmniejszyć rozmiar produkcyjnej bazy danych o 50%",
+                "Ponieważ Python wymaga obecności hashy git do wykonywania obliczeń matematycznych"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Traceability ensures that any quality defect identified months later can be investigated by recreating the exact model state used on that day.",
+            "explanationPl": "Identyfikowalność gwarantuje, że w razie wykrycia wady po miesiącach można dokładnie odtworzyć stan modelu używanego w danym dniu."
+        }
+    ]
+},
+{
+    "id": "m07_l02_serving_models_fastapi_rest",
+    "module_id": "mod-7",
+    "module_number": 7,
+    "lesson_number": 2,
+    "title_en": "Serving Industrial ML Models via FastAPI REST Endpoints",
+    "title_pl": "Serwowanie Modeli Przemysłowych za Pomocą Punktów Końcowych REST w FastAPI",
+    "summary_en": "Bridge OT and IT by packaging trained machine learning pipelines into high-performance, asynchronous FastAPI microservices with Pydantic validation.",
+    "summary_pl": "Połącz świat OT i IT: wdrażaj potoki uczenia maszynowego jako asynchroniczne mikroserwisy FastAPI z walidacją typów w Pydantic.",
+    "visual_widget": "drift_latency_sandbox",
+    "colab_notebook": "m07_l02_serving_models_fastapi_rest.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m7-2-1",
+            "textEn": "Define strict Pydantic telemetry input schema with physical engineering bounds",
+            "textPl": "Zdefiniuj ścisły schemat danych telemetrycznych w Pydantic z inżynierskimi limitami fizycznymi"
+        },
+        {
+            "id": "chk-m7-2-2",
+            "textEn": "Build asynchronous FastAPI web service with /health and /predict endpoints",
+            "textPl": "Zbuduj asynchroniczny serwis FastAPI z punktami końcowymi /health i /predict"
+        },
+        {
+            "id": "chk-m7-2-3",
+            "textEn": "Benchmark sub-5ms HTTP inference response latency under simulated SCADA payload traffic",
+            "textPl": "Zweryfikuj czas odpowiedzi inferencji poniżej 5ms przy symulowanym ruchu zbieżnym z SCADA"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Bridging OT and IT: Industrial REST Architectures",
+            "titlePl": "Most Między OT i IT: Przemysłowe Architektury REST API",
+            "en": "Factory automation systems (SCADA, MES, Industrial Edge Gateways) communicate over standardized Ethernet protocols. To integrate Python machine learning models into factory workflows, models must be exposed as resilient microservices. {{term:fastapi}} has become the industrial standard due to its asynchronous ASGI architecture, automated OpenAPI documentation, and native C-speed data validation via Pydantic.",
+            "pl": "Systemy automatyki fabrycznej (SCADA, MES, przemysłowe bramy brzegowe) komunikują się po protokołach Ethernet. Aby zintegrować modele uczenia maszynowego z infrastrukturą zakładową, modele muszą być wystawione jako niezawodne mikroserwisy. {{term:fastapi}} stanowi standard przemysłowy dzięki asynchronicznej architekturze ASGI, automatycznej dokumentacji OpenAPI i szybkiej walidacji typów w Pydantic."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Input Validation & Fail-Safe Defaults",
+            "titlePl": "Walidacja Danych Wejściowych i Tryby Bezpieczne (Fail-Safe)",
+            "en": "In production, sensors occasionally transmit corrupted values (e.g. negative Kelvin temperatures, NaN values from disconnected 4-20mA loops). If a model receives invalid inputs without validation, it might silently output an erroneous 'Healthy' prediction. Pydantic models enforce physical sanity bounds (e.g. $4.0 \\le I \\le 20.0\\text{ mA}$). If an out-of-bounds payload arrives, the API immediately returns an HTTP 422 error and triggers a safe fallback alarm.",
+            "pl": "Na produkcji czujniki przesyłają czasami uszkodzone pakiety (np. ujemne temperatury Kelvina, wartości NaN przy zerwaniu pętli 4-20mA). Jeśli model przyjmie takie dane bez walidacji, może błędnie zwrócić status 'Healthy'. Schematy Pydantic wymuszają granice fizyczne (np. $4.0 \\le I \\le 20.0\\text{ mA}$). Przekroczenie limitów powoduje natychmiastowe zwrócenie błędu HTTP 422 i załączenie alarmu bezpieczeństwa."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m7-2-1",
+            "questionEn": "Why is strict Pydantic payload validation essential when serving predictive maintenance models to SCADA systems?",
+            "questionPl": "Dlaczego ścisła walidacja danych w Pydantic jest kluczowa przy serwowaniu modeli PdM dla systemów SCADA?",
+            "optionsEn": [
+                "It rejects physically impossible sensor values (e.g. -500 bar) before they corrupt model inferences or mask real failures",
+                "It automatically converts Python code into Siemens PLC firmware",
+                "It eliminates the need for HTTP encryption and cybersecurity firewalls",
+                "It increases sensor battery life by reducing transmission voltages"
+            ],
+            "optionsPl": [
+                "Odrzuca fizycznie niemożliwe wartości pomiarowe (np. -500 bar) zanim zniekształcą one predykcję lub ukryją rzeczywistą awarię",
+                "Automatycznie konwertuje kod Pythona na firmware sterowników Siemens",
+                "Eliminuje potrzebę stosowania szyfrowania HTTP i zapór sieciowych",
+                "Wydłuża żywotność baterii czujników poprzez obniżenie napięcia transmisji"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Without strict boundary validation, corrupted sensor inputs can lead to silent failures where a broken machine is erroneously classified as healthy.",
+            "explanationPl": "Brak walidacji może doprowadzić do sytuacji, w której uszkodzony czujnik spowoduje zaklasyfikowanie uszkodzonej maszyny jako całkowicie sprawnej."
+        }
+    ]
+},
+{
+    "id": "m07_l03_live_executive_oee_dashboards_streamlit",
+    "module_id": "mod-7",
+    "module_number": 7,
+    "lesson_number": 3,
+    "title_en": "Building Live Executive OEE & ML Dashboards with Streamlit",
+    "title_pl": "Budowa Pulpitów Menedżerskich OEE i Telemetrii ML w Streamlit",
+    "summary_en": "Design and build interactive real-time dashboards in Streamlit to visualize machine health, anomaly alerts, and Overall Equipment Effectiveness (OEE).",
+    "summary_pl": "Projektuj i twórz interaktywne pulpity w Streamlit do wizualizacji kondycji maszyn, alarmów anomalii i wskaźnika OEE.",
+    "visual_widget": "drift_latency_sandbox",
+    "colab_notebook": "m07_l03_executive_oee_dashboards_streamlit.ipynb",
+    "estimated_minutes": 25,
+    "checklist": [
+        {
+            "id": "chk-m7-3-1",
+            "textEn": "Calculate Overall Equipment Effectiveness (OEE = Availability x Performance x Quality)",
+            "textPl": "Oblicz wskaźnik OEE (Dostępność x Wydajność x Jakość) dla linii produkcyjnej"
+        },
+        {
+            "id": "chk-m7-3-2",
+            "textEn": "Construct multi-column Streamlit dashboard layout with gauges and time-series charts",
+            "textPl": "Zbuduj układ pulpitu w Streamlit z zegarami wskaźnikowymi i wykresami czasowymi"
+        },
+        {
+            "id": "chk-m7-3-3",
+            "textEn": "Implement interactive alert acknowledgement table and operator feedback logging",
+            "textPl": "Zaimplementuj interaktywną tabelę potwierdzania alarmów i rejestr uwag operatora"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Operational KPIs: Overall Equipment Effectiveness (OEE)",
+            "titlePl": "Wskaźniki Operacyjne: Całkowita Efektywność Wyposażenia (OEE)",
+            "en": "Machine learning predictions are useless if factory managers and maintenance superintendents cannot understand them. In world-class manufacturing, line performance is governed by {{term:oee}} (Overall Equipment Effectiveness): $\\text{OEE} = \\text{Availability} \\times \\text{Performance} \\times \\text{Quality}$. Predictive maintenance directly protects Availability by eliminating catastrophic unplanned downtime events and protects Performance by flagging minor speed losses before micro-stops occur.",
+            "pl": "Predykcje uczenia maszynowego są bezużyteczne, jeśli dyrekcja i służby utrzymania ruchu nie potrafią ich zinterpretować. W nowoczesnych fabrykach efektywność wyznacza wskaźnik {{term:oee}}: $\\text{OEE} = \\text{Dostępność} \\times \\text{Wydajność} \\times \\text{Jakość}$. Systemy predykcyjne bezpośrednio chronią Dostępność poprzez eliminację nieplanowanych przestojów oraz Wydajność, wykrywając spadki prędkości przed zatrzymaniem linii."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Rapid Engineering Dashboards with Streamlit",
+            "titlePl": "Szybkie Pulpity Inżynierskie w Bibliotece Streamlit",
+            "en": "Developing custom web frontends in JavaScript can take months. Python-native frameworks like {{term:streamlit}} allow data scientists and automation engineers to convert telemetry analysis scripts into production-ready web applications in hours. Real-time metric cards, interactive anomaly score timelines, and alarm acknowledgement forms provide a single pane of glass for plant operations.",
+            "pl": "Tworzenie dedykowanych interfejsów w JavaScript zajmuje całe miesiące. Framework {{term:streamlit}} pozwala inżynierom automatyki przekształcać skrypty analizy w interaktywne aplikacje webowe w zaledwie kilka godzin. Zegary wskaźnikowe, wykresy anomalii na żywo i formularze potwierdzenia alarmów tworzą zintegrowane centrum dowodzenia dla kierownictwa fabryki."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m7-3-1",
+            "questionEn": "A packaging line has 90% Availability, 85% Performance, and 98% Quality. What is its resulting OEE?",
+            "questionPl": "Linia pakująca ma Dostępność 90%, Wydajność 85% oraz Jakość 98%. Jakie jest jej wynikowe OEE?",
+            "optionsEn": [
+                "75.0% (0.90 x 0.85 x 0.98 = 0.7497)",
+                "91.0% (simple average of the three percentages)",
+                "100.0% (rounded up to nearest standard plant target)",
+                "60.0% (adjusted for labor efficiency)"
+            ],
+            "optionsPl": [
+                "75.0% (0.90 x 0.85 x 0.98 = 0.7497)",
+                "91.0% (prosta średnia arytmetyczna trzech wartości)",
+                "100.0% (zaokrąglone w górę do standardowego celu fabrycznego)",
+                "60.0% (skorygowane o wydajność pracy personelu)"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "OEE is strictly multiplicative: 0.90 * 0.85 * 0.98 = 0.7497 (approximately 75.0%).",
+            "explanationPl": "Wskaźnik OEE oblicza się wyłącznie jako iloczyn trzech składowych: 0.90 * 0.85 * 0.98 = 74.97% (ok. 75.0%)."
+        }
+    ]
+},
+{
+    "id": "m07_l04_dockerizing_pipeline_presenting_roi_capstone4",
+    "module_id": "mod-7",
+    "module_number": 7,
+    "lesson_number": 4,
+    "title_en": "Capstone 4: Dockerizing the Pipeline & Presenting Financial ROI to Management",
+    "title_pl": "Projekt Zwieńczeniowy 4: Konteneryzacja w Dockerze i Prezentacja Zwrotu z Inwestycji (ROI) dla Dyrekcji",
+    "summary_en": "Containerize the full predictive maintenance stack in Docker and construct an executive financial business case proving ROI, MTBF, and MTTR gains.",
+    "summary_pl": "Skonteneryzuj kompletny stos predykcyjnego utrzymania ruchu w Dockerze i przygotuj prezentację biznesową dowodzącą zwrotu z inwestycji (ROI).",
+    "visual_widget": "drift_latency_sandbox",
+    "colab_notebook": "m07_l04_dockerizing_pipeline_presenting_roi_capstone4.ipynb",
+    "estimated_minutes": 30,
+    "checklist": [
+        {
+            "id": "chk-m7-4-1",
+            "textEn": "Write production multi-stage Dockerfile packaging FastAPI server and trained ONNX models",
+            "textPl": "Napisz produkcyjny wieloetapowy Dockerfile pakujący serwer FastAPI i modele ONNX"
+        },
+        {
+            "id": "chk-m7-4-2",
+            "textEn": "Calculate plant reliability impact: Mean Time Between Failures (MTBF) and MTTR",
+            "textPl": "Oblicz wpływ na niezawodność: średni czas między awariami (MTBF) oraz MTTR"
+        },
+        {
+            "id": "chk-m7-4-3",
+            "textEn": "Formulate executive financial ROI business case: capital expenditure, annual savings, and payback period",
+            "textPl": "Sformułuj analizę finansową ROI dla dyrekcji: nakłady CAPEX, roczne oszczędności i czas zwrotu"
+        }
+    ],
+    "sections": [
+        {
+            "id": "sec-1",
+            "type": "paragraph",
+            "titleEn": "Industrial Containerization with Docker",
+            "titlePl": "Przemysłowa Konteneryzacja za Pomocą Dockera",
+            "en": "A machine learning pipeline that only runs on a data scientist's laptop delivers zero factory value. To deploy reliable AI across industrial networks, we containerize our code, dependencies, and ONNX models using {{term:docker}}. A multi-stage Dockerfile compiles dependencies in a builder stage and copies only lightweight binary artifacts into a minimal, hardened Debian runtime image ($< 150\\text{ MB}$), ensuring reproducible, tamper-proof execution on edge IPCs.",
+            "pl": "System uczenia maszynowego, który działa jedynie na laptopie programisty, nie przynosi fabryce żadnej wartości. Aby bezpiecznie wdrożyć sztuczną inteligencję w sieci zakładowej, konteneryzujemy kod, biblioteki i modele ONNX w środowisku {{term:docker}}. Wieloetapowy Dockerfile (multi-stage build) kompiluje zależności w pierwszym etapie i przenosi tylko niezbędne pliki do lekkiego obrazu bazowego ($< 150\\text{ MB}$), gwarantując powtarzalność na komputerach IPC."
+        },
+        {
+            "id": "sec-2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Speaking the C-Suite Language: Financial ROI & Reliability Metrics",
+            "titlePl": "Język Zarządu: Analiza Zwrotu z Inwestycji (ROI) i Wskaźniki Niezawodności",
+            "en": "Plant general managers and Chief Operating Officers (COOs) do not evaluate AI by ROC-AUC scores or loss curves; they invest based on financial Return on Investment ({{term:roi}}), extended Mean Time Between Failures ({{term:mtbf}}), and reduced Mean Time to Repair ({{term:mttr}}). By demonstrating that a \\$85,000 PdM deployment prevents \\$380,000 in catastrophic gearbox downtime with a 3.8-month payback period, engineers secure permanent operational investment.",
+            "pl": "Dyrektorzy operacyjni (COO) i zarządy fabryk nie oceniają projektów AI na podstawie metryk ROC-AUC czy funkcji straty; podejmują decyzje w oparciu o finansowy zwrot z inwestycji ({{term:roi}}), wydłużenie średniego czasu bezawaryjnej pracy ({{term:mtbf}}) oraz skrócenie czasu napraw ({{term:mttr}}). Udowodnienie, że inwestycja rzędu \\$85,000 zapobiega awariom wartym \\$380,000 w 3.8 miesiąca, gwarantuje akceptację projektu."
+        }
+    ],
+    "quiz": [
+        {
+            "id": "q-m7-4-1",
+            "questionEn": "A plant invests $90,000 in predictive maintenance, saving $360,000 annually by eliminating 3 turbine breakdowns. What is the payback period?",
+            "questionPl": "Fabryka zainwestowała $90,000 w system PdM, oszczędzając rocznie $360,000 dzięki wyeliminowaniu 3 awarii turbin. Jaki jest czas zwrotu inwestycji (payback period)?",
+            "optionsEn": [
+                "3.0 months ($90,000 / ($360,000 / 12 months) = 3.0 months)",
+                "3.0 years",
+                "12.0 months",
+                "Immediate (0 days)"
+            ],
+            "optionsPl": [
+                "3.0 miesiące ($90,000 / ($360,000 / 12 miesięcy) = 3.0 miesiące)",
+                "3.0 lata",
+                "12.0 miesięcy",
+                "Natychmiast (0 dni)"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Monthly savings are $360,000 / 12 = $30,000/month. The $90,000 initial capital expense is recouped in exactly 90,000 / 30,000 = 3.0 months.",
+            "explanationPl": "Miesięczne oszczędności wynoszą $360,000 / 12 = $30,000/miesiąc. Koszt $90,000 zwraca się po dokładnie 90,000 / 30,000 = 3.0 miesiącach."
+        }
+    ]
+}
 ]
 
 MODULE_META = {
@@ -1475,26 +1739,26 @@ MODULE_META = {
     },
     5: {
         "id": "mod-5",
-        "titleEn": "Frequency Domain & Predictive Maintenance",
-        "titlePl": "Analiza Częstotliwościowa i Predykcyjne Utrzymanie Ruchu",
-        "descriptionEn": "Transform raw vibration waveforms into spectral signatures using FFT and STFT spectrograms, identify bearing fault frequencies (BPFO/BPFI), and estimate Remaining Useful Life (RUL).",
-        "descriptionPl": "Przekształcaj drgania w widmo częstotliwości za pomocą FFT i spektrogramów, wykrywaj uszkodzenia bieżni łożysk (BPFO/BPFI) i szacuj czas do awarii (RUL).",
+        "titleEn": "Time-Series Dynamics, Vibration FFT & Capstone 2",
+        "titlePl": "Dynamika Szeregów Czasowych, FFT Drgań i Projekt Zwieńczeniowy 2",
+        "descriptionEn": "Verify time-series stationarity (ADF test), analyze bearing kinematics via FFT spectral peaks, forecast utility consumption (ARIMA vs XGBoost), and build Capstone 2 (Hydraulic Leak Detector).",
+        "descriptionPl": "Badaj stacjonarność (test ADF), analizuj kinematykę łożysk w widmie FFT, prognozuj zużycie mediów (ARIMA vs XGBoost) i zbuduj Capstone 2 (Detektor Wycieków).",
         "sandboxType": "fft_anomaly_sandbox"
     },
     6: {
         "id": "mod-6",
-        "titleEn": "Edge Vision & Surface Quality Inspection",
-        "titlePl": "Wizja Komputerowa na Brzegu i Kontrola Powierzchni",
-        "descriptionEn": "Deploy automated optical inspection: predict bounding boxes for surface scratches and voids, calculate Intersection over Union (IoU), and fine-tune lightweight CNNs.",
-        "descriptionPl": "Wdrażaj automatyczną inspekcję optyczną: lokalizuj rysy i wtrącenia ramkami bounding box, obliczaj metrykę IoU i trenuj lekkie sieci splotowe.",
+        "titleEn": "Industrial Deep Learning, Edge Vision & Capstone 3",
+        "titlePl": "Głębokie Uczenie Przemysłowe, Wizja na Brzegu i Projekt Zwieńczeniowy 3",
+        "descriptionEn": "Master neural network mechanics in PyTorch 2.x & Keras 3, detect sheet metal defects with CNNs, run Ultralytics YOLO conveyor inspection, and quantize models to ONNX INT8 (Capstone 3).",
+        "descriptionPl": "Poznaj mechanikę sieci w PyTorch 2.x i Keras 3, wykrywaj wady blach z CNN, uruchamiaj detekcję YOLO na przenośniku i kwantyzuj modele do ONNX INT8 (Capstone 3).",
         "sandboxType": "cnn_iou_sandbox"
     },
     7: {
         "id": "mod-7",
-        "titleEn": "MLOps, Concept Drift & Factory Deployment",
-        "titlePl": "MLOps, Dryf Modeli i Wdrożenia Fabryczne",
-        "descriptionEn": "Monitor production model health against concept and data drift (Kolmogorov-Smirnov tests), optimize inference with INT8 quantization & TensorRT, and automate retraining pipelines.",
-        "descriptionPl": "Monitoruj stan modeli produkcyjnych pod kątem dryfu (test Kołmogorowa-Smirnowa), optymalizuj wnioskowanie z INT8 i TensorRT oraz automatyzuj potoki dotrenowania.",
+        "titleEn": "Industrial MLOps, Model Serving & Capstone 4",
+        "titlePl": "Przemysłowy MLOps, Serwowanie Modeli i Projekt Zwieńczeniowy 4",
+        "descriptionEn": "Track experiments with MLflow, serve models with low-latency FastAPI endpoints, construct live executive OEE dashboards in Streamlit, and dockerize the PdM pipeline for C-level ROI pitch (Capstone 4).",
+        "descriptionPl": "Śledź eksperymenty w MLflow, udostępniaj modele przez FastAPI REST, twórz pulpity OEE w Streamlit i konteneryzuj potok w Dockerze pod prezentację ROI (Capstone 4).",
         "sandboxType": "drift_latency_sandbox"
     }
 }

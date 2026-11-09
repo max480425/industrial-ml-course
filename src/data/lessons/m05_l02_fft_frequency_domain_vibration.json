@@ -1,0 +1,97 @@
+{
+  "id": "m05_l02_fft_frequency_domain_vibration",
+  "module_id": "mod-5",
+  "module_number": 5,
+  "lesson_number": 2,
+  "title_en": "FFT Frequency-Domain Vibration & Bearing Kinematics",
+  "title_pl": "Analiza Drgań w Dziedzinie Częstotliwości (FFT) i Kinematyka Łożysk",
+  "summary_en": "Decompose raw accelerometer signals with FFT, apply Hanning windowing to stop leakage, and isolate bearing outer race defect peaks.",
+  "summary_pl": "Rozłóż sygnały z akcelerometru za pomocą FFT, zastosuj okno Hanninga i zidentyfikuj piki uszkodzenia bieżni łożyska.",
+  "visual_widget": "fft_anomaly_sandbox",
+  "colab_notebook": "m05_l02_fft_frequency_domain_vibration.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m5-2-1",
+      "textEn": "Synthesize multi-harmonic vibration signal with bearing defect frequencies",
+      "textPl": "Wygeneruj sygnał drgań z harmonicznymi i częstotliwością uszkodzenia łożyska"
+    },
+    {
+      "id": "chk-m5-2-2",
+      "textEn": "Apply Hanning window function to suppress spectral boundary leakage",
+      "textPl": "Zastosuj funkcję okna Hanninga, aby stłumić przeciek widmowy na brzegach"
+    },
+    {
+      "id": "chk-m5-2-3",
+      "textEn": "Calculate Fast Fourier Transform (FFT) and detect Ball Pass Frequency Outer Race (BPFO) peak",
+      "textPl": "Oblicz szybką transformatę Fouriera (FFT) i zlokalizuj pik częstotliwości BPFO"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Vibration Analysis & Spectral Decomposition",
+      "titlePl": "Analiza Wibracji i Dekompozycja Widmowa",
+      "en": "Looking at raw accelerometer readings in the time domain reveals nothing more than a noisy, chaotic oscillation. However, rotating machinery operates under strict geometric kinematics: motor shafts rotate at rotational frequency $f_{shaft}$, gear meshes mesh at $N_{teeth} \\cdot f_{shaft}$, and bearing balls impact defects at characteristic kinematic frequencies. Using the {{term:fft}}, we project the time signal into the frequency domain, where discrete mechanical components appear as sharp spectral peaks.",
+      "pl": "Analiza sygnału z akcelerometru w dziedzinie czasu ukazuje jedynie chaotyczny, zaszumiony przebieg. Jednak maszyny wirnikowe podlegają ścisłym prawom kinematyki: wał obraca się z częstotliwością $f_{shaft}$, zęby przekładni stykają się z częstością $N_{teeth} \\cdot f_{shaft}$, a kulki łożysk uderzają w mikropęknięcia z charakterystyczną częstotliwością. Używając {{term:fft}}, rzutujemy sygnał w dziedzinę częstotliwości, gdzie każdy element tworzy wyraźny pik."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Bearing Defect Kinematics: BPFO & BPFI",
+      "titlePl": "Kinematyka Uszkodzeń Łożysk: BPFO i BPFI",
+      "en": "When a microscopic fatigue spall forms on the stationary outer ring of a rolling element bearing, every passing ball produces an impact shock at the Ball Pass Frequency Outer Race ({{term:bpfo}}): $f_{BPFO} = \\frac{N_{balls}}{2} f_{shaft} \\left(1 - \\frac{d}{D}\\cos\\alpha\\right)$. A defect on the rotating inner ring generates the Ball Pass Frequency Inner Race ({{term:bpfi}}). Detecting these spectral peaks weeks before audible noise occurs is the hallmark of modern predictive maintenance.",
+      "pl": "Gdy na nieruchomej bieżni zewnętrznej łożyska tocznego powstanie mikropęknięcie zmęczeniowe, każda tocząca się kulka generuje impuls uderzeniowy z częstotliwością {{term:bpfo}}: $f_{BPFO} = \\frac{N_{balls}}{2} f_{shaft} \\left(1 - \\frac{d}{D}\\cos\\alpha\\right)$. Uszkodzenie bieżni wewnętrznej generuje z kolei częstotliwość {{term:bpfi}}. Wykrycie tych pików na tygodnie przed pojawieniem się hałasu stanowi fundament nowoczesnego predykcyjnego utrzymania ruchu."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m5-2-1",
+      "questionEn": "Why is a Hanning or Hamming window applied to vibration telemetry before calculating the FFT?",
+      "questionPl": "Dlaczego przed obliczeniem FFT na sygnał drgań nakłada się okno Hanninga lub Hamminga?",
+      "optionsEn": [
+        "To amplify high-frequency electrical sensor noise",
+        "To prevent spectral leakage caused by non-periodic truncation at signal sample boundaries",
+        "To convert the signal from acceleration to velocity automatically",
+        "To downsample the signal from 10 kHz to 1 kHz"
+      ],
+      "optionsPl": [
+        "Aby wzmocnić zakłócenia elektromagnetyczne w wysokich częstotliwościach",
+        "Aby zapobiec przeciekowi widmowemu wywołanemu nieciągłością sygnału na brzegach okna czasowego",
+        "Aby automatycznie przekształcić przyspieszenie w prędkość drgań",
+        "Aby zredukować częstotliwość próbkowania z 10 kHz do 1 kHz"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Window functions smoothly taper signal endpoints to zero, eliminating artificial boundary discontinuities that smear spectral energy.",
+      "explanationPl": "Funkcje okna łagodnie wygaszają końce sygnału do zera, eliminując sztuczne nieciągłości powodujące rozmycie energii widma."
+    }
+  ],
+  "titleEn": "FFT Frequency-Domain Vibration & Bearing Kinematics",
+  "titlePl": "Analiza Drgań w Dziedzinie Częstotliwości (FFT) i Kinematyka Łożysk",
+  "summaryEn": "Decompose raw accelerometer signals with FFT, apply Hanning windowing to stop leakage, and isolate bearing outer race defect peaks.",
+  "summaryPl": "Rozłóż sygnały z akcelerometru za pomocą FFT, zastosuj okno Hanninga i zidentyfikuj piki uszkodzenia bieżni łożyska.",
+  "sandboxType": "fft_anomaly_sandbox",
+  "notebook": "m05_l02_fft_frequency_domain_vibration.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Vibration Analysis & Spectral Decomposition",
+      "titlePl": "Analiza Wibracji i Dekompozycja Widmowa",
+      "en": "Looking at raw accelerometer readings in the time domain reveals nothing more than a noisy, chaotic oscillation. However, rotating machinery operates under strict geometric kinematics: motor shafts rotate at rotational frequency $f_{shaft}$, gear meshes mesh at $N_{teeth} \\cdot f_{shaft}$, and bearing balls impact defects at characteristic kinematic frequencies. Using the {{term:fft}}, we project the time signal into the frequency domain, where discrete mechanical components appear as sharp spectral peaks.",
+      "pl": "Analiza sygnału z akcelerometru w dziedzinie czasu ukazuje jedynie chaotyczny, zaszumiony przebieg. Jednak maszyny wirnikowe podlegają ścisłym prawom kinematyki: wał obraca się z częstotliwością $f_{shaft}$, zęby przekładni stykają się z częstością $N_{teeth} \\cdot f_{shaft}$, a kulki łożysk uderzają w mikropęknięcia z charakterystyczną częstotliwością. Używając {{term:fft}}, rzutujemy sygnał w dziedzinę częstotliwości, gdzie każdy element tworzy wyraźny pik."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Bearing Defect Kinematics: BPFO & BPFI",
+      "titlePl": "Kinematyka Uszkodzeń Łożysk: BPFO i BPFI",
+      "en": "When a microscopic fatigue spall forms on the stationary outer ring of a rolling element bearing, every passing ball produces an impact shock at the Ball Pass Frequency Outer Race ({{term:bpfo}}): $f_{BPFO} = \\frac{N_{balls}}{2} f_{shaft} \\left(1 - \\frac{d}{D}\\cos\\alpha\\right)$. A defect on the rotating inner ring generates the Ball Pass Frequency Inner Race ({{term:bpfi}}). Detecting these spectral peaks weeks before audible noise occurs is the hallmark of modern predictive maintenance.",
+      "pl": "Gdy na nieruchomej bieżni zewnętrznej łożyska tocznego powstanie mikropęknięcie zmęczeniowe, każda tocząca się kulka generuje impuls uderzeniowy z częstotliwością {{term:bpfo}}: $f_{BPFO} = \\frac{N_{balls}}{2} f_{shaft} \\left(1 - \\frac{d}{D}\\cos\\alpha\\right)$. Uszkodzenie bieżni wewnętrznej generuje z kolei częstotliwość {{term:bpfi}}. Wykrycie tych pików na tygodnie przed pojawieniem się hałasu stanowi fundament nowoczesnego predykcyjnego utrzymania ruchu."
+    }
+  ],
+  "estimatedMinutes": 25
+}

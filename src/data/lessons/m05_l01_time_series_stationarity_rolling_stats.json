@@ -1,0 +1,97 @@
+{
+  "id": "m05_l01_time_series_stationarity_rolling_stats",
+  "module_id": "mod-5",
+  "module_number": 5,
+  "lesson_number": 1,
+  "title_en": "Time-Series Stationarity & Rolling Window Statistics",
+  "title_pl": "Stacjonarność Szeregów Czasowych i Ruchome Statystyki Okienne",
+  "summary_en": "Diagnose non-stationarity in factory telemetry using the Augmented Dickey-Fuller test, differencing, and rolling statistics.",
+  "summary_pl": "Diagnozuj niestacjonarność w telemetrii fabrycznej za pomocą testu ADF, różnicowania i ruchomych statystyk okiennych.",
+  "visual_widget": "fft_anomaly_sandbox",
+  "colab_notebook": "m05_l01_time_series_stationarity_rolling_stats.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m5-1-1",
+      "textEn": "Execute Augmented Dickey-Fuller (ADF) hypothesis test on raw boiler pressure telemetry",
+      "textPl": "Wykonaj test hipotezy Dickeya-Fullera (ADF) na surowej telemetrii ciśnienia kotła"
+    },
+    {
+      "id": "chk-m5-1-2",
+      "textEn": "Apply first-order differencing to eliminate non-stationary drift",
+      "textPl": "Zastosuj różnicowanie pierwszego rzędu, aby wyeliminować niestacjonarny dryf"
+    },
+    {
+      "id": "chk-m5-1-3",
+      "textEn": "Compute and plot Autocorrelation (ACF) and Partial Autocorrelation (PACF) lag plots",
+      "textPl": "Oblicz i wykreśl autokorelację (ACF) oraz częściową autokorelację (PACF)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "The Physics of Stationarity in Manufacturing",
+      "titlePl": "Fizyka Stacjonarności w Środowisku Produkcyjnym",
+      "en": "A time series exhibits {{term:stationarity}} when its mean, variance, and autocovariance remain constant across time. In industrial plant operations, raw sensor signals are almost universally non-stationary: ambient summer temperatures cause thermal baselines to drift upward, furnace refractory linings thin over months, and pneumatic regulators experience gradual mechanical pressure decay. Applying standard machine learning or regression algorithms to non-stationary data leads to spurious statistical correlations and rampant false alarms.",
+      "pl": "Szereg czasowy wykazuje {{term:stationarity}}, gdy jego średnia, wariancja i autokowariancja pozostają niezmienne w czasie. W zakładach produkcyjnych surowe sygnały czujników są niemal zawsze niestacjonarne: letnie upały powodują dryf temperatur bazowych, wymurówka pieców ulega stopniowej degradacji, a reduktory ciśnienia wykazują powolne spadki. Stosowanie algorytmów uczenia maszynowego na niestacjonarnych danych prowadzi do fałszywych korelacji i licznych błędnych alarmów."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Hypothesis Testing: Augmented Dickey-Fuller (ADF)",
+      "titlePl": "Weryfikacja Hipotez: Rozszerzony Test Dickeya-Fullera (ADF)",
+      "en": "Before fitting predictive models, reliability engineers perform the {{term:adf_test}}. The null hypothesis $H_0$ states that the telemetry has a unit root (is non-stationary). If the resulting p-value is strictly below $0.05$, we reject $H_0$ and conclude the signal is stationary. If $p \\ge 0.05$, we apply first-order differencing $\\Delta y_t = y_t - y_{t-1}$ to transform drifting trends into stationary delta increments.",
+      "pl": "Przed trenowaniem modeli inżynierowie wykonują {{term:adf_test}}. Hipoteza zerowa $H_0$ zakłada, że sygnał posiada pierwiastek jednostkowy (jest niestacjonarny). Jeśli wartość p-value jest niższa niż $0.05$, odrzucamy $H_0$ i uznajemy szereg za stacjonarny. W przeciwnym razie stosujemy różnicowanie pierwszego rzędu $\\Delta y_t = y_t - y_{t-1}$, przekształcając dryfujący trend w stacjonarne przyrosty."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m5-1-1",
+      "questionEn": "An ADF test on furnace thermocouple telemetry yields a p-value of 0.38. What engineering action is required before forecasting?",
+      "questionPl": "Test ADF na danych z termopary pieca dał wartość p-value równą 0.38. Jakie działanie inżynierskie jest wymagane przed modelowaniem?",
+      "optionsEn": [
+        "Proceed immediately; 0.38 indicates perfect stationarity",
+        "Apply first-order differencing (Δy = y_t - y_{t-1}) to remove the non-stationary trend and re-test",
+        "Multiply readings by 100 to increase numerical precision",
+        "Replace the thermocouple with a higher-frequency sensor"
+      ],
+      "optionsPl": [
+        "Kontynuować bez zmian; 0.38 oznacza idealną stacjonarność",
+        "Zastosować różnicowanie pierwszego rzędu (Δy = y_t - y_{t-1}), aby usunąć niestacjonarny trend, a następnie powtórzyć test",
+        "Pomnożyć odczyty przez 100 w celu zwiększenia precyzji numerycznej",
+        "Wymienić termoparę na czujnik o wyższej częstotliwości próbkowania"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "A p-value of 0.38 fails to reject the unit-root null hypothesis (p >= 0.05). Differencing eliminates the non-stationary drift.",
+      "explanationPl": "Wartość p-value = 0.38 nie pozwala odrzucić hipotezy zerowej o pierwiastku jednostkowym. Różnicowanie eliminuje dryfujący trend."
+    }
+  ],
+  "titleEn": "Time-Series Stationarity & Rolling Window Statistics",
+  "titlePl": "Stacjonarność Szeregów Czasowych i Ruchome Statystyki Okienne",
+  "summaryEn": "Diagnose non-stationarity in factory telemetry using the Augmented Dickey-Fuller test, differencing, and rolling statistics.",
+  "summaryPl": "Diagnozuj niestacjonarność w telemetrii fabrycznej za pomocą testu ADF, różnicowania i ruchomych statystyk okiennych.",
+  "sandboxType": "fft_anomaly_sandbox",
+  "notebook": "m05_l01_time_series_stationarity_rolling_stats.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "The Physics of Stationarity in Manufacturing",
+      "titlePl": "Fizyka Stacjonarności w Środowisku Produkcyjnym",
+      "en": "A time series exhibits {{term:stationarity}} when its mean, variance, and autocovariance remain constant across time. In industrial plant operations, raw sensor signals are almost universally non-stationary: ambient summer temperatures cause thermal baselines to drift upward, furnace refractory linings thin over months, and pneumatic regulators experience gradual mechanical pressure decay. Applying standard machine learning or regression algorithms to non-stationary data leads to spurious statistical correlations and rampant false alarms.",
+      "pl": "Szereg czasowy wykazuje {{term:stationarity}}, gdy jego średnia, wariancja i autokowariancja pozostają niezmienne w czasie. W zakładach produkcyjnych surowe sygnały czujników są niemal zawsze niestacjonarne: letnie upały powodują dryf temperatur bazowych, wymurówka pieców ulega stopniowej degradacji, a reduktory ciśnienia wykazują powolne spadki. Stosowanie algorytmów uczenia maszynowego na niestacjonarnych danych prowadzi do fałszywych korelacji i licznych błędnych alarmów."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Hypothesis Testing: Augmented Dickey-Fuller (ADF)",
+      "titlePl": "Weryfikacja Hipotez: Rozszerzony Test Dickeya-Fullera (ADF)",
+      "en": "Before fitting predictive models, reliability engineers perform the {{term:adf_test}}. The null hypothesis $H_0$ states that the telemetry has a unit root (is non-stationary). If the resulting p-value is strictly below $0.05$, we reject $H_0$ and conclude the signal is stationary. If $p \\ge 0.05$, we apply first-order differencing $\\Delta y_t = y_t - y_{t-1}$ to transform drifting trends into stationary delta increments.",
+      "pl": "Przed trenowaniem modeli inżynierowie wykonują {{term:adf_test}}. Hipoteza zerowa $H_0$ zakłada, że sygnał posiada pierwiastek jednostkowy (jest niestacjonarny). Jeśli wartość p-value jest niższa niż $0.05$, odrzucamy $H_0$ i uznajemy szereg za stacjonarny. W przeciwnym razie stosujemy różnicowanie pierwszego rzędu $\\Delta y_t = y_t - y_{t-1}$, przekształcając dryfujący trend w stacjonarne przyrosty."
+    }
+  ],
+  "estimatedMinutes": 25
+}

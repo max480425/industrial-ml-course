@@ -1,0 +1,97 @@
+{
+  "id": "m06_l04_exporting_quantizing_onnx_capstone3",
+  "module_id": "mod-6",
+  "module_number": 6,
+  "lesson_number": 4,
+  "title_en": "Capstone 3: Exporting & Quantizing Models to ONNX for Edge Hardware",
+  "title_pl": "Projekt Zwieńczeniowy 3: Eksport i Kwantyzacja Modeli do ONNX na Urządzenia Brzegowe",
+  "summary_en": "Convert deep vision models to open ONNX format, apply INT8 post-training quantization, and benchmark sub-5ms edge inference on industrial IPCs.",
+  "summary_pl": "Konwertuj modele do formatu ONNX, zastosuj kwantyzację INT8 i osiągnij opóźnienie poniżej 5ms na komputerach przemysłowych IPC.",
+  "visual_widget": "cnn_iou_sandbox",
+  "colab_notebook": "m06_l04_exporting_quantizing_onnx_capstone3.ipynb",
+  "estimated_minutes": 30,
+  "checklist": [
+    {
+      "id": "chk-m6-4-1",
+      "textEn": "Export trained PyTorch model to Open Neural Network Exchange (ONNX) graph",
+      "textPl": "Wyeksportuj wytrenowany model PyTorch do otwartego formatu ONNX"
+    },
+    {
+      "id": "chk-m6-4-2",
+      "textEn": "Apply INT8 Post-Training Quantization (PTQ) to compress weights and activations",
+      "textPl": "Zastosuj kwantyzację INT8 po treningu (PTQ), redukując wagi i aktywacje"
+    },
+    {
+      "id": "chk-m6-4-3",
+      "textEn": "Benchmark latency and throughput (FPS) in ONNX Runtime across FP32 and INT8",
+      "textPl": "Zmierz opóźnienie i przepustowość (FPS) w ONNX Runtime dla wersji FP32 i INT8"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Edge Computing Constraints in Manufacturing Plants",
+      "titlePl": "Ograniczenia Przemysłowych Urządzeń Brzegowych (Edge Computing)",
+      "en": "Factory shop floors cannot stream high-bandwidth camera feeds to cloud data centers due to cybersecurity air-gapping, unpredictable network jitter, and strict microsecond cycle times. Computer vision models must run locally on DIN-rail industrial PCs (IPCs) or edge embedded accelerators (e.g. Siemens IPC, NVIDIA Jetson, Intel OpenVINO). These ruggedized fanless units possess strict thermal envelopes ($< 25\\text{ W}$) and limited RAM.",
+      "pl": "Hale produkcyjne nie mogą przesyłać strumieni wideo do chmury ze względów cyberbezpieczeństwa (odcięcie od Internetu), opóźnień sieciowych oraz wymogów czasu rzeczywistego. Modele wizyjne muszą być uruchamiane lokalnie na przemysłowych komputerach montowanych na szynie DIN (IPC) lub akceleratorach brzegowych (np. Siemens IPC, NVIDIA Jetson). Te pasywnie chłodzone urządzenia charakteryzują się ścisłym budżetem termicznym ($< 25\\text{ W}$) i ograniczoną pamięcią RAM."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "ONNX Graph Optimization & INT8 Quantization",
+      "titlePl": "Optymalizacja Grafu ONNX i Kwantyzacja INT8",
+      "en": "Exporting models to the Open Neural Network Exchange (ONNX) enables deployment via {{term:onnx_runtime}}, eliminating Python runtime overhead and unlocking hardware-specific C++ SIMD optimizations. Applying {{term:int8_quantization}} maps 32-bit floating point weights into 8-bit signed integers ($[-128, 127]$). This slashes model memory footprint by $75\\%$ and accelerates inference by $3\\times-4\\times$ on edge CPU/VPU cores with negligible ($<0.5\\%$) drop in defect detection accuracy.",
+      "pl": "Eksport modeli do formatu ONNX pozwala na ich uruchamianie w silniku {{term:onnx_runtime}}, eliminując narzut interpretera Pythona i wykorzystując sprzętowe instrukcje C++ SIMD. Zastosowanie {{term:int8_quantization}} mapuje 32-bitowe wagi zmiennoprzecinkowe na 8-bitowe liczby całkowite ($[-128, 127]$). Zmniejsza to rozmiar modelu o $75\\%$ i przyspiesza wnioskowanie $3\\times-4\\times$ przy znikomym ($<0.5\\%$) spadku dokładności."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m6-4-1",
+      "questionEn": "What is the primary operational advantage of converting a PyTorch inspection model to an INT8 ONNX Runtime engine?",
+      "questionPl": "Jaka jest główna zaleta operacyjna konwersji modelu inspekcyjnego z PyTorch do silnika INT8 w ONNX Runtime?",
+      "optionsEn": [
+        "A 3x to 4x reduction in inference latency and 75% memory reduction, enabling high-FPS execution on fanless industrial IPCs",
+        "The ability to run the model without supplying any electricity to the edge computer",
+        "Automatic generation of 3D CAD engineering drawings from camera frames",
+        "Guaranteed 100.0% accuracy on every manufactured component"
+      ],
+      "optionsPl": [
+        "3-krotne do 4-krotne skrócenie czasu wnioskowania i redukcja pamięci o 75%, umożliwiające pracę na komputerach bezwentylatorowych IPC",
+        "Możliwość zasilania komputera brzegowego bez dostarczania energii elektrycznej",
+        "Automatyczne generowanie rysunków wykonawczych CAD 3D z obrazu kamery",
+        "Gwarancja 100.0% bezbłędności na każdym wyprodukowanym wyrobie"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "INT8 quantization slashes memory bandwidth bottlenecks and activates fast integer arithmetic units, providing major latency reductions on edge hardware.",
+      "explanationPl": "Kwantyzacja INT8 eliminuje wąskie gardła przepustowości pamięci i uruchamia szybkie jednostki obliczeń całkowitoliczbowych, drastycznie skracając czas inferencji."
+    }
+  ],
+  "titleEn": "Capstone 3: Exporting & Quantizing Models to ONNX for Edge Hardware",
+  "titlePl": "Projekt Zwieńczeniowy 3: Eksport i Kwantyzacja Modeli do ONNX na Urządzenia Brzegowe",
+  "summaryEn": "Convert deep vision models to open ONNX format, apply INT8 post-training quantization, and benchmark sub-5ms edge inference on industrial IPCs.",
+  "summaryPl": "Konwertuj modele do formatu ONNX, zastosuj kwantyzację INT8 i osiągnij opóźnienie poniżej 5ms na komputerach przemysłowych IPC.",
+  "sandboxType": "cnn_iou_sandbox",
+  "notebook": "m06_l04_exporting_quantizing_onnx_capstone3.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Edge Computing Constraints in Manufacturing Plants",
+      "titlePl": "Ograniczenia Przemysłowych Urządzeń Brzegowych (Edge Computing)",
+      "en": "Factory shop floors cannot stream high-bandwidth camera feeds to cloud data centers due to cybersecurity air-gapping, unpredictable network jitter, and strict microsecond cycle times. Computer vision models must run locally on DIN-rail industrial PCs (IPCs) or edge embedded accelerators (e.g. Siemens IPC, NVIDIA Jetson, Intel OpenVINO). These ruggedized fanless units possess strict thermal envelopes ($< 25\\text{ W}$) and limited RAM.",
+      "pl": "Hale produkcyjne nie mogą przesyłać strumieni wideo do chmury ze względów cyberbezpieczeństwa (odcięcie od Internetu), opóźnień sieciowych oraz wymogów czasu rzeczywistego. Modele wizyjne muszą być uruchamiane lokalnie na przemysłowych komputerach montowanych na szynie DIN (IPC) lub akceleratorach brzegowych (np. Siemens IPC, NVIDIA Jetson). Te pasywnie chłodzone urządzenia charakteryzują się ścisłym budżetem termicznym ($< 25\\text{ W}$) i ograniczoną pamięcią RAM."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "ONNX Graph Optimization & INT8 Quantization",
+      "titlePl": "Optymalizacja Grafu ONNX i Kwantyzacja INT8",
+      "en": "Exporting models to the Open Neural Network Exchange (ONNX) enables deployment via {{term:onnx_runtime}}, eliminating Python runtime overhead and unlocking hardware-specific C++ SIMD optimizations. Applying {{term:int8_quantization}} maps 32-bit floating point weights into 8-bit signed integers ($[-128, 127]$). This slashes model memory footprint by $75\\%$ and accelerates inference by $3\\times-4\\times$ on edge CPU/VPU cores with negligible ($<0.5\\%$) drop in defect detection accuracy.",
+      "pl": "Eksport modeli do formatu ONNX pozwala na ich uruchamianie w silniku {{term:onnx_runtime}}, eliminując narzut interpretera Pythona i wykorzystując sprzętowe instrukcje C++ SIMD. Zastosowanie {{term:int8_quantization}} mapuje 32-bitowe wagi zmiennoprzecinkowe na 8-bitowe liczby całkowite ($[-128, 127]$). Zmniejsza to rozmiar modelu o $75\\%$ i przyspiesza wnioskowanie $3\\times-4\\times$ przy znikomym ($<0.5\\%$) spadku dokładności."
+    }
+  ],
+  "estimatedMinutes": 30
+}

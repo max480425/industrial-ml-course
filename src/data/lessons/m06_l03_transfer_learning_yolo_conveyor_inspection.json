@@ -1,0 +1,97 @@
+{
+  "id": "m06_l03_transfer_learning_yolo_conveyor_inspection",
+  "module_id": "mod-6",
+  "module_number": 6,
+  "lesson_number": 3,
+  "title_en": "Transfer Learning & Ultralytics YOLO on Conveyor Inspection",
+  "title_pl": "Transfer Learning i Ultralytics YOLO w Inspekcji Linii Przenośnikowej",
+  "summary_en": "Leverage transfer learning and single-stage YOLO object detection to locate and classify packaging and machining defects on moving conveyor lines.",
+  "summary_pl": "Wykorzystaj transfer learning i detekcję obiektów YOLO do lokalizowania i klasyfikacji wad wyrobów na ruchomych liniach przenośnikowych.",
+  "visual_widget": "cnn_iou_sandbox",
+  "colab_notebook": "m06_l03_transfer_learning_yolo_conveyor_inspection.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m6-3-1",
+      "textEn": "Configure pretrained vision backbone weights using transfer learning",
+      "textPl": "Skonfiguruj wagi wytrenowanego modelu wizyjnego za pomocą uczenia transferowego"
+    },
+    {
+      "id": "chk-m6-3-2",
+      "textEn": "Format defect bounding boxes in normalized coordinates [x_center, y_center, w, h]",
+      "textPl": "Sformatuj ramki ograniczające defektów w znormalizowanych współrzędnych [x, y, w, h]"
+    },
+    {
+      "id": "chk-m6-3-3",
+      "textEn": "Calculate Intersection over Union (IoU) and evaluate mAP@0.50 detection metrics",
+      "textPl": "Oblicz metrykę Intersection over Union (IoU) i oceń jakość detekcji mAP@0.50"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "The Data Scarcity Dilemma in Quality Assurance",
+      "titlePl": "Dylemat Małej Liczby Danych w Zapewnieniu Jakości",
+      "en": "In mature production lines, manufacturing defects occur rarely (often fewer than 50 examples per month across thousands of produced units). Training deep neural networks from scratch on 50 images yields severe overfitting. Using {{term:transfer_learning}}, we take a neural network pretrained on millions of diverse images and fine-tune only its final classification and regression heads on our small factory defect dataset, cutting training time from days to minutes while drastically improving accuracy.",
+      "pl": "Na dojrzałych liniach produkcyjnych wady występują rzadko (często poniżej 50 przypadków miesięcznie na tysiące sztuk). Trening głębokich sieci od zera na 50 zdjęciach kończy się natychmiastowym przeuczeniem. Stosując {{term:transfer_learning}}, wykorzystujemy sieć wytrenowaną na milionach zróżnicowanych obrazów i dotrenowujemy jedynie warstwy końcowe na naszych danych fabrycznych, skracając czas treningu z dni do minut."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Real-Time Detection with Ultralytics YOLO & IoU",
+      "titlePl": "Detekcja w Czasie Rzeczywistym z Modelem YOLO i Metryką IoU",
+      "en": "Conveyor belts travel at speeds of $1.0 - 2.5\\text{ m/s}$. Inspection systems must locate defects within 30 milliseconds to trigger pneumatic rejection arms. Single-stage object detectors like {{term:yolo}} predict bounding box coordinates $[x, y, w, h]$ and defect class probabilities in a single forward pass. Detections are evaluated using {{term:iou}} (Intersection over Union): predictions with $\\text{IoU} \\ge 0.50$ against human expert annotations count as valid True Positives.",
+      "pl": "Przenośniki taśmowe poruszają się z prędkością $1.0 - 2.5\\text{ m/s}$. System inspekcji musi zlokalizować wadę w czasie poniżej 30 milisekund, aby pneumatyczny spychacz zdążył odrzucić detal. Jednoetapowe detektory, takie jak {{term:yolo}}, wyznaczają współrzędne ramek $[x, y, w, h]$ i klasy w jednym przejściu sieci. Jakość oceniana jest metryką {{term:iou}} (Intersection over Union): predykcje z $\\text{IoU} \\ge 0.50$ uznawane są za poprawne."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m6-3-1",
+      "questionEn": "On a manufacturing conveyor line moving at 1.5 m/s, what happens if an object detection model has an inference latency of 450 ms?",
+      "questionPl": "Na linii produkcyjnej poruszającej się z prędkością 1.5 m/s, co się stanie, jeśli czas wnioskowania modelu detekcji wynosi 450 ms?",
+      "optionsEn": [
+        "The part travels 67.5 cm past the rejection actuator before the model finishes inference, causing a missed defect ejection",
+        "The conveyor belt automatically stops and reverses direction",
+        "The image resolution increases to compensate for motion blur",
+        "The bounding box coordinates automatically shift backward in time"
+      ],
+      "optionsPl": [
+        "Detal przesunie się o 67.5 cm za pneumatyczny spychacz, zanim model zakończy predykcję, co uniemożliwi odrzucenie wadliwej sztuki",
+        "Taśma przenośnika automatycznie zatrzyma się i zacznie cofać",
+        "Rozdzielczość obrazu wzrośnie, aby skompensować rozmycie w ruchu",
+        "Współrzędne ramki ograniczającej automatycznie cofną się w czasie"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "In 450 ms, a 1.5 m/s line travels 0.675 m (67.5 cm). High latency causes pneumatic kickers to strike empty air, missing the defective part.",
+      "explanationPl": "W czasie 450 ms detal przemieszcza się o 67.5 cm. Zbyt wysokie opóźnienie sprawia, że odrzutnik uderza w puste miejsce za wyrobem."
+    }
+  ],
+  "titleEn": "Transfer Learning & Ultralytics YOLO on Conveyor Inspection",
+  "titlePl": "Transfer Learning i Ultralytics YOLO w Inspekcji Linii Przenośnikowej",
+  "summaryEn": "Leverage transfer learning and single-stage YOLO object detection to locate and classify packaging and machining defects on moving conveyor lines.",
+  "summaryPl": "Wykorzystaj transfer learning i detekcję obiektów YOLO do lokalizowania i klasyfikacji wad wyrobów na ruchomych liniach przenośnikowych.",
+  "sandboxType": "cnn_iou_sandbox",
+  "notebook": "m06_l03_transfer_learning_yolo_conveyor_inspection.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "The Data Scarcity Dilemma in Quality Assurance",
+      "titlePl": "Dylemat Małej Liczby Danych w Zapewnieniu Jakości",
+      "en": "In mature production lines, manufacturing defects occur rarely (often fewer than 50 examples per month across thousands of produced units). Training deep neural networks from scratch on 50 images yields severe overfitting. Using {{term:transfer_learning}}, we take a neural network pretrained on millions of diverse images and fine-tune only its final classification and regression heads on our small factory defect dataset, cutting training time from days to minutes while drastically improving accuracy.",
+      "pl": "Na dojrzałych liniach produkcyjnych wady występują rzadko (często poniżej 50 przypadków miesięcznie na tysiące sztuk). Trening głębokich sieci od zera na 50 zdjęciach kończy się natychmiastowym przeuczeniem. Stosując {{term:transfer_learning}}, wykorzystujemy sieć wytrenowaną na milionach zróżnicowanych obrazów i dotrenowujemy jedynie warstwy końcowe na naszych danych fabrycznych, skracając czas treningu z dni do minut."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Real-Time Detection with Ultralytics YOLO & IoU",
+      "titlePl": "Detekcja w Czasie Rzeczywistym z Modelem YOLO i Metryką IoU",
+      "en": "Conveyor belts travel at speeds of $1.0 - 2.5\\text{ m/s}$. Inspection systems must locate defects within 30 milliseconds to trigger pneumatic rejection arms. Single-stage object detectors like {{term:yolo}} predict bounding box coordinates $[x, y, w, h]$ and defect class probabilities in a single forward pass. Detections are evaluated using {{term:iou}} (Intersection over Union): predictions with $\\text{IoU} \\ge 0.50$ against human expert annotations count as valid True Positives.",
+      "pl": "Przenośniki taśmowe poruszają się z prędkością $1.0 - 2.5\\text{ m/s}$. System inspekcji musi zlokalizować wadę w czasie poniżej 30 milisekund, aby pneumatyczny spychacz zdążył odrzucić detal. Jednoetapowe detektory, takie jak {{term:yolo}}, wyznaczają współrzędne ramek $[x, y, w, h]$ i klasy w jednym przejściu sieci. Jakość oceniana jest metryką {{term:iou}} (Intersection over Union): predykcje z $\\text{IoU} \\ge 0.50$ uznawane są za poprawne."
+    }
+  ],
+  "estimatedMinutes": 25
+}

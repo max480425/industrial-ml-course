@@ -1,0 +1,97 @@
+{
+  "id": "m05_l04_realtime_anomaly_capstone2_leak_detector",
+  "module_id": "mod-5",
+  "module_number": 5,
+  "lesson_number": 4,
+  "title_en": "Capstone 2: Real-Time Anomaly & Hydraulic Leak Detector",
+  "title_pl": "Projekt Zwieńczeniowy 2: Detektor Wycieków Oleju i Spadków Ciśnienia w Czasie Rzeczywistym",
+  "summary_en": "Build an end-to-end hydraulic leak detector using CUSUM and EWMA to detect micro-fissures and trigger automated safety shutdown alarms.",
+  "summary_pl": "Zbuduj kompletny detektor wycieków hydraulicznych wykorzystujący algorytmy CUSUM i EWMA do wykrywania mikropęknięć i wyzwalania alarmów.",
+  "visual_widget": "fft_anomaly_sandbox",
+  "colab_notebook": "m05_l04_realtime_anomaly_capstone2_leak_detector.ipynb",
+  "estimated_minutes": 30,
+  "checklist": [
+    {
+      "id": "chk-m5-4-1",
+      "textEn": "Simulate high-pressure hydraulic loop telemetry (inlet/outlet flow and pressure)",
+      "textPl": "Zasymuluj telemetrię układu hydraulicznego wysokiego ciśnienia (przepływ i ciśnienie)"
+    },
+    {
+      "id": "chk-m5-4-2",
+      "textEn": "Implement Cumulative Sum (CUSUM) change-point detector for micro-leak tracking",
+      "textPl": "Zaimplementuj algorytm CUSUM do wykrywania mikroskopijnych wycieków magistrali"
+    },
+    {
+      "id": "chk-m5-4-3",
+      "textEn": "Deploy multi-state safety state machine (NORMAL, WATCH, ALARM, EMERGENCY_SHUTDOWN)",
+      "textPl": "Wdróż wielostanowy automat bezpieczeństwa (NORMAL, WATCH, ALARM, EMERGENCY_SHUTDOWN)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Hydraulic System Dynamics & Micro-Leak Hazards",
+      "titlePl": "Dynamika Układów Hydraulicznych i Ryzyko Mikro-Wycieków",
+      "en": "Industrial hydraulic power units (HPUs) operating at 200–350 bar drive metal presses, injection molders, and robotic arms. A ruptured hydraulic hose sprays flammable oil mist, presenting severe fire hazards and catastrophic environmental fines. Standard PLC low-pressure pressure switches only trigger after $30\\%$ pressure loss—far too late. By pairing mass balance differential telemetry ($Q_{in} - Q_{out}$) with statistical process control, we detect incipient micro-fissures leaking less than $50\\text{ ml/min}$.",
+      "pl": "Przemysłowe agregaty hydrauliczne (HPU) pracujące pod ciśnieniem 200–350 bar napędzają prasy, wtryskarki i ramiona robotów. Pęknięcie węża rozpyla łatwopalną mgłę olejową, stwarzając ryzyko pożaru i ogromne kary środowiskowe. Standardowe presostaty PLC reagują dopiero przy spadku ciśnienia o $30\\%$—zdecydowanie za późno. Łącząc bilans masowy ($Q_{in} - Q_{out}$) ze statystyczną kontrolą procesu, wykrywamy mikropęknięcia o wycieku poniżej $50\\text{ ml/min}$."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Sequential Analysis: CUSUM & EWMA",
+      "titlePl": "Analiza Sekwencyjna: Algorytmy CUSUM i EWMA",
+      "en": "The Cumulative Sum ({{term:cusum}}) algorithm accumulates sequential deviations from the reference mean: $S_t = \\max(0, S_{t-1} + (x_t - \\mu_0 - k))$. By filtering transient pressure pulsations with {{term:ewma}} and accumulating persistent flow discrepancies in CUSUM, the system triggers a WATCH warning within 10 seconds of leak initiation and an automated EMERGENCY_SHUTDOWN command before oil pools on the factory floor.",
+      "pl": "Algorytm {{term:cusum}} (Sum Skumulowanych) akumuluje sekwencyjne odchylenia od średniej referencyjnej: $S_t = \\max(0, S_{t-1} + (x_t - \\mu_0 - k))$. Filtrując chwilowe pulsacje ciśnienia za pomocą {{term:ewma}} i akumulując trwałe różnice przepływu w CUSUM, system wyzwala ostrzeżenie WATCH w ciągu 10 sekund od pojawienia się nieszczelności i wysyła sygnał EMERGENCY_SHUTDOWN przed rozlaniem oleju."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m5-4-1",
+      "questionEn": "Why is CUSUM superior to standard static threshold alarms for hydraulic leak detection?",
+      "questionPl": "Dlaczego algorytm CUSUM jest lepszy od statycznych progów alarmowych w detekcji wycieków hydraulicznych?",
+      "optionsEn": [
+        "CUSUM accumulates small, persistent systematic shifts over time that remain below static alarm limits",
+        "CUSUM eliminates the need for physical pressure sensors entirely",
+        "CUSUM only works when the factory is completely shut down on weekends",
+        "CUSUM automatically repairs severed hydraulic hoses using software commands"
+      ],
+      "optionsPl": [
+        "CUSUM akumuluje niewielkie, lecz trwałe przesunięcia średniej, które nigdy nie przekroczyłyby statycznego progu",
+        "CUSUM całkowicie eliminuje potrzebę stosowania fizycznych czujników ciśnienia",
+        "CUSUM działa wyłącznie podczas weekendowych przestojów fabryki",
+        "CUSUM automatycznie naprawia pęknięte węże hydrauliczne za pomocą oprogramowania"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Static thresholds must be set wide to avoid false alarms from normal pump ripple; CUSUM detects subtle persistent shifts by integrating cumulative error.",
+      "explanationPl": "Statyczne progi muszą być szerokie z uwagi na pulsacje pompy; CUSUM całkuje drobne, systematyczne odchylenia, wykrywając wyciek natychmiast."
+    }
+  ],
+  "titleEn": "Capstone 2: Real-Time Anomaly & Hydraulic Leak Detector",
+  "titlePl": "Projekt Zwieńczeniowy 2: Detektor Wycieków Oleju i Spadków Ciśnienia w Czasie Rzeczywistym",
+  "summaryEn": "Build an end-to-end hydraulic leak detector using CUSUM and EWMA to detect micro-fissures and trigger automated safety shutdown alarms.",
+  "summaryPl": "Zbuduj kompletny detektor wycieków hydraulicznych wykorzystujący algorytmy CUSUM i EWMA do wykrywania mikropęknięć i wyzwalania alarmów.",
+  "sandboxType": "fft_anomaly_sandbox",
+  "notebook": "m05_l04_realtime_anomaly_capstone2_leak_detector.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Hydraulic System Dynamics & Micro-Leak Hazards",
+      "titlePl": "Dynamika Układów Hydraulicznych i Ryzyko Mikro-Wycieków",
+      "en": "Industrial hydraulic power units (HPUs) operating at 200–350 bar drive metal presses, injection molders, and robotic arms. A ruptured hydraulic hose sprays flammable oil mist, presenting severe fire hazards and catastrophic environmental fines. Standard PLC low-pressure pressure switches only trigger after $30\\%$ pressure loss—far too late. By pairing mass balance differential telemetry ($Q_{in} - Q_{out}$) with statistical process control, we detect incipient micro-fissures leaking less than $50\\text{ ml/min}$.",
+      "pl": "Przemysłowe agregaty hydrauliczne (HPU) pracujące pod ciśnieniem 200–350 bar napędzają prasy, wtryskarki i ramiona robotów. Pęknięcie węża rozpyla łatwopalną mgłę olejową, stwarzając ryzyko pożaru i ogromne kary środowiskowe. Standardowe presostaty PLC reagują dopiero przy spadku ciśnienia o $30\\%$—zdecydowanie za późno. Łącząc bilans masowy ($Q_{in} - Q_{out}$) ze statystyczną kontrolą procesu, wykrywamy mikropęknięcia o wycieku poniżej $50\\text{ ml/min}$."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Sequential Analysis: CUSUM & EWMA",
+      "titlePl": "Analiza Sekwencyjna: Algorytmy CUSUM i EWMA",
+      "en": "The Cumulative Sum ({{term:cusum}}) algorithm accumulates sequential deviations from the reference mean: $S_t = \\max(0, S_{t-1} + (x_t - \\mu_0 - k))$. By filtering transient pressure pulsations with {{term:ewma}} and accumulating persistent flow discrepancies in CUSUM, the system triggers a WATCH warning within 10 seconds of leak initiation and an automated EMERGENCY_SHUTDOWN command before oil pools on the factory floor.",
+      "pl": "Algorytm {{term:cusum}} (Sum Skumulowanych) akumuluje sekwencyjne odchylenia od średniej referencyjnej: $S_t = \\max(0, S_{t-1} + (x_t - \\mu_0 - k))$. Filtrując chwilowe pulsacje ciśnienia za pomocą {{term:ewma}} i akumulując trwałe różnice przepływu w CUSUM, system wyzwala ostrzeżenie WATCH w ciągu 10 sekund od pojawienia się nieszczelności i wysyła sygnał EMERGENCY_SHUTDOWN przed rozlaniem oleju."
+    }
+  ],
+  "estimatedMinutes": 30
+}

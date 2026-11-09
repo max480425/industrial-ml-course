@@ -1,0 +1,97 @@
+{
+  "id": "m07_l03_live_executive_oee_dashboards_streamlit",
+  "module_id": "mod-7",
+  "module_number": 7,
+  "lesson_number": 3,
+  "title_en": "Building Live Executive OEE & ML Dashboards with Streamlit",
+  "title_pl": "Budowa Pulpitów Menedżerskich OEE i Telemetrii ML w Streamlit",
+  "summary_en": "Design and build interactive real-time dashboards in Streamlit to visualize machine health, anomaly alerts, and Overall Equipment Effectiveness (OEE).",
+  "summary_pl": "Projektuj i twórz interaktywne pulpity w Streamlit do wizualizacji kondycji maszyn, alarmów anomalii i wskaźnika OEE.",
+  "visual_widget": "drift_latency_sandbox",
+  "colab_notebook": "m07_l03_executive_oee_dashboards_streamlit.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m7-3-1",
+      "textEn": "Calculate Overall Equipment Effectiveness (OEE = Availability x Performance x Quality)",
+      "textPl": "Oblicz wskaźnik OEE (Dostępność x Wydajność x Jakość) dla linii produkcyjnej"
+    },
+    {
+      "id": "chk-m7-3-2",
+      "textEn": "Construct multi-column Streamlit dashboard layout with gauges and time-series charts",
+      "textPl": "Zbuduj układ pulpitu w Streamlit z zegarami wskaźnikowymi i wykresami czasowymi"
+    },
+    {
+      "id": "chk-m7-3-3",
+      "textEn": "Implement interactive alert acknowledgement table and operator feedback logging",
+      "textPl": "Zaimplementuj interaktywną tabelę potwierdzania alarmów i rejestr uwag operatora"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Operational KPIs: Overall Equipment Effectiveness (OEE)",
+      "titlePl": "Wskaźniki Operacyjne: Całkowita Efektywność Wyposażenia (OEE)",
+      "en": "Machine learning predictions are useless if factory managers and maintenance superintendents cannot understand them. In world-class manufacturing, line performance is governed by {{term:oee}} (Overall Equipment Effectiveness): $\\text{OEE} = \\text{Availability} \\times \\text{Performance} \\times \\text{Quality}$. Predictive maintenance directly protects Availability by eliminating catastrophic unplanned downtime events and protects Performance by flagging minor speed losses before micro-stops occur.",
+      "pl": "Predykcje uczenia maszynowego są bezużyteczne, jeśli dyrekcja i służby utrzymania ruchu nie potrafią ich zinterpretować. W nowoczesnych fabrykach efektywność wyznacza wskaźnik {{term:oee}}: $\\text{OEE} = \\text{Dostępność} \\times \\text{Wydajność} \\times \\text{Jakość}$. Systemy predykcyjne bezpośrednio chronią Dostępność poprzez eliminację nieplanowanych przestojów oraz Wydajność, wykrywając spadki prędkości przed zatrzymaniem linii."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Rapid Engineering Dashboards with Streamlit",
+      "titlePl": "Szybkie Pulpity Inżynierskie w Bibliotece Streamlit",
+      "en": "Developing custom web frontends in JavaScript can take months. Python-native frameworks like {{term:streamlit}} allow data scientists and automation engineers to convert telemetry analysis scripts into production-ready web applications in hours. Real-time metric cards, interactive anomaly score timelines, and alarm acknowledgement forms provide a single pane of glass for plant operations.",
+      "pl": "Tworzenie dedykowanych interfejsów w JavaScript zajmuje całe miesiące. Framework {{term:streamlit}} pozwala inżynierom automatyki przekształcać skrypty analizy w interaktywne aplikacje webowe w zaledwie kilka godzin. Zegary wskaźnikowe, wykresy anomalii na żywo i formularze potwierdzenia alarmów tworzą zintegrowane centrum dowodzenia dla kierownictwa fabryki."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m7-3-1",
+      "questionEn": "A packaging line has 90% Availability, 85% Performance, and 98% Quality. What is its resulting OEE?",
+      "questionPl": "Linia pakująca ma Dostępność 90%, Wydajność 85% oraz Jakość 98%. Jakie jest jej wynikowe OEE?",
+      "optionsEn": [
+        "75.0% (0.90 x 0.85 x 0.98 = 0.7497)",
+        "91.0% (simple average of the three percentages)",
+        "100.0% (rounded up to nearest standard plant target)",
+        "60.0% (adjusted for labor efficiency)"
+      ],
+      "optionsPl": [
+        "75.0% (0.90 x 0.85 x 0.98 = 0.7497)",
+        "91.0% (prosta średnia arytmetyczna trzech wartości)",
+        "100.0% (zaokrąglone w górę do standardowego celu fabrycznego)",
+        "60.0% (skorygowane o wydajność pracy personelu)"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "OEE is strictly multiplicative: 0.90 * 0.85 * 0.98 = 0.7497 (approximately 75.0%).",
+      "explanationPl": "Wskaźnik OEE oblicza się wyłącznie jako iloczyn trzech składowych: 0.90 * 0.85 * 0.98 = 74.97% (ok. 75.0%)."
+    }
+  ],
+  "titleEn": "Building Live Executive OEE & ML Dashboards with Streamlit",
+  "titlePl": "Budowa Pulpitów Menedżerskich OEE i Telemetrii ML w Streamlit",
+  "summaryEn": "Design and build interactive real-time dashboards in Streamlit to visualize machine health, anomaly alerts, and Overall Equipment Effectiveness (OEE).",
+  "summaryPl": "Projektuj i twórz interaktywne pulpity w Streamlit do wizualizacji kondycji maszyn, alarmów anomalii i wskaźnika OEE.",
+  "sandboxType": "drift_latency_sandbox",
+  "notebook": "m07_l03_executive_oee_dashboards_streamlit.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Operational KPIs: Overall Equipment Effectiveness (OEE)",
+      "titlePl": "Wskaźniki Operacyjne: Całkowita Efektywność Wyposażenia (OEE)",
+      "en": "Machine learning predictions are useless if factory managers and maintenance superintendents cannot understand them. In world-class manufacturing, line performance is governed by {{term:oee}} (Overall Equipment Effectiveness): $\\text{OEE} = \\text{Availability} \\times \\text{Performance} \\times \\text{Quality}$. Predictive maintenance directly protects Availability by eliminating catastrophic unplanned downtime events and protects Performance by flagging minor speed losses before micro-stops occur.",
+      "pl": "Predykcje uczenia maszynowego są bezużyteczne, jeśli dyrekcja i służby utrzymania ruchu nie potrafią ich zinterpretować. W nowoczesnych fabrykach efektywność wyznacza wskaźnik {{term:oee}}: $\\text{OEE} = \\text{Dostępność} \\times \\text{Wydajność} \\times \\text{Jakość}$. Systemy predykcyjne bezpośrednio chronią Dostępność poprzez eliminację nieplanowanych przestojów oraz Wydajność, wykrywając spadki prędkości przed zatrzymaniem linii."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Rapid Engineering Dashboards with Streamlit",
+      "titlePl": "Szybkie Pulpity Inżynierskie w Bibliotece Streamlit",
+      "en": "Developing custom web frontends in JavaScript can take months. Python-native frameworks like {{term:streamlit}} allow data scientists and automation engineers to convert telemetry analysis scripts into production-ready web applications in hours. Real-time metric cards, interactive anomaly score timelines, and alarm acknowledgement forms provide a single pane of glass for plant operations.",
+      "pl": "Tworzenie dedykowanych interfejsów w JavaScript zajmuje całe miesiące. Framework {{term:streamlit}} pozwala inżynierom automatyki przekształcać skrypty analizy w interaktywne aplikacje webowe w zaledwie kilka godzin. Zegary wskaźnikowe, wykresy anomalii na żywo i formularze potwierdzenia alarmów tworzą zintegrowane centrum dowodzenia dla kierownictwa fabryki."
+    }
+  ],
+  "estimatedMinutes": 25
+}

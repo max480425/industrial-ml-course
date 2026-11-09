@@ -1,0 +1,97 @@
+{
+  "id": "m05_l03_forecasting_consumption_pressure_drift",
+  "module_id": "mod-5",
+  "module_number": 5,
+  "lesson_number": 3,
+  "title_en": "Forecasting Consumption & Pressure Drift: ARIMA vs XGBoost",
+  "title_pl": "Prognozowanie Zużycia i Dryfu Ciśnienia: ARIMA kontra XGBoost",
+  "summary_en": "Forecast factory compressed air and natural gas demand using statistical ARIMA and machine learning XGBoost with temporal lag features.",
+  "summary_pl": "Prognozuj zapotrzebowanie na sprężone powietrze i gaz przy użyciu statystycznego modelu ARIMA oraz algorytmu XGBoost z cechami opóźnionymi.",
+  "visual_widget": "fft_anomaly_sandbox",
+  "colab_notebook": "m05_l03_forecasting_consumption_pressure_drift.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m5-3-1",
+      "textEn": "Fit statistical ARIMA model on hourly factory gas consumption logs",
+      "textPl": "Dopasuj model statystyczny ARIMA do godzinowych logów zużycia gazu w fabryce"
+    },
+    {
+      "id": "chk-m5-3-2",
+      "textEn": "Construct autoregressive lag features and calendar encodings for XGBoost regression",
+      "textPl": "Zbuduj cechy opóźnione autoregresyjnie i kodowanie kalendarzowe dla modelu XGBoost"
+    },
+    {
+      "id": "chk-m5-3-3",
+      "textEn": "Evaluate multi-step walk-forward forecast horizon using Mean Absolute Percentage Error (MAPE)",
+      "textPl": "Oceń wielokrokowy horyzont prognozy za pomocą błędu MAPE w walidacji kroczącej"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Utility & Fluid Pressure Forecasting",
+      "titlePl": "Prognozowanie Mediów Przemysłowych i Ciśnień Płynów",
+      "en": "Industrial manufacturing plants consume massive quantities of natural gas, electric power, and compressed air. Accurately forecasting utility demand 8 to 24 hours in advance allows energy managers to avoid expensive peak-demand surcharges and optimize compressor staging. Classical time-series modeling relies on {{term:arima}} (AutoRegressive Integrated Moving Average), which models linear relationships between lagged values and moving average error residuals.",
+      "pl": "Zakłady produkcyjne zużywają ogromne ilości gazu ziemnego, energii elektrycznej i sprężonego powietrza. Dokładne prognozowanie zapotrzebowania z 8-24 godzinnym wyprzedzeniem pozwala uniknąć kar za przekroczenie mocy zamówionej i zoptymalizować pracę sprężarek. Klasyczne podejście opiera się na modelu {{term:arima}}, który opisuje liniowe zależności między przeszłymi wartościami i resztami średniej ruchomej."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "ARIMA vs XGBoost with Lag Variables",
+      "titlePl": "ARIMA kontra XGBoost z Zmiennymi Opóźnionymi",
+      "en": "While ARIMA assumes linear Gaussian dynamics, non-linear machine learning models like {{term:xgboost}} excel when paired with engineered lag features ($t-1, t-24$), rolling standard deviations, and exogenous variables (ambient temperature, production tonnage). In practice, XGBoost typically achieves 15-25% lower MAPE on complex multi-shift factory consumption profiles.",
+      "pl": "Podczas gdy ARIMA zakłada liniową dynamikę Gaussa, nieliniowe modele uczenia maszynowego, takie jak {{term:xgboost}}, doskonale sprawdzają się w połączeniu z cechami opóźnionymi ($t-1, t-24$), ruchomymi odchyleniami standardowymi i zmiennymi zewnętrznymi (temperatura otoczenia, tonaż produkcji). W praktyce XGBoost osiąga o 15-25% niższy błąd MAPE na złożonych profilach zmianowych."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m5-3-1",
+      "questionEn": "When formatting time-series data for XGBoost multi-step forecasting, why must lag features strictly reference historical timestamps?",
+      "questionPl": "Dlaczego podczas przygotowywania cech dla XGBoost w prognozowaniu szeregów czasowych cechy opóźnione muszą odwoływać się wyłącznie do przeszłości?",
+      "optionsEn": [
+        "To prevent future data leakage that would create unrealistically optimistic offline training scores",
+        "To comply with European electrical grid frequency regulations (50 Hz)",
+        "Because gradient boosting trees cannot accept floating-point numbers",
+        "To force all predictions to sum to zero"
+      ],
+      "optionsPl": [
+        "Aby zapobiec wyciekowi danych z przyszłości (data leakage), który prowadzi do nierealistycznie optymistycznych wyników treningowych",
+        "Aby spełnić wymogi regulacji częstotliwości europejskiej sieci energetycznej (50 Hz)",
+        "Ponieważ drzewa gradientowe nie potrafią przetwarzać liczb zmiennoprzecinkowych",
+        "Aby wymusić, by suma wszystkich predykcji wynosiła zero"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Referencing future timestamps during feature engineering constitutes lookahead leakage, rendering the model useless in live streaming production.",
+      "explanationPl": "Odwołanie do przyszłych próbek w procesie inżynierii cech stanowi wyciek danych (lookahead leakage), uniemożliwiający poprawne działanie modelu na produkcji."
+    }
+  ],
+  "titleEn": "Forecasting Consumption & Pressure Drift: ARIMA vs XGBoost",
+  "titlePl": "Prognozowanie Zużycia i Dryfu Ciśnienia: ARIMA kontra XGBoost",
+  "summaryEn": "Forecast factory compressed air and natural gas demand using statistical ARIMA and machine learning XGBoost with temporal lag features.",
+  "summaryPl": "Prognozuj zapotrzebowanie na sprężone powietrze i gaz przy użyciu statystycznego modelu ARIMA oraz algorytmu XGBoost z cechami opóźnionymi.",
+  "sandboxType": "fft_anomaly_sandbox",
+  "notebook": "m05_l03_forecasting_consumption_pressure_drift.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Utility & Fluid Pressure Forecasting",
+      "titlePl": "Prognozowanie Mediów Przemysłowych i Ciśnień Płynów",
+      "en": "Industrial manufacturing plants consume massive quantities of natural gas, electric power, and compressed air. Accurately forecasting utility demand 8 to 24 hours in advance allows energy managers to avoid expensive peak-demand surcharges and optimize compressor staging. Classical time-series modeling relies on {{term:arima}} (AutoRegressive Integrated Moving Average), which models linear relationships between lagged values and moving average error residuals.",
+      "pl": "Zakłady produkcyjne zużywają ogromne ilości gazu ziemnego, energii elektrycznej i sprężonego powietrza. Dokładne prognozowanie zapotrzebowania z 8-24 godzinnym wyprzedzeniem pozwala uniknąć kar za przekroczenie mocy zamówionej i zoptymalizować pracę sprężarek. Klasyczne podejście opiera się na modelu {{term:arima}}, który opisuje liniowe zależności między przeszłymi wartościami i resztami średniej ruchomej."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "ARIMA vs XGBoost with Lag Variables",
+      "titlePl": "ARIMA kontra XGBoost z Zmiennymi Opóźnionymi",
+      "en": "While ARIMA assumes linear Gaussian dynamics, non-linear machine learning models like {{term:xgboost}} excel when paired with engineered lag features ($t-1, t-24$), rolling standard deviations, and exogenous variables (ambient temperature, production tonnage). In practice, XGBoost typically achieves 15-25% lower MAPE on complex multi-shift factory consumption profiles.",
+      "pl": "Podczas gdy ARIMA zakłada liniową dynamikę Gaussa, nieliniowe modele uczenia maszynowego, takie jak {{term:xgboost}}, doskonale sprawdzają się w połączeniu z cechami opóźnionymi ($t-1, t-24$), ruchomymi odchyleniami standardowymi i zmiennymi zewnętrznymi (temperatura otoczenia, tonaż produkcji). W praktyce XGBoost osiąga o 15-25% niższy błąd MAPE na złożonych profilach zmianowych."
+    }
+  ],
+  "estimatedMinutes": 25
+}

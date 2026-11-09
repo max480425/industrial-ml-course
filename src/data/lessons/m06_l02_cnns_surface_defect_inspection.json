@@ -1,0 +1,97 @@
+{
+  "id": "m06_l02_cnns_surface_defect_inspection",
+  "module_id": "mod-6",
+  "module_number": 6,
+  "lesson_number": 2,
+  "title_en": "Convolutional Neural Networks (CNNs) for Surface Defect Inspection",
+  "title_pl": "Konwolucyjne Sieci Neuronowe (CNN) w Inspekcji Wad Powierzchniowych",
+  "summary_en": "Build 2D convolutional neural networks with Sobel edge filters and pooling layers to automatically detect surface defects on manufactured parts.",
+  "summary_pl": "Buduj konwolucyjne sieci neuronowe z filtrami Sobela i warstwami poolingu, aby automatycznie wykrywać wady powierzchniowe wyrobów.",
+  "visual_widget": "cnn_iou_sandbox",
+  "colab_notebook": "m06_l02_cnns_surface_defect_inspection.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m6-2-1",
+      "textEn": "Synthesize synthetic surface defect images (scratches, pits, oil inclusions)",
+      "textPl": "Wygeneruj syntetyczne obrazy wad powierzchniowych (rysy, wżery, plamy olejowe)"
+    },
+    {
+      "id": "chk-m6-2-2",
+      "textEn": "Apply 2D spatial convolution kernels (Sobel and Laplacian edge detectors)",
+      "textPl": "Zastosuj dwuwymiarowe jądra splotu (filtry krawędziowe Sobela i Laplace'a)"
+    },
+    {
+      "id": "chk-m6-2-3",
+      "textEn": "Train a multi-class CNN surface inspection classifier and evaluate confusion matrix",
+      "textPl": "Wytrenuj wieloklasowy klasyfikator CNN inspekcji jakości i oceń macierz pomyłek"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Automated Optical Inspection (AOI) on the Factory Floor",
+      "titlePl": "Automatyczna Inspekcja Optyczna (AOI) na Linii Produkcyjnej",
+      "en": "Manual visual inspection by human operators is slow, subjective, and prone to severe fatigue errors after long factory shifts. In high-speed manufacturing (cold-rolled steel coils, automotive stamping, semiconductor wafers), automated optical inspection stations capture high-resolution camera frames under strobe lighting. {{term:cnn}} (Convolutional Neural Networks) process these images using localized 2D filter kernels that slide across the image tensor, detecting microscopic scratches, dents, and voids regardless of their spatial location.",
+      "pl": "Ręczna kontrola wizualna prowadzona przez operatorów jest powolna, subiektywna i podatna na błędy wynikające ze zmęczenia. W produkcji wielkoseryjnej (walcowanie blach, tłoczenie karoserii, płytki krzemowe) stacje automatycznej inspekcji optycznej rejestrują kadry w oświetleniu stroboskopowym. Sieci {{term:cnn}} przetwarzają te obrazy za pomocą lokalnych filtrów splotowych, wykrywając mikrorysy, wżery i pory niezależnie od ich położenia w kadrze."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Convolution Mechanics: Kernels, Stride & Pooling",
+      "titlePl": "Mechanika Konwolucji: Jądra Splotu, Krok i Warstwy Poolingu",
+      "en": "A 2D convolution computes the element-wise dot product between an $n \\times n$ kernel matrix and local image patches: $S(i, j) = (I * K)(i, j) = \\sum_m \\sum_n I(i-m, j-n) K(m, n)$. Shallow layers learn low-level primitives like edges and texture gradients; deeper layers combine these into semantic defect signatures (e.g. longitudinal cracks vs circular blowholes). Max pooling layers reduce spatial dimensions, conferring translation invariance so a scratch is recognized anywhere in the camera field of view.",
+      "pl": "Konwolucja 2D oblicza iloczyn skalarny jądra $n \\times n$ z wycinkiem obrazu: $S(i, j) = (I * K)(i, j) = \\sum_m \\sum_n I(i-m, j-n) K(m, n)$. Płytkie warstwy wykrywają krawędzie i gradienty jasności; głębsze łączą je w cechy semantyczne (np. pęknięcia wzdłużne vs pęcherze gazowe). Warstwy Max Pooling redukują wymiary przestrzenne, zapewniając niezmienniczość translacyjną."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m6-2-1",
+      "questionEn": "What is the primary benefit of Max Pooling layers in an industrial surface inspection CNN?",
+      "questionPl": "Jaka jest główna korzyść ze stosowania warstw Max Pooling w przemysłowej sieci CNN do inspekcji powierzchni?",
+      "optionsEn": [
+        "They reduce spatial dimensionality and provide translation invariance so defects are recognized regardless of slight conveyor belt shifts",
+        "They convert RGB color images into 1-bit monochrome binary arrays",
+        "They eliminate the need to collect training images from the production line",
+        "They increase image resolution by 4x using generative interpolation"
+      ],
+      "optionsPl": [
+        "Redukują wymiarowość przestrzenną i zapewniają niezmienniczość względem przesunięć wyrobu na taśmie przenośnika",
+        "Konwertują kolorowe obrazy RGB na 1-bitowe tablice monochromatyczne",
+        "Eliminują konieczność zbierania zdjęć treningowych z linii produkcyjnej",
+        "Zwiększają rozdzielczość obrazu 4-krotnie za pomocą interpolacji generatywnej"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Max pooling downsamples feature maps, preserving the strongest activations while creating robustness against minor spatial vibrations.",
+      "explanationPl": "Max pooling redukuje wymiarowość map cech, zachowując najsilniejsze aktywacje i uodparniając model na drgania taśmy transportowej."
+    }
+  ],
+  "titleEn": "Convolutional Neural Networks (CNNs) for Surface Defect Inspection",
+  "titlePl": "Konwolucyjne Sieci Neuronowe (CNN) w Inspekcji Wad Powierzchniowych",
+  "summaryEn": "Build 2D convolutional neural networks with Sobel edge filters and pooling layers to automatically detect surface defects on manufactured parts.",
+  "summaryPl": "Buduj konwolucyjne sieci neuronowe z filtrami Sobela i warstwami poolingu, aby automatycznie wykrywać wady powierzchniowe wyrobów.",
+  "sandboxType": "cnn_iou_sandbox",
+  "notebook": "m06_l02_cnns_surface_defect_inspection.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Automated Optical Inspection (AOI) on the Factory Floor",
+      "titlePl": "Automatyczna Inspekcja Optyczna (AOI) na Linii Produkcyjnej",
+      "en": "Manual visual inspection by human operators is slow, subjective, and prone to severe fatigue errors after long factory shifts. In high-speed manufacturing (cold-rolled steel coils, automotive stamping, semiconductor wafers), automated optical inspection stations capture high-resolution camera frames under strobe lighting. {{term:cnn}} (Convolutional Neural Networks) process these images using localized 2D filter kernels that slide across the image tensor, detecting microscopic scratches, dents, and voids regardless of their spatial location.",
+      "pl": "Ręczna kontrola wizualna prowadzona przez operatorów jest powolna, subiektywna i podatna na błędy wynikające ze zmęczenia. W produkcji wielkoseryjnej (walcowanie blach, tłoczenie karoserii, płytki krzemowe) stacje automatycznej inspekcji optycznej rejestrują kadry w oświetleniu stroboskopowym. Sieci {{term:cnn}} przetwarzają te obrazy za pomocą lokalnych filtrów splotowych, wykrywając mikrorysy, wżery i pory niezależnie od ich położenia w kadrze."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Convolution Mechanics: Kernels, Stride & Pooling",
+      "titlePl": "Mechanika Konwolucji: Jądra Splotu, Krok i Warstwy Poolingu",
+      "en": "A 2D convolution computes the element-wise dot product between an $n \\times n$ kernel matrix and local image patches: $S(i, j) = (I * K)(i, j) = \\sum_m \\sum_n I(i-m, j-n) K(m, n)$. Shallow layers learn low-level primitives like edges and texture gradients; deeper layers combine these into semantic defect signatures (e.g. longitudinal cracks vs circular blowholes). Max pooling layers reduce spatial dimensions, conferring translation invariance so a scratch is recognized anywhere in the camera field of view.",
+      "pl": "Konwolucja 2D oblicza iloczyn skalarny jądra $n \\times n$ z wycinkiem obrazu: $S(i, j) = (I * K)(i, j) = \\sum_m \\sum_n I(i-m, j-n) K(m, n)$. Płytkie warstwy wykrywają krawędzie i gradienty jasności; głębsze łączą je w cechy semantyczne (np. pęknięcia wzdłużne vs pęcherze gazowe). Warstwy Max Pooling redukują wymiary przestrzenne, zapewniając niezmienniczość translacyjną."
+    }
+  ],
+  "estimatedMinutes": 25
+}

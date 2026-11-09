@@ -1,0 +1,97 @@
+{
+  "id": "m07_l04_dockerizing_pipeline_presenting_roi_capstone4",
+  "module_id": "mod-7",
+  "module_number": 7,
+  "lesson_number": 4,
+  "title_en": "Capstone 4: Dockerizing the Pipeline & Presenting Financial ROI to Management",
+  "title_pl": "Projekt Zwieńczeniowy 4: Konteneryzacja w Dockerze i Prezentacja Zwrotu z Inwestycji (ROI) dla Dyrekcji",
+  "summary_en": "Containerize the full predictive maintenance stack in Docker and construct an executive financial business case proving ROI, MTBF, and MTTR gains.",
+  "summary_pl": "Skonteneryzuj kompletny stos predykcyjnego utrzymania ruchu w Dockerze i przygotuj prezentację biznesową dowodzącą zwrotu z inwestycji (ROI).",
+  "visual_widget": "drift_latency_sandbox",
+  "colab_notebook": "m07_l04_dockerizing_pipeline_presenting_roi_capstone4.ipynb",
+  "estimated_minutes": 30,
+  "checklist": [
+    {
+      "id": "chk-m7-4-1",
+      "textEn": "Write production multi-stage Dockerfile packaging FastAPI server and trained ONNX models",
+      "textPl": "Napisz produkcyjny wieloetapowy Dockerfile pakujący serwer FastAPI i modele ONNX"
+    },
+    {
+      "id": "chk-m7-4-2",
+      "textEn": "Calculate plant reliability impact: Mean Time Between Failures (MTBF) and MTTR",
+      "textPl": "Oblicz wpływ na niezawodność: średni czas między awariami (MTBF) oraz MTTR"
+    },
+    {
+      "id": "chk-m7-4-3",
+      "textEn": "Formulate executive financial ROI business case: capital expenditure, annual savings, and payback period",
+      "textPl": "Sformułuj analizę finansową ROI dla dyrekcji: nakłady CAPEX, roczne oszczędności i czas zwrotu"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Containerization with Docker",
+      "titlePl": "Przemysłowa Konteneryzacja za Pomocą Dockera",
+      "en": "A machine learning pipeline that only runs on a data scientist's laptop delivers zero factory value. To deploy reliable AI across industrial networks, we containerize our code, dependencies, and ONNX models using {{term:docker}}. A multi-stage Dockerfile compiles dependencies in a builder stage and copies only lightweight binary artifacts into a minimal, hardened Debian runtime image ($< 150\\text{ MB}$), ensuring reproducible, tamper-proof execution on edge IPCs.",
+      "pl": "System uczenia maszynowego, który działa jedynie na laptopie programisty, nie przynosi fabryce żadnej wartości. Aby bezpiecznie wdrożyć sztuczną inteligencję w sieci zakładowej, konteneryzujemy kod, biblioteki i modele ONNX w środowisku {{term:docker}}. Wieloetapowy Dockerfile (multi-stage build) kompiluje zależności w pierwszym etapie i przenosi tylko niezbędne pliki do lekkiego obrazu bazowego ($< 150\\text{ MB}$), gwarantując powtarzalność na komputerach IPC."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Speaking the C-Suite Language: Financial ROI & Reliability Metrics",
+      "titlePl": "Język Zarządu: Analiza Zwrotu z Inwestycji (ROI) i Wskaźniki Niezawodności",
+      "en": "Plant general managers and Chief Operating Officers (COOs) do not evaluate AI by ROC-AUC scores or loss curves; they invest based on financial Return on Investment ({{term:roi}}), extended Mean Time Between Failures ({{term:mtbf}}), and reduced Mean Time to Repair ({{term:mttr}}). By demonstrating that a \\$85,000 PdM deployment prevents \\$380,000 in catastrophic gearbox downtime with a 3.8-month payback period, engineers secure permanent operational investment.",
+      "pl": "Dyrektorzy operacyjni (COO) i zarządy fabryk nie oceniają projektów AI na podstawie metryk ROC-AUC czy funkcji straty; podejmują decyzje w oparciu o finansowy zwrot z inwestycji ({{term:roi}}), wydłużenie średniego czasu bezawaryjnej pracy ({{term:mtbf}}) oraz skrócenie czasu napraw ({{term:mttr}}). Udowodnienie, że inwestycja rzędu \\$85,000 zapobiega awariom wartym \\$380,000 w 3.8 miesiąca, gwarantuje akceptację projektu."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m7-4-1",
+      "questionEn": "A plant invests $90,000 in predictive maintenance, saving $360,000 annually by eliminating 3 turbine breakdowns. What is the payback period?",
+      "questionPl": "Fabryka zainwestowała $90,000 w system PdM, oszczędzając rocznie $360,000 dzięki wyeliminowaniu 3 awarii turbin. Jaki jest czas zwrotu inwestycji (payback period)?",
+      "optionsEn": [
+        "3.0 months ($90,000 / ($360,000 / 12 months) = 3.0 months)",
+        "3.0 years",
+        "12.0 months",
+        "Immediate (0 days)"
+      ],
+      "optionsPl": [
+        "3.0 miesiące ($90,000 / ($360,000 / 12 miesięcy) = 3.0 miesiące)",
+        "3.0 lata",
+        "12.0 miesięcy",
+        "Natychmiast (0 dni)"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Monthly savings are $360,000 / 12 = $30,000/month. The $90,000 initial capital expense is recouped in exactly 90,000 / 30,000 = 3.0 months.",
+      "explanationPl": "Miesięczne oszczędności wynoszą $360,000 / 12 = $30,000/miesiąc. Koszt $90,000 zwraca się po dokładnie 90,000 / 30,000 = 3.0 miesiącach."
+    }
+  ],
+  "titleEn": "Capstone 4: Dockerizing the Pipeline & Presenting Financial ROI to Management",
+  "titlePl": "Projekt Zwieńczeniowy 4: Konteneryzacja w Dockerze i Prezentacja Zwrotu z Inwestycji (ROI) dla Dyrekcji",
+  "summaryEn": "Containerize the full predictive maintenance stack in Docker and construct an executive financial business case proving ROI, MTBF, and MTTR gains.",
+  "summaryPl": "Skonteneryzuj kompletny stos predykcyjnego utrzymania ruchu w Dockerze i przygotuj prezentację biznesową dowodzącą zwrotu z inwestycji (ROI).",
+  "sandboxType": "drift_latency_sandbox",
+  "notebook": "m07_l04_dockerizing_pipeline_presenting_roi_capstone4.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Containerization with Docker",
+      "titlePl": "Przemysłowa Konteneryzacja za Pomocą Dockera",
+      "en": "A machine learning pipeline that only runs on a data scientist's laptop delivers zero factory value. To deploy reliable AI across industrial networks, we containerize our code, dependencies, and ONNX models using {{term:docker}}. A multi-stage Dockerfile compiles dependencies in a builder stage and copies only lightweight binary artifacts into a minimal, hardened Debian runtime image ($< 150\\text{ MB}$), ensuring reproducible, tamper-proof execution on edge IPCs.",
+      "pl": "System uczenia maszynowego, który działa jedynie na laptopie programisty, nie przynosi fabryce żadnej wartości. Aby bezpiecznie wdrożyć sztuczną inteligencję w sieci zakładowej, konteneryzujemy kod, biblioteki i modele ONNX w środowisku {{term:docker}}. Wieloetapowy Dockerfile (multi-stage build) kompiluje zależności w pierwszym etapie i przenosi tylko niezbędne pliki do lekkiego obrazu bazowego ($< 150\\text{ MB}$), gwarantując powtarzalność na komputerach IPC."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Speaking the C-Suite Language: Financial ROI & Reliability Metrics",
+      "titlePl": "Język Zarządu: Analiza Zwrotu z Inwestycji (ROI) i Wskaźniki Niezawodności",
+      "en": "Plant general managers and Chief Operating Officers (COOs) do not evaluate AI by ROC-AUC scores or loss curves; they invest based on financial Return on Investment ({{term:roi}}), extended Mean Time Between Failures ({{term:mtbf}}), and reduced Mean Time to Repair ({{term:mttr}}). By demonstrating that a \\$85,000 PdM deployment prevents \\$380,000 in catastrophic gearbox downtime with a 3.8-month payback period, engineers secure permanent operational investment.",
+      "pl": "Dyrektorzy operacyjni (COO) i zarządy fabryk nie oceniają projektów AI na podstawie metryk ROC-AUC czy funkcji straty; podejmują decyzje w oparciu o finansowy zwrot z inwestycji ({{term:roi}}), wydłużenie średniego czasu bezawaryjnej pracy ({{term:mtbf}}) oraz skrócenie czasu napraw ({{term:mttr}}). Udowodnienie, że inwestycja rzędu \\$85,000 zapobiega awariom wartym \\$380,000 w 3.8 miesiąca, gwarantuje akceptację projektu."
+    }
+  ],
+  "estimatedMinutes": 30
+}

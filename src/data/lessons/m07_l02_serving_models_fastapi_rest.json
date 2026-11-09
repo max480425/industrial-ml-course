@@ -1,0 +1,97 @@
+{
+  "id": "m07_l02_serving_models_fastapi_rest",
+  "module_id": "mod-7",
+  "module_number": 7,
+  "lesson_number": 2,
+  "title_en": "Serving Industrial ML Models via FastAPI REST Endpoints",
+  "title_pl": "Serwowanie Modeli Przemysłowych za Pomocą Punktów Końcowych REST w FastAPI",
+  "summary_en": "Bridge OT and IT by packaging trained machine learning pipelines into high-performance, asynchronous FastAPI microservices with Pydantic validation.",
+  "summary_pl": "Połącz świat OT i IT: wdrażaj potoki uczenia maszynowego jako asynchroniczne mikroserwisy FastAPI z walidacją typów w Pydantic.",
+  "visual_widget": "drift_latency_sandbox",
+  "colab_notebook": "m07_l02_serving_models_fastapi_rest.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m7-2-1",
+      "textEn": "Define strict Pydantic telemetry input schema with physical engineering bounds",
+      "textPl": "Zdefiniuj ścisły schemat danych telemetrycznych w Pydantic z inżynierskimi limitami fizycznymi"
+    },
+    {
+      "id": "chk-m7-2-2",
+      "textEn": "Build asynchronous FastAPI web service with /health and /predict endpoints",
+      "textPl": "Zbuduj asynchroniczny serwis FastAPI z punktami końcowymi /health i /predict"
+    },
+    {
+      "id": "chk-m7-2-3",
+      "textEn": "Benchmark sub-5ms HTTP inference response latency under simulated SCADA payload traffic",
+      "textPl": "Zweryfikuj czas odpowiedzi inferencji poniżej 5ms przy symulowanym ruchu zbieżnym z SCADA"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Bridging OT and IT: Industrial REST Architectures",
+      "titlePl": "Most Między OT i IT: Przemysłowe Architektury REST API",
+      "en": "Factory automation systems (SCADA, MES, Industrial Edge Gateways) communicate over standardized Ethernet protocols. To integrate Python machine learning models into factory workflows, models must be exposed as resilient microservices. {{term:fastapi}} has become the industrial standard due to its asynchronous ASGI architecture, automated OpenAPI documentation, and native C-speed data validation via Pydantic.",
+      "pl": "Systemy automatyki fabrycznej (SCADA, MES, przemysłowe bramy brzegowe) komunikują się po protokołach Ethernet. Aby zintegrować modele uczenia maszynowego z infrastrukturą zakładową, modele muszą być wystawione jako niezawodne mikroserwisy. {{term:fastapi}} stanowi standard przemysłowy dzięki asynchronicznej architekturze ASGI, automatycznej dokumentacji OpenAPI i szybkiej walidacji typów w Pydantic."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Input Validation & Fail-Safe Defaults",
+      "titlePl": "Walidacja Danych Wejściowych i Tryby Bezpieczne (Fail-Safe)",
+      "en": "In production, sensors occasionally transmit corrupted values (e.g. negative Kelvin temperatures, NaN values from disconnected 4-20mA loops). If a model receives invalid inputs without validation, it might silently output an erroneous 'Healthy' prediction. Pydantic models enforce physical sanity bounds (e.g. $4.0 \\le I \\le 20.0\\text{ mA}$). If an out-of-bounds payload arrives, the API immediately returns an HTTP 422 error and triggers a safe fallback alarm.",
+      "pl": "Na produkcji czujniki przesyłają czasami uszkodzone pakiety (np. ujemne temperatury Kelvina, wartości NaN przy zerwaniu pętli 4-20mA). Jeśli model przyjmie takie dane bez walidacji, może błędnie zwrócić status 'Healthy'. Schematy Pydantic wymuszają granice fizyczne (np. $4.0 \\le I \\le 20.0\\text{ mA}$). Przekroczenie limitów powoduje natychmiastowe zwrócenie błędu HTTP 422 i załączenie alarmu bezpieczeństwa."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m7-2-1",
+      "questionEn": "Why is strict Pydantic payload validation essential when serving predictive maintenance models to SCADA systems?",
+      "questionPl": "Dlaczego ścisła walidacja danych w Pydantic jest kluczowa przy serwowaniu modeli PdM dla systemów SCADA?",
+      "optionsEn": [
+        "It rejects physically impossible sensor values (e.g. -500 bar) before they corrupt model inferences or mask real failures",
+        "It automatically converts Python code into Siemens PLC firmware",
+        "It eliminates the need for HTTP encryption and cybersecurity firewalls",
+        "It increases sensor battery life by reducing transmission voltages"
+      ],
+      "optionsPl": [
+        "Odrzuca fizycznie niemożliwe wartości pomiarowe (np. -500 bar) zanim zniekształcą one predykcję lub ukryją rzeczywistą awarię",
+        "Automatycznie konwertuje kod Pythona na firmware sterowników Siemens",
+        "Eliminuje potrzebę stosowania szyfrowania HTTP i zapór sieciowych",
+        "Wydłuża żywotność baterii czujników poprzez obniżenie napięcia transmisji"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Without strict boundary validation, corrupted sensor inputs can lead to silent failures where a broken machine is erroneously classified as healthy.",
+      "explanationPl": "Brak walidacji może doprowadzić do sytuacji, w której uszkodzony czujnik spowoduje zaklasyfikowanie uszkodzonej maszyny jako całkowicie sprawnej."
+    }
+  ],
+  "titleEn": "Serving Industrial ML Models via FastAPI REST Endpoints",
+  "titlePl": "Serwowanie Modeli Przemysłowych za Pomocą Punktów Końcowych REST w FastAPI",
+  "summaryEn": "Bridge OT and IT by packaging trained machine learning pipelines into high-performance, asynchronous FastAPI microservices with Pydantic validation.",
+  "summaryPl": "Połącz świat OT i IT: wdrażaj potoki uczenia maszynowego jako asynchroniczne mikroserwisy FastAPI z walidacją typów w Pydantic.",
+  "sandboxType": "drift_latency_sandbox",
+  "notebook": "m07_l02_serving_models_fastapi_rest.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Bridging OT and IT: Industrial REST Architectures",
+      "titlePl": "Most Między OT i IT: Przemysłowe Architektury REST API",
+      "en": "Factory automation systems (SCADA, MES, Industrial Edge Gateways) communicate over standardized Ethernet protocols. To integrate Python machine learning models into factory workflows, models must be exposed as resilient microservices. {{term:fastapi}} has become the industrial standard due to its asynchronous ASGI architecture, automated OpenAPI documentation, and native C-speed data validation via Pydantic.",
+      "pl": "Systemy automatyki fabrycznej (SCADA, MES, przemysłowe bramy brzegowe) komunikują się po protokołach Ethernet. Aby zintegrować modele uczenia maszynowego z infrastrukturą zakładową, modele muszą być wystawione jako niezawodne mikroserwisy. {{term:fastapi}} stanowi standard przemysłowy dzięki asynchronicznej architekturze ASGI, automatycznej dokumentacji OpenAPI i szybkiej walidacji typów w Pydantic."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Input Validation & Fail-Safe Defaults",
+      "titlePl": "Walidacja Danych Wejściowych i Tryby Bezpieczne (Fail-Safe)",
+      "en": "In production, sensors occasionally transmit corrupted values (e.g. negative Kelvin temperatures, NaN values from disconnected 4-20mA loops). If a model receives invalid inputs without validation, it might silently output an erroneous 'Healthy' prediction. Pydantic models enforce physical sanity bounds (e.g. $4.0 \\le I \\le 20.0\\text{ mA}$). If an out-of-bounds payload arrives, the API immediately returns an HTTP 422 error and triggers a safe fallback alarm.",
+      "pl": "Na produkcji czujniki przesyłają czasami uszkodzone pakiety (np. ujemne temperatury Kelvina, wartości NaN przy zerwaniu pętli 4-20mA). Jeśli model przyjmie takie dane bez walidacji, może błędnie zwrócić status 'Healthy'. Schematy Pydantic wymuszają granice fizyczne (np. $4.0 \\le I \\le 20.0\\text{ mA}$). Przekroczenie limitów powoduje natychmiastowe zwrócenie błędu HTTP 422 i załączenie alarmu bezpieczeństwa."
+    }
+  ],
+  "estimatedMinutes": 25
+}

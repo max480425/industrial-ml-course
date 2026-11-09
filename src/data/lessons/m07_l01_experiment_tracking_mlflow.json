@@ -1,0 +1,97 @@
+{
+  "id": "m07_l01_experiment_tracking_mlflow",
+  "module_id": "mod-7",
+  "module_number": 7,
+  "lesson_number": 1,
+  "title_en": "Industrial Experiment Tracking & Governance with MLflow",
+  "title_pl": "Śledzenie Eksperymentów i Zarządzanie Modelami Przemysłowymi w MLflow",
+  "summary_en": "Establish rigorous MLOps experiment tracking and audit trails: log metrics, artifacts, and manage the Model Registry lifecycle.",
+  "summary_pl": "Wdróż przemysłowy system MLOps: śledź metryki, rejestruj artefakty i zarządzaj cyklem życia modeli w rejestrze MLflow.",
+  "visual_widget": "drift_latency_sandbox",
+  "colab_notebook": "m07_l01_experiment_tracking_mlflow.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m7-1-1",
+      "textEn": "Initialize MLflow tracking server and create dedicated manufacturing experiment",
+      "textPl": "Zainicjalizuj serwer śledzenia MLflow i utwórz dedykowany eksperyment produkcyjny"
+    },
+    {
+      "id": "chk-m7-1-2",
+      "textEn": "Log hyperparameters, financial loss matrices, and serialized model artifacts",
+      "textPl": "Zarejestruj hiperparametry, macierze strat finansowych i zserializowane artefakty"
+    },
+    {
+      "id": "chk-m7-1-3",
+      "textEn": "Promote candidate model across Model Registry stages: Staging to Production",
+      "textPl": "Przeprowadź model przez etapy rejestru modeli: od Staging do Production"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Traceability & Regulatory Governance in Industrial AI",
+      "titlePl": "Identyfikowalność i Wymogi Regulacyjne w Przemysłowym AI",
+      "en": "In ISO 9001 and IATF 16949 certified manufacturing facilities, every process parameter affecting product quality must be strictly documented and auditable. Ad-hoc Jupyter notebook experiments without version control represent unacceptable operational risk. Open-source MLOps platforms like {{term:mlflow}} provide centralized tracking: every training run logs code commits, exact training dataset hashes, hyperparameters, and operational performance metrics.",
+      "pl": "W zakładach certyfikowanych według norm ISO 9001 i IATF 16949 każdy parametr wpływający na jakość wyrobu musi być udokumentowany i audytowalny. Prowadzenie eksperymentów w niesformalizowanych notatnikach Jupyter bez kontroli wersji stanowi niedopuszczalne ryzyko. Platforma {{term:mlflow}} zapewnia centralne repozytorium: każdy trening zapisuje wersję kodu, hash zbioru danych, hiperparametry i metryki jakości."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "The Model Registry: Staging, Production & Rollback",
+      "titlePl": "Rejestr Modeli: Fazy Staging, Production i Procedury Rollback",
+      "en": "The MLflow Model Registry provides formal lifecycle gates. Newly trained models enter `Staging` for shadow testing against live PLC telemetry. Once reliability engineers verify that False Negative rates remain zero for 72 consecutive hours, the model is promoted to `Production`. If sensor drift or mechanical wear causes model degradation, automated rollback triggers instantaneously reinstate the previous verified model version.",
+      "pl": "Rejestr modeli MLflow definiuje formalne bramki wdrożeniowe. Nowe modele trafiają do fazy `Staging` na testy równoległe (shadow testing) z rzeczywistą telemetrią PLC. Dopiero po potwierdzeniu przez inżynierów braku błędów drugiego rodzaju (False Negative) przez 72 godziny, model przechodzi do fazy `Production`. W razie wystąpienia dryfu czujników procedura rollback natychmiast przywraca poprzednią wersję."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m7-1-1",
+      "questionEn": "Why must every industrial ML model training run log the exact dataset hash and git commit hash in MLflow?",
+      "questionPl": "Dlaczego każdy trening przemysłowego modelu ML musi rejestrować w MLflow dokładny hash zbioru danych i commitu git?",
+      "optionsEn": [
+        "To guarantee full regulatory auditability and exact numerical reproducibility in case of customer quality recalls",
+        "To automatically double the training speed of scikit-learn models",
+        "To compress the size of the production database by 50%",
+        "Because Python requires git hashes to execute mathematical functions"
+      ],
+      "optionsPl": [
+        "Aby zagwarantować pełną audytowalność i powtarzalność wyników w razie reklamacji jakościowej klienta lub audytu",
+        "Aby automatycznie podwoić prędkość treningu modeli w scikit-learn",
+        "Aby zmniejszyć rozmiar produkcyjnej bazy danych o 50%",
+        "Ponieważ Python wymaga obecności hashy git do wykonywania obliczeń matematycznych"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Traceability ensures that any quality defect identified months later can be investigated by recreating the exact model state used on that day.",
+      "explanationPl": "Identyfikowalność gwarantuje, że w razie wykrycia wady po miesiącach można dokładnie odtworzyć stan modelu używanego w danym dniu."
+    }
+  ],
+  "titleEn": "Industrial Experiment Tracking & Governance with MLflow",
+  "titlePl": "Śledzenie Eksperymentów i Zarządzanie Modelami Przemysłowymi w MLflow",
+  "summaryEn": "Establish rigorous MLOps experiment tracking and audit trails: log metrics, artifacts, and manage the Model Registry lifecycle.",
+  "summaryPl": "Wdróż przemysłowy system MLOps: śledź metryki, rejestruj artefakty i zarządzaj cyklem życia modeli w rejestrze MLflow.",
+  "sandboxType": "drift_latency_sandbox",
+  "notebook": "m07_l01_experiment_tracking_mlflow.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Traceability & Regulatory Governance in Industrial AI",
+      "titlePl": "Identyfikowalność i Wymogi Regulacyjne w Przemysłowym AI",
+      "en": "In ISO 9001 and IATF 16949 certified manufacturing facilities, every process parameter affecting product quality must be strictly documented and auditable. Ad-hoc Jupyter notebook experiments without version control represent unacceptable operational risk. Open-source MLOps platforms like {{term:mlflow}} provide centralized tracking: every training run logs code commits, exact training dataset hashes, hyperparameters, and operational performance metrics.",
+      "pl": "W zakładach certyfikowanych według norm ISO 9001 i IATF 16949 każdy parametr wpływający na jakość wyrobu musi być udokumentowany i audytowalny. Prowadzenie eksperymentów w niesformalizowanych notatnikach Jupyter bez kontroli wersji stanowi niedopuszczalne ryzyko. Platforma {{term:mlflow}} zapewnia centralne repozytorium: każdy trening zapisuje wersję kodu, hash zbioru danych, hiperparametry i metryki jakości."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "The Model Registry: Staging, Production & Rollback",
+      "titlePl": "Rejestr Modeli: Fazy Staging, Production i Procedury Rollback",
+      "en": "The MLflow Model Registry provides formal lifecycle gates. Newly trained models enter `Staging` for shadow testing against live PLC telemetry. Once reliability engineers verify that False Negative rates remain zero for 72 consecutive hours, the model is promoted to `Production`. If sensor drift or mechanical wear causes model degradation, automated rollback triggers instantaneously reinstate the previous verified model version.",
+      "pl": "Rejestr modeli MLflow definiuje formalne bramki wdrożeniowe. Nowe modele trafiają do fazy `Staging` na testy równoległe (shadow testing) z rzeczywistą telemetrią PLC. Dopiero po potwierdzeniu przez inżynierów braku błędów drugiego rodzaju (False Negative) przez 72 godziny, model przechodzi do fazy `Production`. W razie wystąpienia dryfu czujników procedura rollback natychmiast przywraca poprzednią wersję."
+    }
+  ],
+  "estimatedMinutes": 25
+}

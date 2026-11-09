@@ -1008,5 +1008,195 @@
     "defPl": "Nieliniowa metoda redukcji wymiarowości zachowująca strukturę globalną i lokalną skupisk, idealna do wizualizacji reżimów pracy maszyn.",
     "contextEn": "Projects 64 chemical reactor thermocouple variables into an intuitive 2D topological map where degraded states form distinct islands.",
     "contextPl": "Rzutuje 64 czujniki temperatury reaktora na mapę 2D, gdzie stany awaryjne tworzą wyraźnie odseparowane wyspy."
+  },
+  {
+    "id": "stationarity",
+    "termEn": "Stationarity",
+    "termPl": "Stacjonarność",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "A property of a time series whose mean, variance, and autocovariance remain constant over time.",
+    "defPl": "Własność szeregu czasowego, którego średnia, wariancja i autokowariancja pozostają stałe w czasie.",
+    "contextEn": "Sensor drift or seasonal temperature changes violate stationarity, requiring differencing before modeling.",
+    "contextPl": "Dryf czujnika lub sezonowe zmiany temperatur naruszają stacjonarność, wymagając różnicowania przed modelowaniem."
+  },
+  {
+    "id": "adf_test",
+    "termEn": "Augmented Dickey-Fuller (ADF) Test",
+    "termPl": "Rozszerzony Test Dickeya-Fullera (ADF)",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "A statistical hypothesis test used to determine whether a time series has a unit root (is non-stationary).",
+    "defPl": "Statystyczny test hipotezy weryfikujący, czy szereg czasowy posiada pierwiastek jednostkowy (jest niestacjonarny).",
+    "contextEn": "A p-value below 0.05 on the ADF test confirms the industrial pressure log is stationary and safe for modeling.",
+    "contextPl": "Wartość p-value poniżej 0.05 w teście ADF potwierdza, że log ciśnienia przemysłowego jest stacjonarny i zdatny do modelowania."
+  },
+  {
+    "id": "arima",
+    "termEn": "ARIMA (AutoRegressive Integrated Moving Average)",
+    "termPl": "Model ARIMA",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "A statistical class of models that uses past values, differencing, and moving average errors to forecast time series.",
+    "defPl": "Klasa modeli statystycznych wykorzystująca wartości przeszłe, różnicowanie i błędy średniej ruchomej do prognozowania szeregów czasowych.",
+    "contextEn": "Forecasting compressed air system consumption over the next shift using seasonal ARIMA(1,1,1).",
+    "contextPl": "Prognozowanie zużycia sprężonego powietrza w instalacji fabrycznej na kolejną zmianę przy użyciu modelu ARIMA."
+  },
+  {
+    "id": "cusum",
+    "termEn": "CUSUM (Cumulative Sum Control Chart)",
+    "termPl": "Wykres Kontrolny CUSUM (Sum Skumulowanych)",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "A sequential analysis technique used for monitoring small, persistent shifts in process mean levels.",
+    "defPl": "Technika analizy sekwencyjnej służąca do wykrywania niewielkich, lecz trwałych przesunięć średniej w procesie technologicznym.",
+    "contextEn": "CUSUM immediately detects micro-leaks in hydraulic loops that standard static thresholds miss.",
+    "contextPl": "CUSUM natychmiast wykrywa mikro-wycieki w układach hydraulicznych, niewidoczne dla statycznych progów alarmowych."
+  },
+  {
+    "id": "ewma",
+    "termEn": "EWMA (Exponentially Weighted Moving Average)",
+    "termPl": "Wykładniczo Ważona Średnia Ruchoma (EWMA)",
+    "category": "Signals & Acquisition",
+    "defEn": "A moving average filter that applies exponentially decreasing weights to older observations.",
+    "defPl": "Filtr średniej ruchomej nadający wykładniczo malejące wagi starszym obserwacjom pomiarowym.",
+    "contextEn": "EWMA smooths noisy thermal telemetry while reacting rapidly to sudden boiler pressure drops.",
+    "contextPl": "EWMA wygładza zaszumioną telemetrię termiczną, jednocześnie szybko reagując na nagłe spadki ciśnienia w kotle."
+  },
+  {
+    "id": "pytorch",
+    "termEn": "PyTorch",
+    "termPl": "Biblioteka PyTorch",
+    "category": "Computer Vision & Edge",
+    "defEn": "An open-source deep learning framework providing dynamic computational graphs and hardware-accelerated tensor operations.",
+    "defPl": "Otwarty framework deep learning zapewniający dynamiczne grafy obliczeniowe i akcelerowane sprzętowo operacje na tensorach.",
+    "contextEn": "Training high-speed 1D and 2D neural networks for automated defect inspection in PyTorch 2.x.",
+    "contextPl": "Trenowanie szybkich sieci neuronowych 1D i 2D do automatycznej kontroli jakości w PyTorch 2.x."
+  },
+  {
+    "id": "keras",
+    "termEn": "Keras 3",
+    "termPl": "Keras 3",
+    "category": "Computer Vision & Edge",
+    "defEn": "A high-level multi-backend deep learning API running seamlessly on PyTorch, JAX, and TensorFlow.",
+    "defPl": "Wysokopoziomowe API sieci neuronowych działające na backendach PyTorch, JAX i TensorFlow.",
+    "contextEn": "Building rapid visual quality inspection prototypes with Keras 3.",
+    "contextPl": "Szybkie prototypowanie modeli inspekcji wizyjnej jakości przy użyciu Keras 3."
+  },
+  {
+    "id": "cnn",
+    "termEn": "Convolutional Neural Network (CNN)",
+    "termPl": "Konwolucyjna Sieć Neuronowa (CNN)",
+    "category": "Computer Vision & Edge",
+    "defEn": "A deep neural network architecture employing 2D spatial convolution kernels to detect visual features.",
+    "defPl": "Architektura głębokich sieci neuronowych wykorzystująca konwolucję przestrzenną do detekcji cech wizualnych.",
+    "contextEn": "Deploying a 4-layer CNN to classify scratches, pinholes, and oil stains on sheet metal in under 10ms.",
+    "contextPl": "Wdrożenie 4-warstwowej sieci CNN do klasyfikacji zarysowań, wtrąceń i plam olejowych na blasze w czasie poniżej 10 ms."
+  },
+  {
+    "id": "yolo",
+    "termEn": "YOLO (You Only Look Once)",
+    "termPl": "Model YOLO",
+    "category": "Computer Vision & Edge",
+    "defEn": "A single-stage real-time object detection model that predicts bounding boxes and class probabilities in a single pass.",
+    "defPl": "Jednoetapowy model detekcji obiektów w czasie rzeczywistym, wyznaczający ramki ograniczające i klasy w jednym przejściu sieci.",
+    "contextEn": "Ultralytics YOLOv8 detects packaging defects on a 60-meter/minute conveyor belt with 95% mAP.",
+    "contextPl": "Model YOLOv8 wykrywa defekty opakowań na przenośniku taśmowym o prędkości 60 m/min z dokładnością 95% mAP."
+  },
+  {
+    "id": "onnx_runtime",
+    "termEn": "ONNX Runtime",
+    "termPl": "Środowisko ONNX Runtime",
+    "category": "Computer Vision & Edge",
+    "defEn": "A high-performance inference engine for executing Open Neural Network Exchange models across heterogeneous edge hardware.",
+    "defPl": "Wysokowydajny silnik inferencyjny do uruchamiania modeli w standardzie ONNX na zróżnicowanym sprzęcie brzegowym.",
+    "contextEn": "Executing quantized vision models on Siemens industrial IPCs via ONNX Runtime with zero Python overhead.",
+    "contextPl": "Wykonywanie skwantyzowanych modeli wizyjnych na komputerach przemysłowych Siemens IPC za pomocą ONNX Runtime."
+  },
+  {
+    "id": "int8_quantization",
+    "termEn": "INT8 Quantization",
+    "termPl": "Kwantyzacja do INT8",
+    "category": "Computer Vision & Edge",
+    "defEn": "Converting 32-bit floating point weights and activations to 8-bit integers, slashing memory and accelerating inference.",
+    "defPl": "Konwersja 32-bitowych wag zmiennoprzecinkowych na 8-bitowe liczby całkowite, redukująca zużycie pamięci i przyspieszająca inferencję.",
+    "contextEn": "INT8 quantization reduces neural network latency by 3.8x on NVIDIA Jetson edge modules with <0.5% accuracy drop.",
+    "contextPl": "Kwantyzacja INT8 skraca czas inferencji 3.8-krotnie na modułach brzegowych NVIDIA Jetson przy spadku dokładności poniżej 0.5%."
+  },
+  {
+    "id": "mlflow",
+    "termEn": "MLflow",
+    "termPl": "Platforma MLflow",
+    "category": "MLOps & Deployment",
+    "defEn": "An open-source MLOps platform for managing the end-to-end machine learning lifecycle, experiment tracking, and model registry.",
+    "defPl": "Otwarta platforma MLOps do zarządzania cyklem życia modeli ML, śledzenia eksperymentów i wersjonowania w rejestrze modeli.",
+    "contextEn": "Logging training hyperparameters, ROC-AUC, and cost loss matrices across 50 factory model iterations in MLflow.",
+    "contextPl": "Rejestrowanie hiperparametrów, metryk ROC-AUC i macierzy kosztów dla 50 iteracji modeli fabrycznych w MLflow."
+  },
+  {
+    "id": "fastapi",
+    "termEn": "FastAPI",
+    "termPl": "Framework FastAPI",
+    "category": "MLOps & Deployment",
+    "defEn": "A modern, asynchronous, high-performance web framework for building REST APIs with Python 3.8+ and Pydantic validation.",
+    "defPl": "Nowoczesny, asynchroniczny framework do tworzenia interfejsów REST API z walidacją typów za pomocą biblioteki Pydantic.",
+    "contextEn": "Serving predictive maintenance model predictions to SCADA systems via a sub-5ms FastAPI /predict endpoint.",
+    "contextPl": "Udostępnianie predykcji modelu PdM dla systemów SCADA za pośrednictwem punktu końcowego /predict w FastAPI o opóźnieniu <5ms."
+  },
+  {
+    "id": "streamlit",
+    "termEn": "Streamlit",
+    "termPl": "Framework Streamlit",
+    "category": "MLOps & Deployment",
+    "defEn": "A Python framework that turns data scripts into shareable web applications and live operational engineering dashboards.",
+    "defPl": "Framework Pythona przekształcający skrypty analizy danych w interaktywne aplikacje webowe i pulpity inżynierskie.",
+    "contextEn": "Displaying real-time machine health gauges and historical anomaly trends for plant supervisors with Streamlit.",
+    "contextPl": "Wizualizacja wskaźników kondycji maszyn i trendów anomalii w czasie rzeczywistym dla mistrzów produkcji w Streamlit."
+  },
+  {
+    "id": "oee",
+    "termEn": "OEE (Overall Equipment Effectiveness)",
+    "termPl": "Wskaźnik OEE (Całkowita Efektywność Wyposażenia)",
+    "category": "MLOps & Deployment",
+    "defEn": "The gold-standard manufacturing metric evaluating line efficiency: OEE = Availability x Performance x Quality.",
+    "defPl": "Kluczowy przemysłowy wskaźnik efektywności linii produkcyjnej obliczany jako: Dostępność x Wydajność x Jakość.",
+    "contextEn": "Predictive maintenance increased packaging line OEE from 72% to 84% by eliminating catastrophic micro-stoppages.",
+    "contextPl": "Predykcyjne utrzymanie ruchu zwiększyło OEE linii pakującej z 72% do 84%, eliminując nieplanowane mikro-przestoje."
+  },
+  {
+    "id": "docker",
+    "termEn": "Docker",
+    "termPl": "Konteneryzacja Docker",
+    "category": "MLOps & Deployment",
+    "defEn": "An OS-level virtualization platform that packages applications and dependencies into standardized lightweight containers.",
+    "defPl": "Platforma wirtualizacji na poziomie systemu operacyjnego pakująca aplikacje i zależności w lekkie, powtarzalne kontenery.",
+    "contextEn": "Deploying identical predictive maintenance containers across edge IPCs and on-premise Kubernetes clusters.",
+    "contextPl": "Wdrażanie identycznych kontenerów predykcyjnego utrzymania ruchu na komputerach IPC oraz klastrach Kubernetes."
+  },
+  {
+    "id": "roi",
+    "termEn": "ROI (Return on Investment)",
+    "termPl": "Zwrot z Inwestycji (ROI)",
+    "category": "MLOps & Deployment",
+    "defEn": "A financial metric calculating the monetary net profit generated by a project relative to its implementation cost.",
+    "defPl": "Wskaźnik finansowy mierzący zysk netto wygenerowany przez projekt w stosunku do poniesionych nakładów inwestycyjnych.",
+    "contextEn": "The predictive maintenance system achieved a 320% ROI with a 4.2-month payback period by preventing two gearbox failures.",
+    "contextPl": "System PdM osiągnął ROI na poziomie 320% i czas zwrotu 4.2 miesiąca, zapobiegając dwóm poważnym awariom przekładni."
+  },
+  {
+    "id": "mtbf",
+    "termEn": "MTBF (Mean Time Between Failures)",
+    "termPl": "Średni Czas Między Awariami (MTBF)",
+    "category": "MLOps & Deployment",
+    "defEn": "The predicted elapsed time between inherent mechanical or electrical failures of a system during normal operation.",
+    "defPl": "Przewidywany średni czas bezawaryjnej pracy systemu pomiędzy kolejnymi usterkami w trakcie normalnej eksploatacji.",
+    "contextEn": "Condition monitoring increased the slurry pump MTBF from 650 operational hours to over 2,200 hours.",
+    "contextPl": "Monitoring stanu technicznego podniósł wskaźnik MTBF pompy szlamowej z 650 godzin pracy do ponad 2200 godzin."
+  },
+  {
+    "id": "mttr",
+    "termEn": "MTTR (Mean Time to Repair)",
+    "termPl": "Średni Czas Naprawy (MTTR)",
+    "category": "MLOps & Deployment",
+    "defEn": "The average time required to troubleshoot, repair, and recommission a failed industrial asset.",
+    "defPl": "Średni czas niezbędny do zdiagnozowania, naprawy i ponownego uruchomienia uszkodzonego urządzenia przemysłowego.",
+    "contextEn": "Early component fault warnings allowed technicians to stage spare parts in advance, cutting MTTR from 8 hours to 45 minutes.",
+    "contextPl": "Wczesne ostrzeganie umożliwiło wcześniejsze przygotowanie części zamiennych, skracając MTTR z 8 godzin do 45 minut."
   }
 ]

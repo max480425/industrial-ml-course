@@ -1,0 +1,97 @@
+{
+  "id": "m06_l01_neural_network_mechanics_pytorch_keras",
+  "module_id": "mod-6",
+  "module_number": 6,
+  "lesson_number": 1,
+  "title_en": "Neural Network Mechanics in PyTorch 2.x & Keras 3",
+  "title_pl": "Mechanika Sieci Neuronowych w PyTorch 2.x i Keras 3",
+  "summary_en": "Master deep neural network mechanics: tensors, backpropagation, AdamW optimization, and training MLPs on multi-channel sensor arrays.",
+  "summary_pl": "Opanuj mechanikę sieci głębokich: tensory, propagację wsteczną, optymalizator AdamW i trenowanie sieci MLP na danych z czujników.",
+  "visual_widget": "cnn_iou_sandbox",
+  "colab_notebook": "m06_l01_neural_network_mechanics_pytorch_keras.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m6-1-1",
+      "textEn": "Construct multi-layer perceptron (MLP) architecture using PyTorch 2.x nn.Module",
+      "textPl": "Zbuduj architekturę perceptronu wielowarstwowego (MLP) w PyTorch 2.x nn.Module"
+    },
+    {
+      "id": "chk-m6-1-2",
+      "textEn": "Implement forward pass with ReLU and GELU activation functions",
+      "textPl": "Zaimplementuj przejście w przód (forward pass) z funkcjami aktywacji ReLU i GELU"
+    },
+    {
+      "id": "chk-m6-1-3",
+      "textEn": "Train model with AdamW optimizer and plot cross-entropy loss convergence curve",
+      "textPl": "Wytrenuj model optymalizatorem AdamW i wykreśl krzywą zbieżności funkcji straty"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Neural Network Architecture for Industrial Sensor Fusion",
+      "titlePl": "Architektura Sieci Neuronowych w Fuzji Danych z Czujników",
+      "en": "When industrial systems stream dozens of heterogeneous sensors simultaneously (accelerometers, thermocouples, acoustic emissions, servo motor torques), linear models and manual feature engineering hit scaling limits. Deep neural networks learn complex, non-linear representations directly from raw multi-channel tensors. In modern industrial stacks, {{term:pytorch}} and {{term:keras}} provide the standard foundation for defining computation graphs, automated differentiation (Autograd), and GPU-accelerated training.",
+      "pl": "Gdy systemy przemysłowe transmitują dziesiątki zróżnicowanych czujników jednocześnie (akcelerometry, termopary, emisję akustyczną, momenty serwomotorów), modele liniowe i ręczna inżynieria cech napotykają ograniczenia. Głębokie sieci neuronowe uczą się złożonych, nieliniowych reprezentacji bezpośrednio z wielokanałowych tensorów. W nowoczesnych wdrożeniach {{term:pytorch}} i {{term:keras}} stanowią standard budowy grafów obliczeniowych i akcelerowanego treningu."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Backpropagation & Preventing Factory Overfitting",
+      "titlePl": "Propagacja Wsteczna i Zapobieganie Przeuczeniu Modeli",
+      "en": "Backpropagation calculates the gradient of the loss function with respect to every model weight using the mathematical chain rule: $\\frac{\\partial \\mathcal{L}}{\\partial W} = \\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial W}$. Because factory datasets frequently contain repetitive operational states, deep networks can easily memorize steady-state cycles rather than physical degradation dynamics. Reliability engineers enforce Dropout ($p=0.2$), Weight Decay ($L_2$ regularization in AdamW), and Early Stopping based on validation loss.",
+      "pl": "Propagacja wsteczna (backpropagation) oblicza gradient funkcji straty względem każdej wagi w sieci przy użyciu reguły łańcuchowej: $\\frac{\\partial \\mathcal{L}}{\\partial W} = \\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial W}$. Ponieważ dane fabryczne cechują się powtarzalnością, sieci mogą łatwo nauczyć się stanów ustalonych na pamięć. Aby temu zapobiec, stosuje się warstwy Dropout ($p=0.2$), regularyzację wag w optymalizatorze AdamW oraz Early Stopping."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m6-1-1",
+      "questionEn": "What occurs if an industrial neural network is trained without validation early stopping or weight decay?",
+      "questionPl": "Co się stanie, jeśli przemysłowa sieć neuronowa zostanie wytrenowana bez techniki wczesnego zatrzymania (early stopping) lub regularyzacji wag?",
+      "optionsEn": [
+        "The model overfits the training data, memorizing normal baseline noise while failing to generalize to real machine breakdowns",
+        "The physical PLC hardware burns out due to excessive GPU calculations",
+        "The model automatically converts itself into ladder logic",
+        "Training speeds up by 100x with zero accuracy loss"
+      ],
+      "optionsPl": [
+        "Model ulega przeuczeniu (overfitting), zapamiętując szum treningowy i tracąc zdolność wykrywania rzeczywistych awarii",
+        "Sterownik PLC ulega fizycznemu spaleniu z powodu przeciążenia obliczeniami GPU",
+        "Model automatycznie konwertuje się do języka drabinkowego PLC",
+        "Trening przyspiesza 100-krotnie bez jakiejkolwiek utraty dokładności"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Overfitting causes the model to memorize the training set perfectly while failing completely on unseen production anomalies.",
+      "explanationPl": "Przeuczenie powoduje, że model idealnie odwzorowuje zbiór treningowy, lecz traci zdolność generalizacji na nowe, unseen anomalie."
+    }
+  ],
+  "titleEn": "Neural Network Mechanics in PyTorch 2.x & Keras 3",
+  "titlePl": "Mechanika Sieci Neuronowych w PyTorch 2.x i Keras 3",
+  "summaryEn": "Master deep neural network mechanics: tensors, backpropagation, AdamW optimization, and training MLPs on multi-channel sensor arrays.",
+  "summaryPl": "Opanuj mechanikę sieci głębokich: tensory, propagację wsteczną, optymalizator AdamW i trenowanie sieci MLP na danych z czujników.",
+  "sandboxType": "cnn_iou_sandbox",
+  "notebook": "m06_l01_neural_network_mechanics_pytorch_keras.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Neural Network Architecture for Industrial Sensor Fusion",
+      "titlePl": "Architektura Sieci Neuronowych w Fuzji Danych z Czujników",
+      "en": "When industrial systems stream dozens of heterogeneous sensors simultaneously (accelerometers, thermocouples, acoustic emissions, servo motor torques), linear models and manual feature engineering hit scaling limits. Deep neural networks learn complex, non-linear representations directly from raw multi-channel tensors. In modern industrial stacks, {{term:pytorch}} and {{term:keras}} provide the standard foundation for defining computation graphs, automated differentiation (Autograd), and GPU-accelerated training.",
+      "pl": "Gdy systemy przemysłowe transmitują dziesiątki zróżnicowanych czujników jednocześnie (akcelerometry, termopary, emisję akustyczną, momenty serwomotorów), modele liniowe i ręczna inżynieria cech napotykają ograniczenia. Głębokie sieci neuronowe uczą się złożonych, nieliniowych reprezentacji bezpośrednio z wielokanałowych tensorów. W nowoczesnych wdrożeniach {{term:pytorch}} i {{term:keras}} stanowią standard budowy grafów obliczeniowych i akcelerowanego treningu."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Backpropagation & Preventing Factory Overfitting",
+      "titlePl": "Propagacja Wsteczna i Zapobieganie Przeuczeniu Modeli",
+      "en": "Backpropagation calculates the gradient of the loss function with respect to every model weight using the mathematical chain rule: $\\frac{\\partial \\mathcal{L}}{\\partial W} = \\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial W}$. Because factory datasets frequently contain repetitive operational states, deep networks can easily memorize steady-state cycles rather than physical degradation dynamics. Reliability engineers enforce Dropout ($p=0.2$), Weight Decay ($L_2$ regularization in AdamW), and Early Stopping based on validation loss.",
+      "pl": "Propagacja wsteczna (backpropagation) oblicza gradient funkcji straty względem każdej wagi w sieci przy użyciu reguły łańcuchowej: $\\frac{\\partial \\mathcal{L}}{\\partial W} = \\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} \\frac{\\partial \\hat{y}}{\\partial W}$. Ponieważ dane fabryczne cechują się powtarzalnością, sieci mogą łatwo nauczyć się stanów ustalonych na pamięć. Aby temu zapobiec, stosuje się warstwy Dropout ($p=0.2$), regularyzację wag w optymalizatorze AdamW oraz Early Stopping."
+    }
+  ],
+  "estimatedMinutes": 25
+}
