@@ -1,0 +1,1386 @@
+[
+  {
+    "id": "mod-1",
+    "number": 1,
+    "titleEn": "Industrial Data Ingestion & Signal Conditioning",
+    "titlePl": "Akwizycja Danych Przemysłowych i Kondycjonowanie Sygnałów",
+    "descriptionEn": "Master noisy sensor telemetry from SCADA/PLC historians, sampling rates, moving average smoothing, and Butterworth digital filtering.",
+    "descriptionPl": "Opanuj odczyt zaszumionych sygnałów ze sterowników PLC/SCADA, dobór próbkowania, filtry średniej kroczącej i filtry Butterwortha.",
+    "sandboxType": "signal_filter_sandbox",
+    "lessons": [
+      {
+        "id": "1-1",
+        "titleEn": "Industrial Telemetry & Sensor Noise",
+        "titlePl": "Telemetria Przemysłowa i Szum Czujników",
+        "summaryEn": "Understand analog-to-digital conversion, electromagnetic interference from industrial drives, and the {{term:nyquist_rate}}.",
+        "summaryPl": "Poznaj przetwarzanie sygnałów analogowo-cyfrowych, zakłócenia od falowników i częstotliwość {{term:nyquist_rate}}.",
+        "notebook": "01_01_sensor_telemetry.ipynb",
+        "sandboxType": "signal_filter_sandbox",
+        "estimatedMinutes": 15,
+        "checklist": [
+          { "id": "chk-1-1-1", "textEn": "Inspect noisy factory vibration telemetry in pandas", "textPl": "Załaduj zaszumioną telemetrię drgań fabrycznych w bibliotece pandas" },
+          { "id": "chk-1-1-2", "textEn": "Calculate Signal-to-Noise Ratio (SNR) across sensor channels", "textPl": "Wylicz stosunek sygnału do szumu (SNR) dla poszczególnych kanałów" },
+          { "id": "chk-1-1-3", "textEn": "Verify sampling frequency satisfies the Nyquist condition", "textPl": "Zweryfikuj, czy częstotliwość próbkowania spełnia warunek Nyquista" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "In modern smart factories, machinery sensors stream thousands of data points per second to {{term:plc}} controllers and central {{term:scada}} servers. However, industrial environments are notoriously hostile: high-voltage electric motors, welding arcs, and variable frequency drives inject severe {{term:sensor_noise}} into analog measurement wires.",
+            "pl": "W nowoczesnych inteligentnych fabrykach czujniki maszyn przesyłają tysiące próbek na sekundę do sterowników {{term:plc}} i systemów {{term:scada}}. Środowisko przemysłowe jest jednak pełne zakłóceń: silniki wysokiego napięcia, spawarki i falowniki wprowadzają silny {{term:sensor_noise}} do przewodów pomiarowych."
+          },
+          {
+            "id": "b2",
+            "type": "callout",
+            "calloutType": "engineering",
+            "titleEn": "Plant Engineer Rule of Thumb",
+            "titlePl": "Złota Zasada Inżyniera Automatyka",
+            "en": "Never train an ML model directly on raw analog sensor telemetry without validating the {{term:sampling_frequency}}. If you sample below the {{term:nyquist_rate}}, high-frequency machine chatter aliases into false low-frequency vibrations, misleading predictive models.",
+            "pl": "Nigdy nie trenuj modelu ML bezpośrednio na surowych odczytach bez sprawdzenia {{term:sampling_frequency}}. Próbkowanie poniżej {{term:nyquist_rate}} wywoła aliasing: szybkie drgania mechaniczne zamienią się w fałszywe powolne oscylacje, myląc algorytmy predykcyjne."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-1-1-1",
+            "questionEn": "What happens if a 600 Hz vibration tone is sampled at only 800 Hz?",
+            "questionPl": "Co się stanie, gdy drgania o częstotliwości 600 Hz spróbkujemy z częstotliwością zaledwie 800 Hz?",
+            "optionsEn": [
+              "The signal is captured perfectly with zero distortion",
+              "Aliasing occurs, creating a false ghost frequency at 200 Hz",
+              "The signal automatically converts into an INT8 format",
+              "The PLC triggers an immediate hardware emergency stop"
+            ],
+            "optionsPl": [
+              "Sygnał zostanie zarejestrowany idealnie bez żadnych zniekształceń",
+              "Wystąpi aliasing, tworząc fałszywy pozorny prążek przy 200 Hz",
+              "Sygnał automatycznie skonwertuje się do formatu INT8",
+              "Sterownik PLC wywoła natychmiastowe zatrzymanie awaryjne"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "According to the Nyquist theorem, sampling must be at least 2 * 600 Hz = 1200 Hz. At 800 Hz, the 600 Hz signal aliases to |800 - 600| = 200 Hz.",
+            "explanationPl": "Zgodnie z twierdzeniem Nyquista próbkowanie musi wynosić co najmniej 2 * 600 Hz = 1200 Hz. Przy 800 Hz fala 600 Hz odbija się jako |800 - 600| = 200 Hz."
+          },
+          {
+            "id": "q-1-1-2",
+            "questionEn": "Why is sensor noise particularly dangerous for derivative-based features (e.g. rate of change)?",
+            "questionPl": "Dlaczego szum czujnika jest szczególnie groźny dla cech bazujących na pochodnych (np. prędkości zmian)?",
+            "optionsEn": [
+              "Noise has zero variance across time",
+              "Differentiating high-frequency noise drastically amplifies its amplitude",
+              "Derivative calculations require GPU acceleration",
+              "It permanently damages the thermocouple physical sensor"
+            ],
+            "optionsPl": [
+              "Szum ma zerową wariancję w dziedzinie czasu",
+              "Różniczkowanie sygnału o wysokiej częstotliwości drastycznie potęguje szum",
+              "Obliczanie pochodnych wymaga akceleratora graficznego GPU",
+              "Pochodna trwale uszkadza fizyczny czujnik termopary"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Calculating finite differences d(Signal)/dt amplifies high-frequency noise spikes, creating huge erratic spikes in trend indicators.",
+            "explanationPl": "Wyliczanie ilorazu różnicowego drastycznie mnoży amplitudę szybkich szumów, tworząc gigantyczne fałszywe piki w trendach."
+          }
+        ]
+      },
+      {
+        "id": "1-2",
+        "titleEn": "Moving Averages & Real-Time Smoothing",
+        "titlePl": "Średnie Kroczące i Wygładzanie Czasowe",
+        "summaryEn": "Implement simple and exponential moving averages to attenuate sensor chatter while managing phase lag.",
+        "summaryPl": "Zaimplementuj prostą i wykładniczą średnią kroczącą, balansując tłumienie szumu z opóźnieniem fazowym.",
+        "notebook": "01_02_moving_averages.ipynb",
+        "sandboxType": "signal_filter_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-1-2-1", "textEn": "Compute sliding window moving averages in numpy and pandas", "textPl": "Zaimplementuj okno średniej kroczącej w numpy i pandas" },
+          { "id": "chk-1-2-2", "textEn": "Measure phase delay (lag) introduced by large window sizes", "textPl": "Zmierz opóźnienie czasowe wprowadzone przez duże okna uśredniania" },
+          { "id": "chk-1-2-3", "textEn": "Deploy an Exponential Moving Average (EMA) with adaptive alpha", "textPl": "Wdróż wykładniczą średnią kroczącą (EMA) z adaptacyjnym parametrem alpha" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "The simplest way to clean factory data is the {{term:moving_average}}. By taking the mean of the last N readings, high-frequency fluctuations cancel out. However, there is a fundamental trade-off: larger windows eliminate more {{term:sensor_noise}} but introduce phase lag.",
+            "pl": "Najprostszą metodą czyszczenia danych pomiarowych jest {{term:moving_average}}. Uśrednienie ostatnich N próbek redukuje szum, ale ma swoją cenę: większe okno lepiej wygładza, lecz wprowadza opóźnienie fazowe reakcji układu."
+          },
+          {
+            "id": "b2",
+            "type": "paragraph",
+            "en": "In a high-speed packaging line, a 500 ms lag could mean 5 defective bottles pass by before the pneumatic ejector fires. Exponential moving averages (EMA) give higher weight to recent samples, reducing this lag.",
+            "pl": "Na szybkiej linii pakującej opóźnienie 500 ms może oznaczać przepuszczenie 5 wadliwych butelek zanim siłownik zdąży zareagować. Wykładnicza średnia krocząca (EMA) nadaje większą wagę najnowszym próbkom, redukując opóźnienie."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-1-2-1",
+            "questionEn": "What is the primary drawback of increasing the window size N of a moving average filter?",
+            "questionPl": "Jaka jest główna wada zwiększania szerokości okna N w filtrze średniej kroczącej?",
+            "optionsEn": [
+              "It increases the RAM consumption by 1000x",
+              "It introduces physical time delay (phase lag) to transient changes",
+              "It removes DC baseline offset from the voltage",
+              "It causes the sensor to stop sampling"
+            ],
+            "optionsPl": [
+              "Zwiększa zużycie pamięci RAM o 1000 razy",
+              "Wprowadza opóźnienie czasowe (przesunięcie fazowe) w reakcji na nagłe zmiany",
+              "Usuwa stałą składową DC napięcia",
+              "Powoduje zatrzymanie pracy fizycznego przetwornika"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "A window of length N introduces an average group delay of (N - 1) / 2 samples. Large windows mean the model reacts late to sudden spikes.",
+            "explanationPl": "Okno o długości N wprowadza średnie opóźnienie (N - 1) / 2 próbek. Zbyt duże okno opóźnia wykrycie nagłej awarii."
+          }
+        ]
+      },
+      {
+        "id": "1-3",
+        "titleEn": "Digital Filtering with Butterworth Filters",
+        "titlePl": "Filtry Cyfrowe Butterwortha",
+        "summaryEn": "Design low-pass, high-pass, and bandpass Butterworth filters using scipy.signal for machine vibration analysis.",
+        "summaryPl": "Projektuj filtry dolnoprzepustowe i pasmowe Butterwortha w scipy.signal do analizy drgań maszyn.",
+        "notebook": "01_03_butterworth_filters.ipynb",
+        "sandboxType": "signal_filter_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-1-3-1", "textEn": "Design a 4th-order low-pass filter using scipy.signal.butter", "textPl": "Zaprojektuj filtr dolnoprzepustowy 4. rzędu za pomocą scipy.signal.butter" },
+          { "id": "chk-1-3-2", "textEn": "Apply zero-phase forward-backward filtering using filtfilt", "textPl": "Zastosuj dwukierunkową filtrację bez przesunięcia fazowego (filtfilt)" },
+          { "id": "chk-1-3-3", "textEn": "Analyze the Bode frequency response plot", "textPl": "Przeanalizuj charakterystykę częstotliwościową na wykresie Bodego" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Unlike moving averages, the {{term:butterworth_filter}} allows precise mathematical separation between signal frequency bands. It features a maximally flat passband with zero ripple, making it the preferred choice for pre-processing machine vibration data before computing {{term:time_domain_features}}.",
+            "pl": "W przeciwieństwie do prostych średnich, {{term:butterworth_filter}} umożliwia precyzyjne odcięcie konkretnych pasm częstotliwości. Charakteryzuje się maksymalnie płaskim pasmem przepustowym bez tętnień, co czyni go standardem w obróbce sygnałów drganiowych."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-1-3-1",
+            "questionEn": "Why is scipy.signal.filtfilt (forward-backward filtering) preferred over lfilter in offline analysis?",
+            "questionPl": "Dlaczego filtfilt (filtracja w przód i w tył) jest lepsza od lfilter w analizie wsadowej?",
+            "optionsEn": [
+              "It runs completely in integer arithmetic",
+              "It results in zero phase distortion (no time lag in signal peaks)",
+              "It requires 50% fewer CPU clock cycles",
+              "It automatically labels anomalous defect events"
+            ],
+            "optionsPl": [
+              "Działa w całości na liczbach całkowitych",
+              "Eliminuje zniekształcenia fazowe (zerowe opóźnienie szczytów sygnału)",
+              "Zużywa o 50% mniej cykli procesora",
+              "Automatycznie oznacza wykryte awarie etykietami"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Filtfilt runs the filter forwards then backwards, perfectly canceling the phase delay introduced by the filter transfer function.",
+            "explanationPl": "Filtfilt filtruje sygnał w przód, a potem w tył, idealnie kompensując przesunięcie fazowe wprowadzone przez filtr."
+          }
+        ]
+      },
+      {
+        "id": "1-4",
+        "titleEn": "Baseline Drift & Industrial Sensor Calibration",
+        "titlePl": "Dryf Linii Bazowej i Kalibracja Czujników",
+        "summaryEn": "Remove slow thermal trends, calculate tare offsets, and correct baseline wandering on strain gauges and thermocouples.",
+        "summaryPl": "Usuwaj powolne trendy termiczne, wyliczaj offset tarowania i koryguj dryf bazowy tensometrów.",
+        "notebook": "01_04_baseline_calibration.ipynb",
+        "sandboxType": "signal_filter_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-1-4-1", "textEn": "Detect slow thermal baseline wander in continuous telemetry", "textPl": "Wykryj powolny dryf termiczny linii bazowej w ciągłej telemetrii" },
+          { "id": "chk-1-4-2", "textEn": "Fit polynomial and high-pass detrending algorithms", "textPl": "Dopasuj algorytmy usuwania trendu (detrend wielomianowy i górnoprzepustowy)" },
+          { "id": "chk-1-4-3", "textEn": "Implement automated zero-tare calibration logic", "textPl": "Zaimplementuj automatyczne zerowanie i tarowanie czujnika" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "During extended manufacturing shifts, continuous mechanical friction causes thermal expansion. This introduces {{term:baseline_drift}} into pressure and strain sensors: the measured zero-level slowly creeps upward even when the machine is under zero mechanical load.",
+            "pl": "Podczas wielogodzinnych zmian produkcyjnych tarcie mechaniczne rozgrzewa maszynę. Wywołuje to {{term:baseline_drift}} na czujnikach nacisku i tensometrach: poziom zerowy powoli wędruje w górę, mimo że maszyna nie jest w danym momencie obciążona."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-1-4-1",
+            "questionEn": "What type of filter naturally eliminates low-frequency baseline drift from a signal?",
+            "questionPl": "Jaki typ filtra w naturalny sposób usuwa wolnozmienny dryf linii bazowej z sygnału?",
+            "optionsEn": [
+              "High-pass filter",
+              "Low-pass filter",
+              "Moving average filter with small window",
+              "Min-max normalizer"
+            ],
+            "optionsPl": [
+              "Filtr górnoprzepustowy (High-pass)",
+              "Filtr dolnoprzepustowy (Low-pass)",
+              "Średnia krocząca z małym oknem",
+              "Normalizator min-max"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "A high-pass filter blocks near-DC frequencies (0 Hz to 0.1 Hz) where thermal baseline drift lives, while passing the fast dynamic process oscillations.",
+            "explanationPl": "Filtr górnoprzepustowy blokuje składową stałą DC i częstotliwości bliskie zera (dryf termiczny), przepuszczając szybkie drgania procesu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mod-2",
+    "number": 2,
+    "titleEn": "Feature Extraction & Robust Preprocessing",
+    "titlePl": "Inżynieria Cech i Odporne Przetwarzanie",
+    "descriptionEn": "Transform raw sensor streams into predictive features: RMS, Kurtosis, Skewness, Crest Factor, and handle extreme factory outliers with RobustScaler.",
+    "descriptionPl": "Przekształcaj surowe sygnały w cechy diagnostyczne: RMS, Kurtozę, Skośność, Crest Factor i opanuj odporne skalowanie RobustScaler.",
+    "sandboxType": "scaling_outlier_sandbox",
+    "lessons": [
+      {
+        "id": "2-1",
+        "titleEn": "Statistical Time-Domain Feature Extraction",
+        "titlePl": "Statystyczne Cechy w Dziedzinie Czasu",
+        "summaryEn": "Extract RMS, Peak-to-Peak, Kurtosis, and Crest Factor from raw vibration windows to capture early mechanical fatigue.",
+        "summaryPl": "Wyliczaj RMS, wartość międzyszczytową, kurtozę i współczynnik szczytu z okien drgań do wykrywania zmęczenia materiału.",
+        "notebook": "02_01_time_domain_features.ipynb",
+        "sandboxType": "scaling_outlier_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-2-1-1", "textEn": "Partition high-speed sensor streams into 1-second rolling windows", "textPl": "Podziel szybki strumień danych na sekundowe okna przesuwne" },
+          { "id": "chk-2-1-2", "textEn": "Calculate RMS energy and compare against ISO 10816 thresholds", "textPl": "Wylicz energię skuteczną RMS i porównaj z limitami normy ISO 10816" },
+          { "id": "chk-2-1-3", "textEn": "Compute Kurtosis and Crest Factor to spot impulsive impacts", "textPl": "Oblicz kurtozę i współczynnik szczytu, aby wykryć uderzenia udarowe" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Raw sensor telemetry at 20 kHz generates 1.2 million numbers per minute. Feeding raw sequences directly into standard classifiers causes extreme computational overhead. Through {{term:feature_engineering}}, we compress windows into key {{term:time_domain_features}} such as {{term:rms}}, {{term:kurtosis}}, and {{term:crest_factor}}.",
+            "pl": "Surowy strumień z akcelerometru 20 kHz generuje 1,2 miliona liczb na minutę. Przekazywanie takich ciągów bezpośrednio do klasyfikatorów paraliżuje procesor. Dzięki procesowi {{term:feature_engineering}} kompresujemy okna czasowe w zwięzłe wskaźniki: {{term:rms}}, {{term:kurtosis}} i {{term:crest_factor}}."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-2-1-1",
+            "questionEn": "Why is Kurtosis superior to overall RMS for early-stage bearing defect detection?",
+            "questionPl": "Dlaczego kurtoza jest lepsza niż ogólny RMS we wczesnym wykrywaniu uszkodzeń łożysk?",
+            "optionsEn": [
+              "Kurtosis is not affected by physical machinery vibration",
+              "A micro-crack generates sharp impulsive impacts that drive Kurtosis up long before overall RMS energy increases",
+              "Kurtosis is always between 0 and 1",
+              "RMS can only be computed on CPU, while Kurtosis runs on GPU"
+            ],
+            "optionsPl": [
+              "Kurtoza nie zależy od fizycznych drgań maszyny",
+              "Mikropęknięcie generuje ostre szpilki udarowe drastycznie podnoszące kurtozę zanim wzrośnie ogólna energia RMS",
+              "Kurtoza przyjmuje zawsze wartości od 0 do 1",
+              "RMS liczy się na CPU, a kurtozę wyłącznie na GPU"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Normal Gaussian vibration has kurtosis ~3. Rare impact spikes add heavy tails to the distribution, driving kurtosis above 6 even when overall energy RMS is barely altered.",
+            "explanationPl": "Dla sprawnego łożyska kurtoza wynosi ~3. Pojedyncze uderzenia kulki w wyszczerbioną bieżnię podbijają kurtozę powyżej 6 bez zauważalnej zmiany energii RMS."
+          }
+        ]
+      },
+      {
+        "id": "2-2",
+        "titleEn": "Industrial Outlier Detection with IQR & Physical Bounds",
+        "titlePl": "Wykrywanie Odstających Odczytów (IQR i Granice Fizyczne)",
+        "summaryEn": "Filter out sensor dropouts (-999 codes, loose thermocouple spikes) using Interquartile Range and physical domain limits.",
+        "summaryPl": "Filtruj błędy czujników (kody -999, zakłócenia kablowe) używając rozstępu IQR i ograniczeń fizycznych procesu.",
+        "notebook": "02_02_outlier_filtering.ipynb",
+        "sandboxType": "scaling_outlier_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-2-2-1", "textEn": "Define physical domain bounding rules (e.g. 0 < Speed < 6000 RPM)", "textPl": "Zdefiniuj reguły granic fizycznych (np. 0 < obroty < 6000 RPM)" },
+          { "id": "chk-2-2-2", "textEn": "Calculate quartile thresholds Q1, Q3, and IQR bounds", "textPl": "Wylicz kwartyle Q1, Q3 i granice rozstępu międzykwartylowego IQR" },
+          { "id": "chk-2-2-3", "textEn": "Replace electrical spikes with local median values", "textPl": "Zastąp impulsy elektryczne lokalną medianą" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "When a physical sensor disconnects or loses power, the industrial bus may report hardware error flags or extreme numbers like -9999 or 65535. These are classic {{term:outlier}} instances. If passed into ML algorithms without cleaning, they distort means and completely ruin gradient calculations.",
+            "pl": "Gdy czujnik ulegnie przerwaniu lub straci zasilanie, magistrala przemysłowa może zaraportować kod błędu lub skrajne liczby typu -9999 czy 65535. To klasyczny {{term:outlier}}. Jeśli trafi do modelu bez oczyszczenia, zafałszuje średnie i zniszczy proces optymalizacji wag."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-2-2-1",
+            "questionEn": "What is the standard formula for identifying severe statistical outliers using IQR?",
+            "questionPl": "Jaki jest standardowy wzór na wykrywanie skrajnych wartości odstających za pomocą IQR?",
+            "optionsEn": [
+              "Values greater than Mean + 1.0 * StdDev",
+              "Values greater than Q3 + 1.5 * IQR or less than Q1 - 1.5 * IQR",
+              "Values outside the range [0, 1]",
+              "Values with negative sign only"
+            ],
+            "optionsPl": [
+              "Wartości większe niż Średnia + 1.0 * Odchylenie Standardowe",
+              "Wartości większe niż Q3 + 1.5 * IQR lub mniejsze niż Q1 - 1.5 * IQR",
+              "Wartości spoza przedziału [0, 1]",
+              "Wszystkie wartości o ujemnym znaku"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "The Tukey boxplot rule defines outliers as observations beyond Q1 - 1.5*IQR and Q3 + 1.5*IQR.",
+            "explanationPl": "Klasyczna reguła Tukeya definiuje wartości odstające jako punkty leżące poza przedziałem [Q1 - 1.5*IQR, Q3 + 1.5*IQR]."
+          }
+        ]
+      },
+      {
+        "id": "2-3",
+        "titleEn": "RobustScaler vs StandardScaler on Factory Telemetry",
+        "titlePl": "RobustScaler vs StandardScaler w Danych Przemysłowych",
+        "summaryEn": "Demonstrate why StandardScaler collapses under extreme machine spikes, and why RobustScaler is the gold standard.",
+        "summaryPl": "Zobacz, dlaczego StandardScaler zawodzi przy skrajnych pikach i dlaczego RobustScaler to standard w przemyśle.",
+        "notebook": "02_03_robust_scaling.ipynb",
+        "sandboxType": "scaling_outlier_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-2-3-1", "textEn": "Simulate a severe electrical current spike (10,000A) in telemetry", "textPl": "Zasymuluj skrajny pik prądu (10 000A) w telemetrii" },
+          { "id": "chk-2-3-2", "textEn": "Compare feature compression between StandardScaler and RobustScaler", "textPl": "Porównaj spłaszczenie cech między StandardScaler a RobustScaler" },
+          { "id": "chk-2-3-3", "textEn": "Inspect preserved variance in scikit-learn pipeline", "textPl": "Zbadaj zachowaną wariancję w potoku scikit-learn" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "{{term:standard_scaler}} normalizes features by subtracting the mean and dividing by the standard deviation. However, both mean and variance are extremely sensitive to single large spikes: a single 5000A motor startup pulse artificially inflates the standard deviation, crushing all normal 20A operating readings into a near-zero band.",
+            "pl": "{{term:standard_scaler}} normalizuje cechy odejmując średnią i dzieląc przez odchylenie standardowe. Niestety obie te statystyki są bezbronne wobec skrajnych pików: pojedynczy prąd rozruchowy 5000A sztucznie nadmuchuje odchylenie, spłaszczając normalne wartości 20A do mikroskopijnego przedziału wokół zera."
+          },
+          {
+            "id": "b2",
+            "type": "paragraph",
+            "en": "In contrast, {{term:robust_scaler}} uses the median and the {{term:iqr}}. Because the median and IQR ignore the outer 25% extremes, the scaling parameters remain robust and retain the natural variance of normal operating telemetry.",
+            "pl": "Dla kontrastu, {{term:robust_scaler}} opiera się na medianie oraz rozstępie {{term:iqr}}. Ponieważ mediana i IQR nie zależą od skrajnych 25% wartości, współczynniki skalera zachowują naturalną rozpiętość codziennej pracy urządzenia."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-2-3-1",
+            "questionEn": "What mathematical statistics does RobustScaler use for centering and scaling?",
+            "questionPl": "Jakich statystyk matematycznych używa RobustScaler do centrowania i skalowania?",
+            "optionsEn": [
+              "Mean and Variance",
+              "Median and Interquartile Range (IQR)",
+              "Minimum and Maximum",
+              "Mode and Skewness"
+            ],
+            "optionsPl": [
+              "Średniej arytmetycznej i wariancji",
+              "Mediany i rozstępu międzykwartylowego (IQR)",
+              "Wartości minimalnej i maksymalnej",
+              "Dominanty (mody) i skośności"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "RobustScaler subtracts the 50th percentile (median) and scales by the difference between the 75th and 25th percentiles (IQR).",
+            "explanationPl": "RobustScaler odejmuje 50. percentyl (medianę) i dzieli przez różnicę między 75. a 25. percentylem (IQR)."
+          }
+        ]
+      },
+      {
+        "id": "2-4",
+        "titleEn": "Handling Missing Telemetry & Forward Fill",
+        "titlePl": "Uzupełnianie Braków w Szeregach Czasowych",
+        "summaryEn": "Manage industrial network drops, wireless packet losses, and intermittent sensor polling using forward fill (LOCF) and interpolation.",
+        "summaryPl": "Radź sobie z przerwami w transmisji sieciowej i gubieniem pakietów za pomocą forward fill oraz interpolacji.",
+        "notebook": "02_04_missing_telemetry.ipynb",
+        "sandboxType": "scaling_outlier_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-2-4-1", "textEn": "Analyze missing value patterns (random vs burst outages)", "textPl": "Zbadaj rozkład braków danych (losowe vs ciągłe awarie sieci)" },
+          { "id": "chk-2-4-2", "textEn": "Apply forward-fill (LOCF) on discrete valve state signals", "textPl": "Zastosuj uzupełnianie w przód (LOCF) dla stanów dyskretnych zaworów" },
+          { "id": "chk-2-4-3", "textEn": "Implement cubic spline interpolation for continuous pressure curves", "textPl": "Wdróż interpolację sklejaną dla ciągłych krzywych ciśnienia" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Industrial IoT sensors communicating over Wi-Fi or LoRaWAN frequently drop telemetry packets. Applying standard mean imputation ruins time-series dynamics. For state indicators like valve position (Open/Closed), {{term:forward_fill}} (Last Observation Carried Forward) maintains physical validity.",
+            "pl": "Czujniki przemysłowe IoT działające w sieciach bezprzewodowych regularnie gubią pakiety pomiarowe. Wypełnianie dziur zwykłą średnią niszczy dynamikę procesu. Dla zmiennych stanów maszyn (np. zawór otwarty/zamknięty) metoda {{term:forward_fill}} zachowuje zgodność z fizyczną rzeczywistością."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-2-4-1",
+            "questionEn": "Why is replacing missing values with the global column mean dangerous in real-time streaming ML?",
+            "questionPl": "Dlaczego zastąpienie braków średnią globalną jest niebezpieczne w modelach czasu rzeczywistego?",
+            "optionsEn": [
+              "It violates causality and introduces data leakage from future timestamps into the past",
+              "Scikit-learn refuses to compile code containing mean functions",
+              "The mean is always equal to 0",
+              "It increases the file size of the dataset"
+            ],
+            "optionsPl": [
+              "Łamie zasadę przyczynowości i wprowadza wyciek danych (data leakage) z przyszłości do przeszłości",
+              "Scikit-learn nie pozwala na kompilację funkcji średniej w pipeline",
+              "Średnia zawsze wynosi 0 w układach fizycznych",
+              "Zwiększa fizyczny rozmiar pliku na dysku"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Calculating the global mean requires access to future values not available at inference time, leading to severe data leakage and over-optimistic validation scores.",
+            "explanationPl": "Średnia globalna wymaga znajomości próbek z przyszłości, co powoduje wyciek informacji i złudnie wysokie wyniki testowe."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mod-3",
+    "number": 3,
+    "titleEn": "Industrial Classification & Cost-Sensitive Learning",
+    "titlePl": "Klasyfikacja Przemysłowa i Modele Kosztowe",
+    "descriptionEn": "Optimize models for plant economics: align decision thresholds with asymmetric cost matrices ($10k failure vs $50 manual scan) and conquer extreme 99.9% class imbalance.",
+    "descriptionPl": "Optymalizuj modele pod kątem zysków fabryki: dopasuj progi do asymetrycznej macierzy kosztów (awaria za 40k PLN vs audyt za 50 PLN) i opanuj niezbalansowane klasy.",
+    "sandboxType": "cost_matrix_sandbox",
+    "lessons": [
+      {
+        "id": "3-1",
+        "titleEn": "Automated Quality Inspection & Defect Classification",
+        "titlePl": "Automatyczna Kontrola Jakości i Klasyfikacja Wad",
+        "summaryEn": "Formulate defect detection as a supervised classification task; understand the {{term:confusion_matrix}} in factory operations.",
+        "summaryPl": "Sformułuj detekcję wad jako zadanie klasyfikacji nadzorowanej i zrozum {{term:confusion_matrix}} na linii montażu.",
+        "notebook": "03_01_quality_classification.ipynb",
+        "sandboxType": "cost_matrix_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-3-1-1", "textEn": "Load industrial stamped part inspection dataset", "textPl": "Wczytaj zbiór danych z inspekcji wytłoczek metalowych" },
+          { "id": "chk-3-1-2", "textEn": "Train a Random Forest classifier on engineered sensor features", "textPl": "Wytrenuj klasyfikator Random Forest na wyodrębnionych cechach" },
+          { "id": "chk-3-1-3", "textEn": "Construct and visualize the confusion matrix (TP, FP, TN, FN)", "textPl": "Zbuduj i zwizualizuj macierz pomyłek (TP, FP, TN, FN)" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "On automated assembly lines, every manufactured component must be certified before packaging. In a binary classification framework, we classify parts as either healthy (0) or defective (1). The {{term:confusion_matrix}} categorizes predictions into four critical business outcomes: {{term:true_positive}}, {{term:true_negative}}, {{term:false_positive}}, and {{term:false_negative}}.",
+            "pl": "Na zautomatyzowanych liniach montażowych każdy detal musi zostać skontrolowany przed wysyłką. W klasyfikacji binarnej dzielimy wyroby na sprawne (0) oraz wadliwe (1). {{term:confusion_matrix}} grupuje decyzje algorytmu na cztery stany biznesowe: {{term:true_positive}}, {{term:true_negative}}, {{term:false_positive}} i {{term:false_negative}}."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-3-1-1",
+            "questionEn": "Which quadrant in the confusion matrix represents a defective part mistakenly approved for customer shipment?",
+            "questionPl": "Które pole macierzy pomyłek oznacza wadliwy detal omyłkowo dopuszczony do wysyłki do klienta?",
+            "optionsEn": [
+              "True Positive (TP)",
+              "False Positive (FP)",
+              "False Negative (FN / Missed Defect)",
+              "True Negative (TN)"
+            ],
+            "optionsPl": [
+              "Prawdziwie pozytywny (TP)",
+              "Fałszywy alarm (FP)",
+              "Przeoczona wada (FN / False Negative)",
+              "Prawdziwie negatywny (TN)"
+            ],
+            "correctIndex": 2,
+            "explanationEn": "A False Negative means the part was defective (positive), but the model predicted negative (healthy). This is the most dangerous failure in industrial quality assurance.",
+            "explanationPl": "False Negative oznacza, że detal był wadliwy, lecz model uznał go za sprawny. To najbardziej kosztowny błąd w przemyśle."
+          }
+        ]
+      },
+      {
+        "id": "3-2",
+        "titleEn": "Asymmetric Cost Matrices in Plant Economics",
+        "titlePl": "Asymetryczne Macierze Kosztów w Finansach Fabryki",
+        "summaryEn": "Quantify real financial loss: why a missed defect costs 200x more than an operator false alarm.",
+        "summaryPl": "Policz realne straty finansowe: dlaczego przeoczenie wady kosztuje 200x więcej niż fałszywy alarm technika.",
+        "notebook": "03_02_cost_sensitive_learning.ipynb",
+        "sandboxType": "cost_matrix_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-3-2-1", "textEn": "Define cost weights: Cost(FN) = $10,000 vs Cost(FP) = $50", "textPl": "Zdefiniuj wagi kosztów: Koszt(FN) = 40 000 PLN vs Koszt(FP) = 200 PLN" },
+          { "id": "chk-3-2-2", "textEn": "Calculate Expected Total Cost across all decision thresholds", "textPl": "Wylicz całkowity oczekiwany koszt dla każdego progu decyzyjnego" },
+          { "id": "chk-3-2-3", "textEn": "Pinpoint the cost-optimal operating threshold", "textPl": "Wyznacz optymalny ekonomicznie próg decyzyjny" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Academic machine learning treats all errors equally: a {{term:false_positive}} is penalized identically to a {{term:false_negative}}. In manufacturing, this is catastrophic. Missing a hairline crack in an engine crankshaft (FN) leads to a warranty recall costing $10,000. In contrast, a false alarm (FP) merely causes a quality inspector to spend 30 seconds manually scanning the part ($10).",
+            "pl": "Modele akademickie traktują wszystkie błędy równo: {{term:false_positive}} ma taką samą karę jak {{term:false_negative}}. W fabryce to przepis na bankructwo. Przeoczenie mikropęknięcia wału korbowego (FN) oznacza awarię silnika i koszty gwarancyjne rzędu 40 000 PLN. Z kolei fałszywy alarm (FP) to zaledwie 30 sekund pracy kontrolera (40 PLN)."
+          },
+          {
+            "id": "b2",
+            "type": "paragraph",
+            "en": "By encoding an {{term:asymmetric_cost_matrix}}, we transform the evaluation metric from abstract accuracy into real factory currency. The optimal {{term:decision_threshold}} is not 0.50, but typically shifts much lower to catch every possible failure.",
+            "pl": "Definiując {{term:asymmetric_cost_matrix}}, zamieniamy abstrakcyjną dokładność na realny zysk fabryki. Optymalny {{term:decision_threshold}} rzadko wynosi 0.50 – zazwyczaj przesuwamy go mocno w dół, aby wyłapać każdą potencjalną usterkę."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-3-2-1",
+            "questionEn": "If Cost(FN) = $10,000 and Cost(FP) = $50, how should the decision threshold be adjusted relative to the default 0.50?",
+            "questionPl": "Jeśli Koszt(FN) = 40 000 PLN, a Koszt(FP) = 200 PLN, jak należy zmienić próg decyzyjny względem 0.50?",
+            "optionsEn": [
+              "Keep it exactly at 0.50 to maintain statistical purity",
+              "Increase it to 0.95 to reduce false alarms",
+              "Lower it to ~0.05 so the model aggressively flags even suspicious parts",
+              "Invert the classes so healthy parts become defects"
+            ],
+            "optionsPl": [
+              "Zostawić dokładnie 0.50 w imię symetrii statystycznej",
+              "Podnieść do 0.95, aby zmniejszyć liczbę fałszywych alarmów",
+              "Obniżyć do ~0.05, by model agresywnie wyłapywał nawet drobne podejrzenia wad",
+              "Odwrócić klasy tak, by dobre detale stały się wadliwymi"
+            ],
+            "correctIndex": 2,
+            "explanationEn": "Lowering the decision threshold ensures high recall, drastically reducing expensive False Negatives at the cost of a few cheap manual inspections.",
+            "explanationPl": "Obniżenie progu gwarantuje wysoką czułość (recall), eliminując skrajnie drogie przeoczenia wad kosztem tanich weryfikacji ręcznych."
+          }
+        ]
+      },
+      {
+        "id": "3-3",
+        "titleEn": "Conquering Severe 99.9% Class Imbalance",
+        "titlePl": "Walka z Niezbalansowaniem Klas (99.9% Sprawnych)",
+        "summaryEn": "Overcome the 'accuracy paradox' when defects represent 1 in 1000 parts using balanced weights and SMOTE.",
+        "summaryPl": "Przezwycięż 'paradoks dokładności' przy 1 wadzie na 1000 wyrobów za pomocą wag klas i algorytmu SMOTE.",
+        "notebook": "03_03_class_imbalance_smote.ipynb",
+        "sandboxType": "cost_matrix_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-3-3-1", "textEn": "Expose the dummy 'Always Normal' model flaw (99.9% accuracy, 0% recall)", "textPl": "Zdemaskuj naiwny model 'Zawsze Sprawny' (99.9% accuracy, 0% recall)" },
+          { "id": "chk-3-3-2", "textEn": "Apply class_weight='balanced' in logistic regression and tree ensembles", "textPl": "Zastosuj wagę class_weight='balanced' w modelach drzewiastych" },
+          { "id": "chk-3-3-3", "textEn": "Synthesize realistic defect vectors using SMOTE", "textPl": "Wygeneruj syntetyczne wektory rzadkich awarii za pomocą SMOTE" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "In well-maintained plants, defects are thankfully rare: 99.9% of manufactured parts are flawless. This extreme {{term:class_imbalance}} renders standard accuracy meaningless. A naive classifier that simply outputs 'Normal' for everything achieves 99.9% accuracy, yet misses 100% of real breakdowns.",
+            "pl": "W sprawnie zarządzanych fabrykach awarie są na szczęście rzadkością: 99.9% detali spełnia normy. To skrajne {{term:class_imbalance}} sprawia, że tradycyjna dokładność (accuracy) staje się bezużyteczna. Naiwny model zgadujący 'Sprawny' ma 99.9% accuracy, lecz przepuszcza 100% realnych uszkodzeń."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-3-3-1",
+            "questionEn": "Which metric provides the most reliable evaluation of a defect classifier on severe class imbalance?",
+            "questionPl": "Jaki wskaźnik daje najbardziej wiarygodną ocenę modelu przy skrajnym braku równowagi klas?",
+            "optionsEn": [
+              "Overall Accuracy",
+              "Precision-Recall AUC (PR-AUC)",
+              "Mean Absolute Error",
+              "R-Squared"
+            ],
+            "optionsPl": [
+              "Ogólna dokładność (Accuracy)",
+              "Pole pod krzywą precyzji i czułości (PR-AUC)",
+              "Średni błąd bezwzględny (MAE)",
+              "Współczynnik determinacji R-Kwadrat"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "PR-AUC focuses directly on the minority class performance without being inflated by millions of True Negatives.",
+            "explanationPl": "Wskaźnik PR-AUC skupia się bezpośrednio na klasie rzadkiej (wadach) i nie jest sztucznie zawyżany przez miliony poprawnych detali."
+          }
+        ]
+      },
+      {
+        "id": "3-4",
+        "titleEn": "Tuning Decision Thresholds & PR Curves",
+        "titlePl": "Dostrajanie Progów i Krzywe Precision-Recall",
+        "summaryEn": "Plot Precision against Recall across all thresholds to select the exact operating point meeting factory SLA.",
+        "summaryPl": "Wykreśl precyzję w funkcji czułości dla wszystkich progów i wybierz punkt pracy spełniający normy zakładowe.",
+        "notebook": "03_04_precision_recall_tuning.ipynb",
+        "sandboxType": "cost_matrix_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-3-4-1", "textEn": "Extract continuous predicted probabilities via predict_proba", "textPl": "Pobierz ciągłe prawdopodobieństwa predykcji za pomocą predict_proba" },
+          { "id": "chk-3-4-2", "textEn": "Plot precision_recall_curve across probability thresholds", "textPl": "Wykreśl krzywą precision_recall_curve dla całego zakresu progów" },
+          { "id": "chk-3-4-3", "textEn": "Select the threshold that guarantees Recall >= 99% while maximizing Precision", "textPl": "Wybierz próg gwarantujący Recall >= 99% przy najwyższej możliwej precyzji" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "By sweeping the {{term:decision_threshold}} from 0.0 to 1.0, we reveal the fundamental trade-off between {{term:precision}} and {{term:recall}}. In automotive manufacturing, contract SLAs often mandate that Recall must never drop below 99.5%. We inspect the PR curve to locate the threshold that fulfills this requirement while minimizing false alarms.",
+            "pl": "Zmieniając {{term:decision_threshold}} od 0.0 do 1.0, obserwujemy fundamentalny kompromis między {{term:precision}} a {{term:recall}}. W motoryzacji kontrakty OEM wymagają czułości na poziomie minimum 99.5%. Na krzywej PR odnajdujemy próg spełniający ten warunek przy najmniejszej liczbie fałszywych alarmów."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-3-4-1",
+            "questionEn": "What happens to Precision when you lower the decision threshold to achieve 100% Recall?",
+            "questionPl": "Co dzieje się z precyzją, gdy obniżasz próg decyzyjny, aby osiągnąć 100% czułości (Recall)?",
+            "optionsEn": [
+              "Precision generally decreases because more borderline healthy parts trigger false alarms",
+              "Precision automatically increases to 100%",
+              "Precision remains completely unchanged",
+              "The model turns into an unsupervised clustering algorithm"
+            ],
+            "optionsPl": [
+              "Precyzja zazwyczaj spada, ponieważ więcej wątpliwych sprawnych detali wywołuje fałszywe alarmy",
+              "Precyzja automatycznie rośnie do 100%",
+              "Precyzja pozostaje całkowicie bez zmian",
+              "Model przekształca się w nienadzorowany algorytm klastrowania"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "To catch every defect, you must lower the threshold, which inevitably classifies more ambiguous healthy parts as defects, lowering precision.",
+            "explanationPl": "Aby wyłapać absolutnie każdą wadę, musisz obniżyć próg, co nieuchronnie zakwalifikuje część detali granicznych jako wadliwe, obniżając precyzję."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mod-4",
+    "number": 4,
+    "titleEn": "Unsupervised Diagnostics & Regime Clustering",
+    "titlePl": "Diagnostyka Nienadzorowana i Klastrowanie Reżimów",
+    "descriptionEn": "Segment multi-mode machine operating states (Idle, Warmup, Full Speed) with K-Means and isolate zero-label anomalies using DBSCAN and Isolation Forests.",
+    "descriptionPl": "Segmentuj stany pracy maszyny (Bieg jałowy, Rozgrzewanie, Pełna moc) algorytmem K-Średnich i wykrywaj nowe awarie bez etykiet za pomocą DBSCAN i Lasu Izolacyjnego.",
+    "sandboxType": "clustering_sandbox",
+    "lessons": [
+      {
+        "id": "4-1",
+        "titleEn": "Discovering Machine Operating Regimes with K-Means",
+        "titlePl": "Wykrywanie Reżimów Pracy Maszyny Algorytmem K-Means",
+        "summaryEn": "Group multi-sensor telemetry into distinct machine operating states using unsupervised K-Means clustering.",
+        "summaryPl": "Grupuj wielokanałową telemetrię w odrębne stany pracy obrabiarki za pomocą algorytmu K-Średnich.",
+        "notebook": "04_01_kmeans_regimes.ipynb",
+        "sandboxType": "clustering_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-4-1-1", "textEn": "Scale multidimensional spindle RPM and motor current data", "textPl": "Zeskaluj wielowymiarowe dane obrotów wrzeciona i prądu silnika" },
+          { "id": "chk-4-1-2", "textEn": "Fit K-Means across clusters K=2 through K=6", "textPl": "Dopasuj K-Means dla liczby klastrów K od 2 do 6" },
+          { "id": "chk-4-1-3", "textEn": "Plot the Elbow curve (Inertia) and Silhouette scores", "textPl": "Wykreśl metodę łokcia (Inercja) oraz współczynnik Silhouette" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Industrial machines do not operate at fixed steady states. A CNC milling center transitions between standby, tool changes, low-speed roughing, and high-speed finishing. Each {{term:operational_regime}} produces entirely different baseline vibration and current values. With {{term:k_means}}, we automatically discover these operating states without needing manual logs from machinists.",
+            "pl": "Maszyny przemysłowe nie pracują w jednym stałym punkcie. Frezarka CNC przechodzi między czuwaniem, wymianą narzędzia, zgrubną obróbką i polerowaniem wykańczającym. Każdy {{term:operational_regime}} generuje zupełnie inne bazowe drgania i pobór prądu. Za pomocą {{term:k_means}} automatycznie odkrywamy te stany bez konieczności ręcznego logowania przez operatora."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-4-1-1",
+            "questionEn": "Why must an anomaly detection system know the current operational regime of a machine?",
+            "questionPl": "Dlaczego system detekcji anomalii musi znać bieżący reżim operacyjny maszyny?",
+            "optionsEn": [
+              "Vibration levels that indicate a severe breakdown at 200 RPM might be completely normal at 3,000 RPM",
+              "Operating regimes change the CPU architecture of the PLC",
+              "K-Means only works when the motor is completely stopped",
+              "To reboot the SCADA server between work shifts"
+            ],
+            "optionsPl": [
+              "Poziom drgań oznaczający awarię przy 200 obr/min może być w pełni naturalny przy 3000 obr/min",
+              "Reżimy pracy zmieniają architekturę procesora sterownika PLC",
+              "K-Means działa wyłącznie przy całkowicie zatrzymanym silniku",
+              "Aby zrestartować serwer SCADA pomiędzy zmianami produkcyjnymi"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Baseline thresholds must be regime-aware: a high vibration reading during heavy milling is normal, whereas the same vibration during idle indicates loose bearings.",
+            "explanationPl": "Progi alarmowe muszą zależeć od stanu pracy: silne drgania przy głębokim frezowaniu to norma, ale te same drgania na biegu jałowym oznaczają luz w łożyskach."
+          }
+        ]
+      },
+      {
+        "id": "4-2",
+        "titleEn": "Density-Based Anomaly Detection with DBSCAN",
+        "titlePl": "Gęstościowa Detekcja Anomalii z DBSCAN",
+        "summaryEn": "Detect arbitrarily shaped operational clusters and automatically isolate outlier failure states as noise (-1).",
+        "summaryPl": "Wykrywaj skupiska o nieregularnych kształtach i automatycznie izoluj nietypowe stany awaryjne jako szum (-1).",
+        "notebook": "04_02_dbscan_anomalies.ipynb",
+        "sandboxType": "clustering_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-4-2-1", "textEn": "Tune epsilon (eps) and min_samples parameters for machine telemetry", "textPl": "Dobierz parametry epsilon (eps) oraz min_samples dla telemetrii maszyny" },
+          { "id": "chk-4-2-2", "textEn": "Identify dense clusters representing healthy operating profiles", "textPl": "Zidentyfikuj gęste klastry reprezentujące poprawne profile pracy" },
+          { "id": "chk-4-2-3", "textEn": "Extract noise points (label -1) as zero-shot candidate breakdown events", "textPl": "Wyodrębnij punkty szumu (etykieta -1) jako kandydatów na awarie" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "While K-Means assumes spherical clusters of equal size, real machine operations often form curved manifold trajectories. {{term:dbscan}} groups points based on spatial density: dense regions form clusters, while sparse points that do not belong anywhere are labeled as -1 noise. This provides an elegant, label-free anomaly detector.",
+            "pl": "Podczas gdy K-Means zakłada kuliste skupiska, praca maszyn często układa się w zakrzywione wstęgi i trajektorie. {{term:dbscan}} łączy punkty w oparciu o lokalną gęstość: zwarte obszary tworzą grupy, a rzadkie punkty odstające otrzymują etykietę -1 (szum). Daje to elegancki detektor anomalii bez potrzeby posiadania etykiet."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-4-2-1",
+            "questionEn": "What label does scikit-learn's DBSCAN assign to outlier anomalies that do not meet density criteria?",
+            "questionPl": "Jaką etykietę scikit-learn przypisuje punktom odstającym (anomaliom) w algorytmie DBSCAN?",
+            "optionsEn": [
+              "0",
+              "999",
+              "-1",
+              "None"
+            ],
+            "optionsPl": [
+              "0",
+              "999",
+              "-1",
+              "Brak wartości (None)"
+            ],
+            "correctIndex": 2,
+            "explanationEn": "In scikit-learn, DBSCAN assigns the cluster label -1 to all noise samples (points not within eps distance of at least min_samples points).",
+            "explanationPl": "W scikit-learn algorytm DBSCAN oznacza punkty szumu i anomalie etykietą -1."
+          }
+        ]
+      },
+      {
+        "id": "4-3",
+        "titleEn": "High-Dimensional Compression with PCA",
+        "titlePl": "Redukcja Wymiarowości z Wykorzystaniem PCA",
+        "summaryEn": "Compress 64 redundant plant sensor feeds into 2-3 principal components for real-time operator visualization.",
+        "summaryPl": "Zredukuj 64 skorelowane sygnały z czujników do 2-3 składowych głównych na pulpit dyspozytora.",
+        "notebook": "04_03_pca_compression.ipynb",
+        "sandboxType": "clustering_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-4-3-1", "textEn": "Fit PCA on a 64-channel chemical reactor temperature array", "textPl": "Dopasuj PCA do 64 czujników temperatury reaktora chemicznego" },
+          { "id": "chk-4-3-2", "textEn": "Inspect cumulative explained variance ratio curve", "textPl": "Zbadaj krzywą skumulowanej wariancji wyjaśnionej" },
+          { "id": "chk-4-3-3", "textEn": "Render interactive 2D and 3D machine trajectory scatter plots", "textPl": "Wygeneruj interaktywne trajektorie 2D i 3D parametrów pracy" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Large industrial installations like chemical crackers and blast furnaces feature hundreds of sensors that measure closely linked physical variables. {{term:pca}} finds orthogonal directions of maximum variance, allowing engineers to visualize complex plant dynamics on a simple 2D display and identify structural system deviations.",
+            "pl": "Duże instalacje przemysłowe, jak piece hutnicze czy reaktory chemiczne, posiadają setki czujników mierzących powiązane zjawiska. {{term:pca}} wyznacza prostopadłe osie największej wariancji, umożliwiając inżynierom podgląd stanu całej instalacji na prostym wykresie 2D i szybkie wykrycie rozstrojenia układu."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-4-3-1",
+            "questionEn": "What does a cumulative explained variance ratio of 0.92 for the first 3 principal components indicate?",
+            "questionPl": "Co oznacza skumulowany wskaźnik wyjaśnionej wariancji 0.92 dla pierwszych 3 składowych głównych?",
+            "optionsEn": [
+              "92% of the original sensor columns were corrupted and deleted",
+              "The first 3 components retain 92% of the total informational variance of the original multi-sensor dataset",
+              "The model achieves 92% classification accuracy",
+              "The machine will fail within 92 operating hours"
+            ],
+            "optionsPl": [
+              "92% pierwotnych kolumn czujników było uszkodzonych i zostało usuniętych",
+              "Pierwsze 3 składowe zachowują aż 92% całkowitej informacji i zmienności wielokanałowego zbioru",
+              "Model osiąga 92% dokładności klasyfikacji wad",
+              "Maszyna ulegnie awarii w ciągu najbliższych 92 godzin"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Explained variance measures how much information is retained after dimensionality reduction. 0.92 means only 8% variance was lost by projecting down to 3 components.",
+            "explanationPl": "Wskaźnik wariancji wyjaśnionej mierzy ilość zachowanej informacji. 0.92 oznacza, że redukując dziesiątki czujników do 3 liczb tracimy zaledwie 8% informacji."
+          }
+        ]
+      },
+      {
+        "id": "4-4",
+        "titleEn": "Isolation Forests for Early Machine Breakdown Warning",
+        "titlePl": "Lasy Izolacyjne (Isolation Forest) do Wykrywania Uszkodzeń",
+        "summaryEn": "Train tree-based isolation ensembles to assign continuous anomaly scores to impending mechanical seizures.",
+        "summaryPl": "Wytrenuj las izolacyjny do wyliczania ciągłego wskaźnika anomalii zwiastującego zatarcie mechanizmu.",
+        "notebook": "04_04_isolation_forest.ipynb",
+        "sandboxType": "clustering_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-4-4-1", "textEn": "Instantiate sklearn.ensemble.IsolationForest on healthy baseline runs", "textPl": "Zainicjuj IsolationForest na danych ze sprawnego cyklu produkcyjnego" },
+          { "id": "chk-4-4-2", "textEn": "Compute decision_function continuous anomaly scores", "textPl": "Wylicz ciągły wskaźnik anomalii za pomocą decision_function" },
+          { "id": "chk-4-4-3", "textEn": "Set plant alert trigger threshold at anomaly score > 0.80", "textPl": "Ustaw próg powiadomień alarmowych na poziomie wskaźnika > 0.80" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "{{term:isolation_forest}} is the industry standard algorithm for zero-shot equipment monitoring. Instead of modeling what normal data looks like, it isolates anomalies by randomly partitioning feature ranges. Because anomalies are few and structurally distinct, they are isolated close to the root of the decision trees with very few splits.",
+            "pl": "{{term:isolation_forest}} to branżowy standard monitorowania stanu maszyn bez posiadania bazy awarii. Zamiast budować skomplikowany model 'normalności', algorytm izoluje punkty losowymi podziałami cech. Ponieważ awarie są rzadkie i nietypowe, zostają odcięte tuż przy korzeniach drzew decyzyjnych przy minimalnej liczbie podziałów."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-4-4-1",
+            "questionEn": "Why do anomalous data points have shorter average path lengths in an Isolation Forest?",
+            "questionPl": "Dlaczego punkty anomalne mają krótszą średnią długość ścieżki w drzewach Lasu Izolacyjnego?",
+            "optionsEn": [
+              "They are processed on faster SSD drives",
+              "Because they are located in sparse regions far from the dense clusters, random splits easily isolate them",
+              "Tree depth is artificially hardcoded to 1 for all defects",
+              "Anomalies have lower floating point precision"
+            ],
+            "optionsPl": [
+              "Są zapisywane na szybszych dyskach SSD",
+              "Leżą w rzadkich obszarach daleko od skupisk, więc losowe cięcia z łatwością je odcinają",
+              "Głębokość drzewa jest sztucznie ustawiona na 1 dla wad",
+              "Anomalie mają niższą precyzję zapisu zmiennoprzecinkowego"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Points in dense normal clusters require many random splits to isolate; outliers in sparse space require very few splits, resulting in short path lengths.",
+            "explanationPl": "Punkty w gęstym skupisku wymagają wielu cięć do odseparowania; anomalie w pustej przestrzeni zostają odcięte już po 2-3 losowych podziałach."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mod-5",
+    "number": 5,
+    "titleEn": "Frequency Domain & Predictive Maintenance",
+    "titlePl": "Analiza Częstotliwościowa i Predykcyjne Utrzymanie Ruchu",
+    "descriptionEn": "Transform raw vibration waveforms into spectral signatures using FFT and STFT spectrograms, identify bearing fault frequencies (BPFO/BPFI), and estimate Remaining Useful Life (RUL).",
+    "descriptionPl": "Przekształcaj drgania w widmo częstotliwości za pomocą FFT i spektrogramów, wykrywaj uszkodzenia bieżni łożysk (BPFO/BPFI) i szacuj czas do awarii (RUL).",
+    "sandboxType": "fft_anomaly_sandbox",
+    "lessons": [
+      {
+        "id": "5-1",
+        "titleEn": "Time Domain vs Frequency Domain Vibration",
+        "titlePl": "Dziedzina Czasu a Dziedzina Częstotliwości w Drganiach",
+        "summaryEn": "Discover why microscopic bearing race spalling is completely invisible in time signals but shines brightly in the frequency spectrum.",
+        "summaryPl": "Zobacz, dlaczego mikropęknięcie bieżni jest niewidoczne w czasie, lecz tworzy potężny pik w widmie częstotliwości.",
+        "notebook": "05_01_time_vs_frequency.ipynb",
+        "sandboxType": "fft_anomaly_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-5-1-1", "textEn": "Plot continuous accelerometer vibration waveform in time domain", "textPl": "Wykreśl surowy sygnał przyspieszenia drgań w dziedzinie czasu" },
+          { "id": "chk-5-1-2", "textEn": "Superimpose multiple sine waves to observe composite interference", "textPl": "Nałóż na siebie kilka sinusoid, aby zaobserwować interferencję" },
+          { "id": "chk-5-1-3", "textEn": "Demonstrate how spectral decomposition untangles complex machinery vibrations", "textPl": "Pokaż, jak dekompozycja widmowa rozplątuje drgania złożonych maszyn" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Looking at raw accelerometer readings in the {{term:time_domain}} often reveals nothing more than a noisy, jagged line. However, complex rotating equipment consists of multiple distinct physical components: the main motor shaft, a 17-tooth gearbox, cooling fans, and rolling element bearings. In the {{term:frequency_domain}}, each rotating element generates a distinct peak at its exact mechanical rotational speed.",
+            "pl": "Analiza sygnału z akcelerometru w {{term:time_domain}} ukazuje jedynie zaszumiony, poszarpany wykres. Jednak maszyna wirnikowa składa się z wielu odrębnych części: wału silnika, 17-zębnej przekładni, wentylatora i łożysk tocznych. W {{term:frequency_domain}} każdy z tych podzespołów generuje odrębny, czysty pik odpowiadający jego prędkości mechanicznej."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-5-1-1",
+            "questionEn": "If an industrial motor runs at 1,800 RPM, at what frequency will its fundamental 1X unbalance peak appear?",
+            "questionPl": "Jeśli silnik przemysłowy obraca się z prędkością 1800 obr/min, przy jakiej częstotliwości pojawi się jego podstawowy pik niewyważenia 1X?",
+            "optionsEn": [
+              "1,800 Hz",
+              "30 Hz",
+              "60 Hz",
+              "100 Hz"
+            ],
+            "optionsPl": [
+              "1800 Hz",
+              "30 Hz",
+              "60 Hz",
+              "100 Hz"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Frequency in Hertz is revolutions per second: 1,800 RPM / 60 seconds = 30 Hz.",
+            "explanationPl": "Częstotliwość w hercach to liczba obrotów na sekundę: 1800 RPM / 60 sekund = 30 Hz."
+          }
+        ]
+      },
+      {
+        "id": "5-2",
+        "titleEn": "Fast Fourier Transform (FFT) & Windowing",
+        "titlePl": "Szybka Transformata Fouriera (FFT) i Okienkowanie",
+        "summaryEn": "Calculate magnitude spectra using numpy.fft, prevent spectral leakage using Hanning windows, and calibrate frequency bins.",
+        "summaryPl": "Obliczaj widmo amplitudowe w numpy.fft, eliminuj przeciek widmowy oknem Hanninga i kalibruj osie częstotliwości.",
+        "notebook": "05_02_fft_and_windowing.ipynb",
+        "sandboxType": "fft_anomaly_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-5-2-1", "textEn": "Compute discrete FFT using numpy.fft.rfft", "textPl": "Wylicz dyskretną transformatę FFT za pomocą numpy.fft.rfft" },
+          { "id": "chk-5-2-2", "textEn": "Construct the exact frequency axis vector using np.fft.rfftfreq", "textPl": "Zbuduj oś częstotliwości za pomocą np.fft.rfftfreq" },
+          { "id": "chk-5-2-3", "textEn": "Apply a Hanning window to eliminate sharp boundary discontinuities", "textPl": "Zastosuj okno Hanninga, aby zlikwidować nieciągłości na brzegach okna" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "The {{term:fft}} algorithm is one of the greatest mathematical breakthroughs in computing. To apply it accurately in predictive maintenance, one must avoid {{term:leakage_spectral}}: slicing a continuous physical waveform at non-integer cycle boundaries creates artificial discontinuity steps that splatter energy across neighboring frequency bins. Multiplying by a smooth {{term:windowing}} curve like Hanning resolves this issue.",
+            "pl": "Algorytm {{term:fft}} to jedno z najważniejszych osiągnięć obliczeniowych w inżynierii. Aby stosować go poprawnie w diagnostyce maszyn, należy unikać zjawiska {{term:leakage_spectral}}: ucięcie sygnału w ułamku cyklu tworzy sztuczny skok na brzegach okna, który rozmywa energię po całym widmie. Zastosowanie funkcji {{term:windowing}} (np. okna Hanninga) eliminuje ten problem."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-5-2-1",
+            "questionEn": "What causes spectral leakage when computing an FFT on an unwindowed signal?",
+            "questionPl": "Co jest przyczyną przecieku widmowego (spectral leakage) podczas liczenia FFT na sygnale bez okienka?",
+            "optionsEn": [
+              "The GPU overheating during matrix multiplication",
+              "Non-integer periodicity across the window, creating an artificial step discontinuity between start and end",
+              "Too high sampling frequency exceeding 1 MHz",
+              "Using 64-bit floating point numbers"
+            ],
+            "optionsPl": [
+              "Przegrzanie karty graficznej podczas mnożenia macierzy",
+              "Niepełna liczba cykli w oknie, tworząca sztuczną nieciągłość (skok) między początkiem a końcem próbki",
+              "Zbyt wysoka częstotliwość próbkowania przekraczająca 1 MHz",
+              "Użycie 64-bitowych liczb zmiennoprzecinkowych"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "FFT assumes the analyzed block repeats infinitely. If the end of the block doesn't smoothly match the beginning, the sharp transition splatters energy across all frequencies.",
+            "explanationPl": "FFT zakłada, że badany odcinek powtarza się w nieskończoność. Jeśli koniec odcinka nie schodzi się płynnie z początkiem, powstaje sztuczny skok rozmywający energię."
+          }
+        ]
+      },
+      {
+        "id": "5-3",
+        "titleEn": "Bearing Fault Frequencies: BPFO & BPFI Kinematics",
+        "titlePl": "Częstotliwości Uszkodzeń Łożysk: Kinematyka BPFO i BPFI",
+        "summaryEn": "Derive defect impact frequencies from bearing internal geometry: ball count, pitch diameter, roller diameter, and contact angle.",
+        "summaryPl": "Wyliczaj częstotliwości uderzeń z geometrii łożyska: liczby kulek, średnicy podziałowej i kąta działania.",
+        "notebook": "05_03_bearing_kinematics.ipynb",
+        "sandboxType": "fft_anomaly_sandbox",
+        "estimatedMinutes": 30,
+        "checklist": [
+          { "id": "chk-5-3-1", "textEn": "Implement kinematic equations for BPFO, BPFI, BSF, and FTF", "textPl": "Zaimplementuj równania kinematyczne dla BPFO, BPFI, BSF oraz FTF" },
+          { "id": "chk-5-3-2", "textEn": "Identify defective outer race peak emergence in real vibration datasets", "textPl": "Zlokalizuj pojawienie się piku uszkodzenia bieżni zewnętrznej w danych" },
+          { "id": "chk-5-3-3", "textEn": "Track harmonic sidebands spaced at running speed (1X)", "textPl": "Śledź wstęgi boczne oddalone o częstotliwość obrotową (1X)" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Rolling element bearings degrade in predictable metallurgical stages: microscopic subsurface fatigue leads to flaking, creating tiny pits on the outer or inner race. Every time a steel roller passes over this defect, it generates a sharp impact pulse. The exact rate of these impacts is governed by bearing geometry, generating the famous {{term:bpfo}} and {{term:bpfi}} frequencies.",
+            "pl": "Łożyska toczne ulegają zużyciu w przewidywalny sposób: mikroskopijne zmęczenie podpowierzchniowe prowadzi do wykruszenia materiału (spalling) na bieżni. Każde przetoczenie się wałeczka po wyrwie generuje mikro-uderzenie. Dokładna częstotliwość tych uderzeń wynika z geometrii łożyska i definiuje wskaźniki {{term:bpfo}} oraz {{term:bpfi}}."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-5-3-1",
+            "questionEn": "What does a sharp new spectral peak at exactly BPFO indicate in vibration analysis?",
+            "questionPl": "Co oznacza pojawienie się nowego, ostrego piku widmowego przy częstotliwości BPFO w wibrodiagnostyce?",
+            "optionsEn": [
+              "The motor is running backwards",
+              "A localized fatigue spall has formed on the bearing outer race",
+              "The cooling fan filter is clogged with dust",
+              "The electrical grid voltage dropped by 10%"
+            ],
+            "optionsPl": [
+              "Silnik obraca się w przeciwnym kierunku",
+              "Na bieżni zewnętrznej łożyska pojawiło się lokalne wykruszenie zmęczeniowe",
+              "Filtr wentylatora chłodzącego został zatkany kurzem",
+              "Napięcie w sieci zasilającej fabrykę spadło o 10%"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "BPFO stands for Ball Pass Frequency Outer race. Energy concentrating at this exact frequency is empirical proof of outer ring damage.",
+            "explanationPl": "BPFO (Ball Pass Frequency Outer race) to częstotliwość przejścia elementów tocznych po bieżni zewnętrznej. Pik w tym punkcie dowodzi uszkodzenia bieżni zewnętrznej."
+          }
+        ]
+      },
+      {
+        "id": "5-4",
+        "titleEn": "Remaining Useful Life (RUL) & Wear Forecasting",
+        "titlePl": "Szacowanie Pozostałego Czasu Pracy (RUL)",
+        "summaryEn": "Fit degradation curves and train regression models on NASA C-MAPSS turbofan data to forecast component failure hours.",
+        "summaryPl": "Dopasuj krzywe degradacji i trenuj modele regresyjne na danych NASA C-MAPSS do prognozowania godzin do awarii.",
+        "notebook": "05_04_rul_forecasting.ipynb",
+        "sandboxType": "fft_anomaly_sandbox",
+        "estimatedMinutes": 30,
+        "checklist": [
+          { "id": "chk-5-4-1", "textEn": "Construct health index trajectories from multi-sensor degradation", "textPl": "Zbuduj trajektorię wskaźnika stanu technicznego (Health Index)" },
+          { "id": "chk-5-4-2", "textEn": "Fit exponential wear models onto NASA turbofan degradation curves", "textPl": "Dopasuj wykładniczy model zużycia do danych degradacji turbin NASA" },
+          { "id": "chk-5-4-3", "textEn": "Predict Remaining Useful Life (RUL) with confidence intervals", "textPl": "Wylicz pozostały czas eksploatacji (RUL) z przedziałami ufności" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Predictive maintenance reaches its full potential when transitioning from binary failure detection to continuous time-to-failure forecasting. {{term:rul}} estimates the exact number of cycles or operating hours remaining before critical breakdown occurs. This allows plant managers to order spare parts just-in-time and schedule overhauls during planned weekend shutdowns.",
+            "pl": "Prawdziwa moc predykcyjnego utrzymania ruchu ujawnia się przy przejściu z prostej detekcji wad na prognozowanie czasu do awarii. {{term:rul}} szacuje dokładną liczbę godzin pracy, jaka pozostała do osiągnięcia stanu krytycznego. Umożliwia to zamówienie części zamiennych just-in-time i zaplanowanie serwisu na weekend."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-5-4-1",
+            "questionEn": "Why is piecewise-linear target clipping (e.g. max RUL = 125 cycles) commonly applied when training RUL models?",
+            "questionPl": "Dlaczego podczas trenowania modeli RUL stosuje się obcinanie etykiety (np. max RUL = 125 cykli)?",
+            "optionsEn": [
+              "Because neural networks cannot represent numbers greater than 125",
+              "A brand new component in early life does not exhibit observable physical degradation; its health is constant until wear begins",
+              "To make the dataset compatible with 8-bit microcontrollers",
+              "It prevents the GPU from running out of CUDA memory"
+            ],
+            "optionsPl": [
+              "Ponieważ sieci neuronowe nie potrafią przetwarzać liczb większych niż 125",
+              "Nowe urządzenie przez długi czas nie wykazuje oznak zużycia; jego stan jest stały aż do zainicjowania procesu degradacji",
+              "Aby zbiór danych zmieścił się w pamięci 8-bitowego mikrokontrolera",
+              "Zapobiega to przepełnieniu pamięci CUDA karty graficznej"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Equipment in pristine condition does not show wear in sensor telemetry. Trying to distinguish between 300 vs 400 cycles of remaining life introduces noise; clipping caps the target to observable degradation.",
+            "explanationPl": "Nowa maszyna nie wykazuje zmian w telemetrii. Próba rozróżnienia między 300 a 400 cyklami do awarii uczy model szumu; ucięcie skupia model na rzeczywistej fazie zużycia."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mod-6",
+    "number": 6,
+    "titleEn": "Edge Vision & Surface Quality Inspection",
+    "titlePl": "Wizja Komputerowa na Brzegu i Kontrola Powierzchni",
+    "descriptionEn": "Deploy automated optical inspection: predict bounding boxes for surface scratches and voids, calculate Intersection over Union (IoU), and fine-tune lightweight CNNs.",
+    "descriptionPl": "Wdrażaj automatyczną inspekcję optyczną: lokalizuj rysy i wtrącenia ramkami bounding box, obliczaj metrykę IoU i trenuj lekkie sieci splotowe.",
+    "sandboxType": "cnn_iou_sandbox",
+    "lessons": [
+      {
+        "id": "6-1",
+        "titleEn": "Industrial Computer Vision & Surface Defects",
+        "titlePl": "Wizja Przemysłowa i Wady Powierzchniowe",
+        "summaryEn": "Formulate optical quality control on moving sheet metal, PCB assemblies, and automotive paint surfaces.",
+        "summaryPl": "Projektuj optyczną kontrolę jakości na walcowanej blasze, płytkach PCB i lakierowanych karoseriach.",
+        "notebook": "06_01_industrial_vision_intro.ipynb",
+        "sandboxType": "cnn_iou_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-6-1-1", "textEn": "Inspect factory line-scan camera image pipeline", "textPl": "Zbadaj potok akwizycji obrazu z przemysłowej kamery linijkowej" },
+          { "id": "chk-6-1-2", "textEn": "Label surface scratch, pitting, and void defect classes", "textPl": "Sklasyfikuj wady powierzchniowe: rysy, wżery i pęcherze" },
+          { "id": "chk-6-1-3", "textEn": "Implement color and lighting normalization under shifting plant sunlight", "textPl": "Wdróż normalizację oświetlenia kompensującą światło słoneczne na hali" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "{{term:computer_vision}} has replaced tedious, error-prone human eye inspection in high-speed manufacturing. High-resolution industrial cameras photograph every stamped car door, semiconductor wafer, or fabric roll at speeds up to 50 frames per second to flag microscopic {{term:surface_defect}} formations.",
+            "pl": "{{term:computer_vision}} zastępuje męczącą i podatną na pomyłki kontrolę wzrokową na szybkich liniach produkcyjnych. Przemysłowe kamery o wysokiej rozdzielczości fotografują wytłoczki karoserii, krzemowe wafle scalone czy bele tkaniny z prędkością do 50 klatek na sekundę, wykrywając {{term:surface_defect}} w ułamku sekundy."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-6-1-1",
+            "questionEn": "What is the primary operational challenge for computer vision systems deployed on factory shop floors?",
+            "questionPl": "Co stanowi największe wyzwanie operacyjne dla systemów wizyjnych na hali produkcyjnej?",
+            "optionsEn": [
+              "Cameras cannot record digital pixels in industrial buildings",
+              "Lighting variability: shifting daylight from skylights, shadows from cranes, and oil mist on lenses",
+              "Robots refuse to inspect colored components",
+              "Neural networks only run when connected to cloud data centers"
+            ],
+            "optionsPl": [
+              "Kamery nie potrafią rejestrować cyfrowych pikseli w budynkach przemysłowych",
+              "Zmienne oświetlenie: słońce wpadające przez świetliki, cienie suwnic i mgła olejowa na obiektywach",
+              "Roboty odmawiają inspekcji kolorowych detali",
+              "Sieci neuronowe działają wyłącznie przy stałym połączeniu z chmurą"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Factory environments suffer from shifting natural lighting, flickering fluorescent fixtures, vibrations shaking camera mounts, and airborne dust settling on optics.",
+            "explanationPl": "Fabryki borykają się ze zmieniającym się światłem dziennym, migotaniem lamp, drganiami konstrukcji i osadzaniem się pyłu oraz oleju na optyce."
+          }
+        ]
+      },
+      {
+        "id": "6-2",
+        "titleEn": "Object Detection & Defect Bounding Boxes",
+        "titlePl": "Detekcja Obiektów i Ramki Ograniczające (Bounding Boxes)",
+        "summaryEn": "Master bounding box parameterization [xmin, ymin, xmax, ymax] and understand multi-task classification + regression loss.",
+        "summaryPl": "Opanuj parametryzację ramek ograniczających i zrozum łączoną funkcję straty klasyfikacji i regresji pozycji.",
+        "notebook": "06_02_bounding_boxes.ipynb",
+        "sandboxType": "cnn_iou_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-6-2-1", "textEn": "Parse Pascal VOC and YOLO format bounding box coordinate annotations", "textPl": "Wczytaj współrzędne ramek w formatach Pascal VOC oraz YOLO" },
+          { "id": "chk-6-2-2", "textEn": "Render bounding box overlays on defective sheet metal images", "textPl": "Wyrysuj ramki defektów na zdjęciach uszkodzonej blachy" },
+          { "id": "chk-6-2-3", "textEn": "Construct multi-loss target vectors (box coords + defect class)", "textPl": "Zbuduj wektory straty łączące błąd lokalizacji ramki z klasą wady" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Simply knowing that an image contains a defect is insufficient for automated plant repair. An object detection network outputs exact {{term:bounding_box}} coordinates identifying the spatial coordinates [x, y, width, height] of each scratch. This spatial coordinate allows a downstream polishing robot to navigate directly to the flaw.",
+            "pl": "Sama informacja, że na zdjęciu jest wada, to za mało dla automatycznej linii. Model detekcji wyznacza dokładne współrzędne {{term:bounding_box}} [x, y, szerokość, wysokość] dla każdej rysy. Te współrzędne przestrzenne pozwalają robotowi polerskiemu skierować narzędzie dokładnie w miejsce uszkodzenia."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-6-2-1",
+            "questionEn": "In YOLO format, how are bounding box coordinates normalized?",
+            "questionPl": "W jaki sposób normalizowane są współrzędne ramek w formacie YOLO?",
+            "optionsEn": [
+              "As raw integer pixel coordinates from 0 to 4096",
+              "As floating point ratios [x_center, y_center, width, height] relative to total image width and height in range [0.0, 1.0]",
+              "In millimeters relative to the robot gripper origin",
+              "As hex strings"
+            ],
+            "optionsPl": [
+              "Jako surowe całkowite piksele w przedziale od 0 do 4096",
+              "Jako względne wartości zmiennoprzecinkowe [x_środek, y_środek, szerokość, wysokość] w przedziale [0.0, 1.0]",
+              "W milimetrach względem punktu bazowego chwytaka robota",
+              "Jako ciągi znaków szesnastkowych HEX"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "YOLO normalizes coordinates between 0.0 and 1.0 by dividing by image width and height, ensuring independence from camera sensor resolution.",
+            "explanationPl": "Format YOLO dzieli współrzędne przez wymiary zdjęcia, dając liczby od 0.0 do 1.0 niezależne od fizycznej rozdzielczości kamery."
+          }
+        ]
+      },
+      {
+        "id": "6-3",
+        "titleEn": "Intersection over Union (IoU) & Model Validation",
+        "titlePl": "Wskaźnik IoU (Intersection over Union) i Ewaluacja",
+        "summaryEn": "Compute IoU between ground truth annotations and model predictions to assess defect localization precision.",
+        "summaryPl": "Obliczaj wskaźnik IoU między wzorcem a predykcją, by precyzyjnie ocenić jakość lokalizacji wad.",
+        "notebook": "06_03_iou_evaluation.ipynb",
+        "sandboxType": "cnn_iou_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-6-3-1", "textEn": "Implement numpy vectorized IoU calculation function", "textPl": "Zaimplementuj zwektoryzowaną funkcję wyliczania IoU w numpy" },
+          { "id": "chk-6-3-2", "textEn": "Analyze the impact of IoU thresholding (e.g. 0.50 vs 0.75)", "textPl": "Przeanalizuj wpływ progu IoU (np. 0.50 vs 0.75) na wyniki" },
+          { "id": "chk-6-3-3", "textEn": "Calculate mean Average Precision (mAP@0.50) on test inspection batch", "textPl": "Wylicz wskaźnik mean Average Precision (mAP@0.50) na partii testowej" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "{{term:iou}} measures the overlap between the human inspector's {{term:ground_truth}} bounding box and the neural network's predicted box. It is calculated as the area of overlap divided by the area of union. An IoU of 1.0 represents a flawless pixel-perfect match, while an IoU < 0.50 typically fails industrial certification.",
+            "pl": "Wskaźnik {{term:iou}} mierzy stopień pokrycia między zaznaczeniem wzorcowym {{term:ground_truth}} inżyniera jakości a ramką wyznaczoną przez sieć neuronową. Wylicza się go jako pole części wspólnej podzielone przez pole sumy obu obszarów. Wartość 1.0 to idealne dopasowanie, natomiast IoU < 0.50 dyskwalifikuje algorytm w testach odbiorczych."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-6-3-1",
+            "questionEn": "What is the IoU of two bounding boxes that touch at a single line edge without overlapping internal area?",
+            "questionPl": "Ile wynosi IoU dwóch ramek stykających się jedynie krawędzią bez wspólnego pola wewnętrznego?",
+            "optionsEn": [
+              "0.0",
+              "0.5",
+              "1.0",
+              "-1.0"
+            ],
+            "optionsPl": [
+              "0.0",
+              "0.5",
+              "1.0",
+              "-1.0"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Because the area of intersection is zero, the numerator is 0, yielding IoU = 0 / Union = 0.0.",
+            "explanationPl": "Pole części wspólnej wynosi 0, zatem licznik ułamka jest równy zero, co daje wynik IoU = 0.0."
+          }
+        ]
+      },
+      {
+        "id": "6-4",
+        "titleEn": "Transfer Learning with Lightweight CNNs",
+        "titlePl": "Uczenie Transferowe z Lekką Siecią CNN",
+        "summaryEn": "Fine-tune pretrained MobileNetV3 backbones with PyTorch for sub-10ms defect classification on embedded vision hardware.",
+        "summaryPl": "Dotrenuj sieć MobileNetV3 w PyTorch, osiągając czas wnioskowania poniżej 10 ms na komputerze brzegowym.",
+        "notebook": "06_04_cnn_transfer_learning.ipynb",
+        "sandboxType": "cnn_iou_sandbox",
+        "estimatedMinutes": 30,
+        "checklist": [
+          { "id": "chk-6-4-1", "textEn": "Load pretrained MobileNetV3 backbone and freeze early convolutional layers", "textPl": "Wczytaj architekturę MobileNetV3 i zamroź początkowe warstwy splotowe" },
+          { "id": "chk-6-4-2", "textEn": "Replace classification head with custom 3-class industrial defect output", "textPl": "Zastąp warstwę wyjściową klasyfikatorem 3 typów wad produkcyjnych" },
+          { "id": "chk-6-4-3", "textEn": "Train with AdamW optimizer and evaluate latency benchmarks", "textPl": "Wytrenuj sieć optymalizatorem AdamW i zmierz czas odpowiedzi (latencję)" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Manufacturing engineers rarely have the luxury of 100,000 labeled defect images to train deep networks from scratch. Through {{term:transfer_learning}}, we take a network pretrained on ImageNet (which already understands basic geometry, edges, and textures) and fine-tune its final layers using only 50 to 100 factory samples.",
+            "pl": "Inżynierowie w fabrykach rzadko mają komfort posiadania 100 000 zdjęć wad do trenowania potężnych sieci od zera. Dzięki metodzie {{term:transfer_learning}} bierzemy model wytrenowany na bazie ImageNet (który potrafi już rozpoznawać krawędzie i cienie) i dostrajamy jego ostatnie warstwy na zaledwie 50-100 fotografiach wad z hali."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-6-4-1",
+            "questionEn": "Why is MobileNet preferred over giant architectures like Vision Transformers for on-line edge sorting?",
+            "questionPl": "Dlaczego MobileNet jest lepszym wyborem niż ogromne transformery wizyjne do sortowania detali na linii?",
+            "optionsEn": [
+              "MobileNet runs only on solar power",
+              "Depthwise separable convolutions minimize parameter count and memory bandwidth, enabling < 10ms inference on low-power industrial PCs",
+              "Vision Transformers are illegal in automotive manufacturing",
+              "MobileNet does not require backpropagation during training"
+            ],
+            "optionsPl": [
+              "MobileNet działa wyłącznie na zasilaniu słonecznym",
+              "Sploty separowalne redukują liczbę parametrów i narzut pamięciowy, dając czas odpowiedzi < 10 ms na tanich komputerach przemysłowych",
+              "Transformery wizyjne są prawnie zakazane w przemyśle",
+              "MobileNet nie wymaga propagacji wstecznej podczas nauki"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "MobileNet's depthwise separable convolutions drastically cut floating-point operations (FLOPs), fitting comfortably inside tight factory latency budgets.",
+            "explanationPl": "Sploty rozdzielne MobileNet drastycznie redukują liczbę operacji FLOPs, mieszcząc się w rygorystycznym budżecie czasu reakcji linii produkcyjnej."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mod-7",
+    "number": 7,
+    "titleEn": "MLOps, Concept Drift & Factory Deployment",
+    "titlePl": "MLOps, Dryf Modeli i Wdrożenia Fabryczne",
+    "descriptionEn": "Monitor production model health against concept and data drift (Kolmogorov-Smirnov tests), optimize inference with INT8 quantization & TensorRT, and automate retraining pipelines.",
+    "descriptionPl": "Monitoruj stan modeli produkcyjnych pod kątem dryfu (test Kołmogorowa-Smirnowa), optymalizuj wnioskowanie z INT8 i TensorRT oraz automatyzuj potoki dotrenowania.",
+    "sandboxType": "drift_latency_sandbox",
+    "lessons": [
+      {
+        "id": "7-1",
+        "titleEn": "Concept Drift vs Data Drift in Manufacturing",
+        "titlePl": "Dryf Pojęcia (Concept Drift) a Dryf Danych w Fabryce",
+        "summaryEn": "Differentiate between ambient environmental sensor shifts (data drift) and fundamental changes in machine failure physics (concept drift).",
+        "summaryPl": "Rozróżniaj wpływ upałów na hali (dryf danych) od fundamentalnej zmiany fizyki awarii maszyny (dryf pojęcia).",
+        "notebook": "07_01_drift_fundamentals.ipynb",
+        "sandboxType": "drift_latency_sandbox",
+        "estimatedMinutes": 20,
+        "checklist": [
+          { "id": "chk-7-1-1", "textEn": "Simulate summer ambient heat shift (+15°C baseline)", "textPl": "Zasymuluj letni wzrost temperatury otoczenia (+15°C na linii bazowej)" },
+          { "id": "chk-7-1-2", "textEn": "Simulate a change in raw material steel hardness (concept drift)", "textPl": "Zasymuluj zmianę twardości stali od nowego dostawcy (dryf pojęcia)" },
+          { "id": "chk-7-1-3", "textEn": "Track degrading model F1-score across production quarters", "textPl": "Zbadaj spadek wskaźnika F1 modelu na przestrzeni kolejnych kwartałów" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "A machine learning model deployed to production immediately begins to decay. In manufacturing, decay takes two forms: {{term:data_drift}} occurs when input sensor distributions shift due to external environmental changes (e.g. summer factory heat). In contrast, {{term:concept_drift}} occurs when the physical relationship between sensor values and breakdown labels fundamentally mutates, such as when tool steel suppliers are switched.",
+            "pl": "Model uczenia maszynowego wdrożony na produkcję od pierwszego dnia traci na aktualności. W przemyśle zjawisko to ma dwa oblicza: {{term:data_drift}} ma miejsce, gdy zmienia się rozkład wejść z powodu otoczenia (np. letnie upały na hali). Z kolei {{term:concept_drift}} oznacza fundamentalną zmianę fizycznej relacji między odczytami a awarią, np. po zmianie gatunku obrabianej stali."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-7-1-1",
+            "questionEn": "Which scenario is a classic example of Data Drift rather than Concept Drift?",
+            "questionPl": "Który scenariusz jest klasycznym przykładem Dryfu Danych (Data Drift), a nie Dryfu Pojęcia?",
+            "optionsEn": [
+              "A new cutting tool geometry completely alters the vibration signature of a dull blade",
+              "Summer temperatures cause all hydraulic oil temperature sensors to read 8°C higher, but the failure threshold relationship remains identical",
+              "The factory rewires from 50 Hz European grid to 60 Hz US generators",
+              "Management redefines what constitutes a quality rejection defect"
+            ],
+            "optionsPl": [
+              "Nowa geometria frezu całkowicie zmienia charakterystykę drgań stępionego ostrza",
+              "Letnie upały podnoszą odczyt czujników oleju hydraulicznego o 8°C, ale relacja definiująca awarię pozostaje bez zmian",
+              "Fabryka przechodzi z sieci europejskiej 50 Hz na zasilanie 60 Hz",
+              "Zarząd fabryki zmienia normy jakościowe definiujące wadliwy wyrób"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Data drift (covariate shift) means P(X) changes while P(Y|X) remains constant. Ambient temperature increases input values without changing the mechanical failure physics.",
+            "explanationPl": "W dryfie danych zmienia się rozkład wejściowy P(X), podczas gdy funkcja awarii P(Y|X) jest stała. Temperatura podnosi pomiary, nie zmieniając fizyki uszkodzenia pompy."
+          }
+        ]
+      },
+      {
+        "id": "7-2",
+        "titleEn": "Automated Drift Detection with Kolmogorov-Smirnov Tests",
+        "titlePl": "Automatyczna Detekcja Dryfu Testem Kołmogorowa-Smirnowa",
+        "summaryEn": "Run statistical hypothesis tests comparing baseline reference distributions against live production streaming telemetry.",
+        "summaryPl": "Wykonuj testy statystyczne porównujące rozkład referencyjny z bieżącą telemetrią produkcyjną.",
+        "notebook": "07_02_ks_drift_detection.ipynb",
+        "sandboxType": "drift_latency_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-7-2-1", "textEn": "Extract reference baseline distribution from verified training set", "textPl": "Wyodrębnij rozkład referencyjny z poprawnego zbioru treningowego" },
+          { "id": "chk-7-2-2", "textEn": "Run scipy.stats.ks_2samp across incoming daily telemetry windows", "textPl": "Uruchamiaj scipy.stats.ks_2samp dla kolejnych dziennych okien danych" },
+          { "id": "chk-7-2-3", "textEn": "Trigger automated alert when KS p-value drops below 0.01", "textPl": "Wywołaj powiadomienie alarmowe, gdy wartość p-value testu KS spadnie poniżej 0.01" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Plant engineers cannot wait for catastrophic machine breakdowns to discover that an ML model has gone out of calibration. By running the non-parametric {{term:ks_test}} on daily sensor logs, we compare the cumulative distribution function of live telemetry against the golden baseline. When the statistical distance exceeds safety thresholds, an automated maintenance ticket is raised.",
+            "pl": "Inżynierowie utrzymania ruchu nie mogą czekać na katastrofalną awarię, by zorientować się, że model utracił dokładność. Uruchamiając nieparametryczny {{term:ks_test}} na dziennych logach, porównujemy dystrybuantę bieżącej telemetrii z profilem wzorcowym. Gdy odległość statystyczna przekroczy normę, system generuje zlecenie kalibracji."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-7-2-1",
+            "questionEn": "What does a Kolmogorov-Smirnov p-value of 0.0001 (alpha = 0.05) indicate?",
+            "questionPl": "Co oznacza wynik p-value = 0.0001 (dla poziomu istotności alpha = 0.05) w teście Kołmogorowa-Smirnowa?",
+            "optionsEn": [
+              "The distributions are identical and the model is healthy",
+              "Reject the null hypothesis: there is statistically significant drift between the baseline and live telemetry",
+              "The sensor has lost electrical power",
+              "The test has timed out"
+            ],
+            "optionsPl": [
+              "Rozkłady są identyczne, a model jest w pełni zdatny do pracy",
+              "Odrzucenie hipotezy zerowej: wystąpił istotny statystycznie dryf parametrów między bazą a produkcją",
+              "Czujnik utracił zasilanie elektryczne",
+              "Test przekroczył limit czasu wykonania"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "A very small p-value indicates that the probability of observing this distributional difference under the null hypothesis (identical distributions) is near zero, proving significant data drift.",
+            "explanationPl": "Bardzo małe p-value oznacza, że prawdopodobieństwo zaobserwowania takich różnic przy braku dryfu jest bliskie zeru, co stanowi dowód na rozkalibrowanie parametrów."
+          }
+        ]
+      },
+      {
+        "id": "7-3",
+        "titleEn": "Edge Model Optimization: ONNX & INT8 Quantization",
+        "titlePl": "Optymalizacja Modeli Brzegowych: ONNX i Kwantyzacja INT8",
+        "summaryEn": "Export PyTorch models to portable ONNX format and quantize weights from FP32 to INT8 to slash inference latency.",
+        "summaryPl": "Eksportuj modele do formatu ONNX i kwantyzuj wagi z FP32 do INT8, drastycznie skracając czas odpowiedzi.",
+        "notebook": "07_03_onnx_quantization.ipynb",
+        "sandboxType": "drift_latency_sandbox",
+        "estimatedMinutes": 30,
+        "checklist": [
+          { "id": "chk-7-3-1", "textEn": "Export PyTorch defect classification model to ONNX runtime format", "textPl": "Wyeksportuj model detekcji wad z PyTorch do formatu ONNX" },
+          { "id": "chk-7-3-2", "textEn": "Apply post-training dynamic INT8 quantization using onnxruntime", "textPl": "Zastosuj post-trainingową kwantyzację dynamiczną INT8 w onnxruntime" },
+          { "id": "chk-7-3-3", "textEn": "Benchmark throughput and latency on edge ARM CPU architecture", "textPl": "Zmierz przepustowość i czas odpowiedzi na architekturze procesora ARM" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "Cloud data centers have immense GPU compute, but industrial machines need decisions in milliseconds right on the plant floor. Through model {{term:quantization}}, we convert model weight tensors from 32-bit floating point ({{term:fp32}}) to compact 8-bit integers ({{term:int8}}). Standardized via {{term:onnx}} and {{term:tensorrt}}, this slashes memory footprints by 75% and speeds up inference by 3x on rugged edge controllers.",
+            "pl": "Serwery chmurowe oferują olbrzymią moc obliczeniową, lecz maszyny na linii wymagają decyzji w ułamku milisekundy. Dzięki procesowi {{term:quantization}} konwertujemy wagi sieci z 32-bitowych liczb zmiennoprzecinkowych ({{term:fp32}}) do 8-bitowych liczb całkowitych ({{term:int8}}). Standard {{term:onnx}} i silnik {{term:tensorrt}} zmniejszają rozmiar modelu o 75% i przyspieszają działanie 3-krotnie na sterownikach przemysłowych."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-7-3-1",
+            "questionEn": "What is the primary trade-off when applying INT8 post-training quantization?",
+            "questionPl": "Jaki jest główny kompromis przy stosowaniu kwantyzacji post-trainingowej INT8?",
+            "optionsEn": [
+              "Massive speedup and 4x memory reduction in exchange for a tiny (typically < 0.5%) loss in numerical precision",
+              "The model becomes completely untrainable in Python",
+              "Inference latency increases by 10x",
+              "It can only run on quantum computers"
+            ],
+            "optionsPl": [
+              "Ogromne przyspieszenie i 4-krotne zmniejszenie pamięci kosztem minimalnej (zazwyczaj < 0.5%) utraty precyzji obliczeń",
+              "Model traci możliwość jakiegokolwiek dalszego trenowania w Pythonie",
+              "Opóźnienie wnioskowania rośnie 10-krotnie",
+              "Działa wyłącznie na komputerach kwantowych"
+            ],
+            "correctIndex": 0,
+            "explanationEn": "Quantization rounds continuous weights to 256 discrete integer values. This slight loss in precision is heavily outweighed by the massive reduction in RAM and cache misses.",
+            "explanationPl": "Kwantyzacja zaokrągla wagi do 256 dyskretnych wartości całkowitych. Minimalny spadek dokładności jest z nawiązką rekompensowany 4-krotną redukcją zapotrzebowania na pamięć."
+          }
+        ]
+      },
+      {
+        "id": "7-4",
+        "titleEn": "Factory Deployment & Continuous Retraining Pipelines",
+        "titlePl": "Wdrożenie Fabryczne i Zautomatyzowane Potoki Dotrenowania",
+        "summaryEn": "Architect an end-to-end industrial MLOps loop: stream edge telemetry, trigger drift alerts, and automate retraining on false alarms.",
+        "summaryPl": "Zaprojektuj pełną pętlę przemysłowego MLOps: zbieraj telemetrię, wyłapuj dryf i automatycznie dotrenowuj model na fałszywych alarmach.",
+        "notebook": "07_04_mlops_pipeline.ipynb",
+        "sandboxType": "drift_latency_sandbox",
+        "estimatedMinutes": 25,
+        "checklist": [
+          { "id": "chk-7-4-1", "textEn": "Design edge telemetry ingestion queue buffer using MQTT/Kafka", "textPl": "Zaprojektuj kolejkę buforującą odczyty maszyn w oparciu o MQTT/Kafka" },
+          { "id": "chk-7-4-2", "textEn": "Build human-in-the-loop operator feedback interface for false alarms", "textPl": "Stwórz panel operatora do weryfikacji i oznaczania fałszywych alarmów" },
+          { "id": "chk-7-4-3", "textEn": "Automate scheduled weekly retraining and model registry deployment", "textPl": "Zautomatyzuj cotygodniowe dotrenowanie i rejestrację nowego modelu" }
+        ],
+        "contentBlocks": [
+          {
+            "id": "b1",
+            "type": "paragraph",
+            "en": "A successful industrial AI system is not a static Python script—it is a continuous operational lifecycle. By deploying {{term:model_monitoring}}, production telemetry is continuously validated. When the line quality supervisor marks a false alarm, that verified edge sample is queued into the {{term:pipeline_retraining}} workflow, ensuring the model adapts gracefully to mechanical tool wear over the lifespan of the manufacturing line.",
+            "pl": "Skuteczny przemysłowy system AI to nie statyczny skrypt w Pythonie, lecz ciągły cykl życia. Wdrażając {{term:model_monitoring}}, nieustannie weryfikujemy telemetrię z hali. Gdy brygadzista jakości zweryfikuje fałszywy alarm, ten sprawdzony przykład trafia do kolejki w {{term:pipeline_retraining}}, dzięki czemu model samoczynnie adaptuje się do naturalnego zużywania się maszyn."
+          }
+        ],
+        "quiz": [
+          {
+            "id": "q-7-4-1",
+            "questionEn": "Why is 'Human-in-the-Loop' operator feedback essential for automated retraining pipelines in manufacturing?",
+            "questionPl": "Dlaczego pętla zwrotna od operatora (Human-in-the-Loop) jest kluczowa w potokach dotrenowania modeli w fabrykach?",
+            "optionsEn": [
+              "Operators write the C++ code for the PLC drivers",
+              "Plant technicians provide the ground-truth verification on whether flagged anomalies were genuine breakdowns or harmless false alarms",
+              "Without humans, computers cannot run cron jobs",
+              "To slow down the manufacturing line"
+            ],
+            "optionsPl": [
+              "Operatorzy piszą kod sterowników PLC w języku C++",
+              "Technicy na linii dostarczają bezspornej prawdy referencyjnej: czy zaalarmowany detal był rzeczywistą wadą, czy nieszkodliwym błędem czujnika",
+              "Bez człowieka serwer nie potrafi uruchomić zaplanowanego zadania w cronie",
+              "Aby celowo spowolnić tempo pracy taśmociągu"
+            ],
+            "correctIndex": 1,
+            "explanationEn": "Automating retraining without human validation causes the model to learn its own errors (feedback loop collapse). Operator confirmation provides the verified ground truth.",
+            "explanationPl": "Dotrenowywanie bez ludzkiej weryfikacji prowadzi do utrwalania własnych błędów modelu. Potwierdzenie technika daje wiarygodny punkt odniesienia (ground truth)."
+          }
+        ]
+      }
+    ]
+  }
+]

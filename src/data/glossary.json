@@ -1,0 +1,902 @@
+[
+  {
+    "id": "sensor_noise",
+    "termEn": "Sensor Noise",
+    "termPl": "Szum czujnika",
+    "category": "Signals & Acquisition",
+    "defEn": "Random unwanted fluctuations in sensor output caused by electrical interference or thermal vibration.",
+    "defPl": "Przypadkowe, niepożądane zakłócenia sygnału pomiarowego wywołane interferencją elektromagnetyczną lub drganiami termicznymi.",
+    "contextEn": "Factory high-voltage motors generate electromagnetic noise in nearby thermocouple wires.",
+    "contextPl": "Silniki wysokonapięciowe w fabrykach generują zakłócenia elektromagnetyczne w pobliskim okablowaniu termopar."
+  },
+  {
+    "id": "sampling_frequency",
+    "termEn": "Sampling Frequency (Fs)",
+    "termPl": "Częstotliwość próbkowania",
+    "category": "Signals & Acquisition",
+    "defEn": "The number of discrete samples captured from an analog sensor per second, measured in Hertz (Hz).",
+    "defPl": "Liczba dyskretnych próbek pobieranych z analogowego czujnika w ciągu jednej sekundy, wyrażona w hercach (Hz).",
+    "contextEn": "Vibration sensors require at least 10 kHz sampling to capture high-speed gear tooth impacts.",
+    "contextPl": "Czujniki wibracji wymagają próbkowania co najmniej 10 kHz, aby zarejestrować uderzenia zębów przekładni przy wysokiej prędkości."
+  },
+  {
+    "id": "nyquist_rate",
+    "termEn": "Nyquist Rate",
+    "termPl": "Częstotliwość Nyquista",
+    "category": "Signals & Acquisition",
+    "defEn": "The minimum sampling rate required to avoid aliasing: at least twice the highest frequency present in the signal.",
+    "defPl": "Minimalna częstotliwość próbkowania zapobiegająca aliasingowi: co najmniej dwukrotność najwyższej częstotliwości składowej sygnału.",
+    "contextEn": "To reliably detect a 1,000 Hz bearing resonance, you must sample at no less than 2,000 Hz.",
+    "contextPl": "Aby poprawnie wykryć rezonans łożyska przy 1 000 Hz, próbkowanie musi wynosić minimum 2 000 Hz."
+  },
+  {
+    "id": "moving_average",
+    "termEn": "Moving Average Filter",
+    "termPl": "Filtr średniej kroczącej",
+    "category": "Signals & Acquisition",
+    "defEn": "A simple smoothing technique that replaces each data point with the average of neighboring points within a sliding window.",
+    "defPl": "Prosta metoda wygładzania sygnału, zastępująca każdy punkt pomiarowy średnią z punktów w ruchomym oknie czasowym.",
+    "contextEn": "Used in PLC control loops to smooth noisy temperature readings without heavy compute load.",
+    "contextPl": "Stosowany w sterownikach PLC do wygładzania niestabilnych odczytów temperatury bez obciążania procesora."
+  },
+  {
+    "id": "butterworth_filter",
+    "termEn": "Butterworth Filter",
+    "termPl": "Filtr Butterwortha",
+    "category": "Signals & Acquisition",
+    "defEn": "An analog or digital filter designed to have the flattest possible frequency response in the passband.",
+    "defPl": "Filtr zaprojektowany tak, aby zapewnić maksymalnie płaską charakterystykę częstotliwościową w paśmie przepustowym.",
+    "contextEn": "Used as an anti-aliasing low-pass filter prior to Fast Fourier Transform analysis on motor telemetry.",
+    "contextPl": "Stosowany jako filtr dolnoprzepustowy przed analizą FFT telemetrii silnika w celu wyeliminowania zakłóceń."
+  },
+  {
+    "id": "kalman_filter",
+    "termEn": "Kalman Filter",
+    "termPl": "Filtr Kalmana",
+    "category": "Signals & Acquisition",
+    "defEn": "An optimal recursive algorithm that estimates the true state of a dynamic system from a series of noisy measurements.",
+    "defPl": "Optymalny algorytm rekurencyjny szacujący rzeczywisty stan układu dynamicznego na podstawie zaszumionych pomiarów.",
+    "contextEn": "Estimates exact robot arm position by fusing noisy encoder pulses with motor current physics.",
+    "contextPl": "Szacuje dokładną pozycję ramienia robota, łącząc odczyty enkoderów z fizycznym modelem prądu silnika."
+  },
+  {
+    "id": "baseline_drift",
+    "termEn": "Baseline Drift",
+    "termPl": "Dryf linii bazowej",
+    "category": "Signals & Acquisition",
+    "defEn": "A slow, continuous shift in sensor baseline zero-level over time caused by thermal expansion or aging.",
+    "defPl": "Powolne, ciągłe przesuwanie się punktu zerowego czujnika spowodowane zmianami temperatury lub zużyciem materiału.",
+    "contextEn": "Strain gauges on a stamping press slowly drift upward as the machine warms up across a 12-hour shift.",
+    "contextPl": "Tensometry na prasie tłoczącej powoli dryfują w górę w miarę rozgrzewania się maszyny podczas 12-godzinnej zmiany."
+  },
+  {
+    "id": "scada",
+    "termEn": "SCADA",
+    "termPl": "System SCADA",
+    "category": "Signals & Acquisition",
+    "defEn": "Supervisory Control and Data Acquisition: industrial software system gathering real-time telemetry from plant machines.",
+    "defPl": "System nadrzędny sterowania i akwizycji danych monitorujący w czasie rzeczywistym pracę urządzeń w fabryce.",
+    "contextEn": "SCADA historians export millions of historical temperature and pressure rows for training ML predictive models.",
+    "contextPl": "Bazy danych SCADA eksportują miliony wierszy pomiarów temperatury i ciśnienia do trenowania modeli ML."
+  },
+  {
+    "id": "plc",
+    "termEn": "PLC (Programmable Logic Controller)",
+    "termPl": "Sterownik PLC",
+    "category": "Signals & Acquisition",
+    "defEn": "Ruggedized industrial digital computer adapted for real-time control of manufacturing processes and machinery.",
+    "defPl": "Odporny przemysłowy komputer cyfrowy przeznaczony do sterowania maszynami i procesami technologicznymi w czasie rzeczywistym.",
+    "contextEn": "Edge ML models send binary emergency-stop predictions directly to PLC digital input registers via Modbus TCP.",
+    "contextPl": "Modele brzegowe ML przesyłają sygnał natychmiastowego stopu bezpośrednio do rejestrów PLC protokołem Modbus TCP."
+  },
+  {
+    "id": "jitter",
+    "termEn": "Sampling Jitter",
+    "termPl": "Jitter próbkowania",
+    "category": "Signals & Acquisition",
+    "defEn": "Unwanted statistical variation in the time interval between successive discrete sensor samples.",
+    "defPl": "Niepożądane odchylenia czasu między kolejnymi próbkami pomiarowymi zebranymi przez mikrokontroler lub magistralę.",
+    "contextEn": "Network latency in wireless IoT sensors introduces jitter, corrupting frequency-domain vibration calculations.",
+    "contextPl": "Opóźnienia w bezprzewodowych czujnikach IoT wprowadzają jitter, niszcząc obliczenia widma częstotliwości."
+  },
+  {
+    "id": "outlier",
+    "termEn": "Sensor Outlier",
+    "termPl": "Wartość odstająca (Outlier)",
+    "category": "Preprocessing & Scaling",
+    "defEn": "A data point that differs significantly from surrounding observations, often caused by sensor glitches or sudden shock.",
+    "defPl": "Wartość pomiarowa drastycznie odbiegająca od reszty próbek, często wywołana usterką kabla lub uderzeniem mechanicznym.",
+    "contextEn": "A loose thermocouple wire drops temperature instantly to -999°C for one millisecond.",
+    "contextPl": "Poluzowany przewód termopary raportuje chwilowo -999°C przez jedną milisekundę."
+  },
+  {
+    "id": "iqr",
+    "termEn": "Interquartile Range (IQR)",
+    "termPl": "Rozstęp międzykwartylowy (IQR)",
+    "category": "Preprocessing & Scaling",
+    "defEn": "The distance between the 75th and 25th percentiles (Q3 - Q1), measuring statistical spread resistant to extreme outliers.",
+    "defPl": "Różnica między 3. a 1. kwartylem (Q3 - Q1), odporna na obecność skrajnych zakłóceń pomiarowych.",
+    "contextEn": "Industrial anomaly filters reject pressure spikes exceeding Q3 + 3.0 * IQR.",
+    "contextPl": "Filtry anomalii w gazociągach odrzucają skoki ciśnienia przekraczające próg Q3 + 3.0 * IQR."
+  },
+  {
+    "id": "standard_scaler",
+    "termEn": "StandardScaler (Z-Score)",
+    "termPl": "Standaryzacja Z-Score",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Scales features by subtracting the mean and dividing by the standard deviation. Highly vulnerable to extreme outliers.",
+    "defPl": "Transformacja odejmująca średnią i dzieląca przez odchylenie standardowe. Bardzo wrażliwa na pojedyncze skrajne błędy.",
+    "contextEn": "When an outlier of 5,000A occurs, StandardScaler shrinks all normal 20A operating motor currents into a tiny range.",
+    "contextPl": "Gdy pojawi się błąd 5000A, StandardScaler spłaszcza wszystkie poprawne pomiary 20A do niemal zerowego przedziału."
+  },
+  {
+    "id": "robust_scaler",
+    "termEn": "RobustScaler",
+    "termPl": "Skaler odporny (RobustScaler)",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Scales features using median and Interquartile Range (IQR), making the scale immune to massive industrial spikes.",
+    "defPl": "Skaluje dane przy użyciu mediany i rozstępu IQR, dzięki czemu zachowuje strukturę danych mimo obecności pików awaryjnych.",
+    "contextEn": "The gold standard scaler for raw industrial vibration and torque telemetry.",
+    "contextPl": "Podstawowy wybór skalera dla surowych sygnałów wibracji i momentu obrotowego w przemyśle."
+  },
+  {
+    "id": "min_max_scaler",
+    "termEn": "Min-Max Scaler",
+    "termPl": "Skalowanie min-max (Normalizacja)",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Transforms features linearly into a fixed range [0, 1] based on minimum and maximum observed values.",
+    "defPl": "Liniowe przekształcenie cech do stałego przedziału [0, 1] na podstawie wartości minimalnej i maksymalnej.",
+    "contextEn": "Required when feeding industrial camera pixel values [0, 255] into a neural network.",
+    "contextPl": "Konieczne przy przekazywaniu jasności pikseli z kamer inspekcyjnych [0, 255] do sieci neuronowej."
+  },
+  {
+    "id": "missing_data_imputation",
+    "termEn": "Missing Data Imputation",
+    "termPl": "Imputacja braków danych",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Technique for replacing missing or corrupted sensor readings with mathematically estimated values.",
+    "defPl": "Zastępowanie brakujących lub uszkodzonych odczytów sensora wyliczonymi wartościami zastępczymi.",
+    "contextEn": "When a wireless flow sensor drops packets, linear interpolation estimates the flow rate between known timestamps.",
+    "contextPl": "Gdy bezprzewodowy przepływomierz gubi pakiety, interpolacja liniowa wylicza wartości pośrednie."
+  },
+  {
+    "id": "forward_fill",
+    "termEn": "Forward Fill (LOCF)",
+    "termPl": "Uzupełnianie w przód (Forward Fill)",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Propagates the last known valid observation forward to fill subsequent gaps in time-series data.",
+    "defPl": "Przenoszenie ostatniego poprawnego pomiaru w przód w celu uzupełnienia luk w szeregu czasowym.",
+    "contextEn": "Ideal for valve position status (open/closed) that changes state only intermittently.",
+    "contextPl": "Idealne dla stanu zaworu (otwarty/zamknięty), który zmienia pozycję tylko sporadycznie."
+  },
+  {
+    "id": "feature_engineering",
+    "termEn": "Feature Engineering",
+    "termPl": "Inżynieria cech",
+    "category": "Preprocessing & Scaling",
+    "defEn": "The process of extracting domain-specific mathematical indicators from raw measurements to help ML models learn faster.",
+    "defPl": "Tworzenie wskaźników matematycznych z surowych pomiarów w oparciu o wiedzę inżynierską w celu ułatwienia nauki modelom ML.",
+    "contextEn": "Calculating energy ratios between vibration bands turns a noisy 10 kHz wave into 4 clean predictive columns.",
+    "contextPl": "Obliczenie stosunku energii w pasmach wibracji zamienia falę 10 kHz w 4 zwięzłe cechy predykcyjne."
+  },
+  {
+    "id": "time_domain_features",
+    "termEn": "Time-Domain Features",
+    "termPl": "Cechy w dziedzinie czasu",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Statistical metrics computed directly on the raw signal over a time window, such as Mean, Variance, Peak-to-Peak, and RMS.",
+    "defPl": "Statystyki wyliczane bezpośrednio na surowym sygnale w oknie czasowym: średnia, wariancja, rozstęp międzyszczytowy, RMS.",
+    "contextEn": "Peak-to-Peak amplitude increases rapidly when a hydraulic pump cavitates.",
+    "contextPl": "Amplituda międzyszczytowa gwałtownie rośnie w momencie wystąpienia kawitacji w pompie hydraulicznej."
+  },
+  {
+    "id": "skewness",
+    "termEn": "Skewness",
+    "termPl": "Skośność",
+    "category": "Preprocessing & Scaling",
+    "defEn": "A measure of the asymmetry of the probability distribution of a real-valued sensor variable about its mean.",
+    "defPl": "Miara asymetrii rozkładu prawdopodobieństwa pomiarów względem wartości średniej.",
+    "contextEn": "Gear spalling creates one-sided impact pulses, introducing high positive skewness in the vibration waveform.",
+    "contextPl": "Wyszczerbienie zęba przekładni tworzy jednostronne impulsy udarowe, powodując wysoką skośność sygnału wibracji."
+  },
+  {
+    "id": "kurtosis",
+    "termEn": "Kurtosis",
+    "termPl": "Kurtoza",
+    "category": "Preprocessing & Scaling",
+    "defEn": "A measure of the 'tailedness' of the probability distribution, extremely sensitive to sharp impulsive spikes in machinery.",
+    "defPl": "Miara spłaszczenia i grubości ogonów rozkładu, wyjątkowo czuła na ostre impulsy uderzeniowe w maszynach.",
+    "contextEn": "Normal bearing vibration has kurtosis ~3; a micro-crack impact drives kurtosis above 7.",
+    "contextPl": "Normalne łożysko wykazuje kurtozę ~3; mikropęknięcie bieżni podbija kurtozę powyżej 7."
+  },
+  {
+    "id": "rms",
+    "termEn": "Root Mean Square (RMS)",
+    "termPl": "Wartość skuteczna (RMS)",
+    "category": "Preprocessing & Scaling",
+    "defEn": "The square root of the arithmetic mean of the squared values, measuring the continuous destructive energy of an oscillating signal.",
+    "defPl": "Pierwiastek ze średniej arytmetycznej kwadratów sygnału, określający całkowitą energię niszczącą drgań mechanicznych.",
+    "contextEn": "ISO 10816 standards set vibration severity limits strictly based on overall RMS velocity (mm/s).",
+    "contextPl": "Norma ISO 10816 definiuje dopuszczalne limity stanu maszyn w oparciu o prędkość drgań RMS (mm/s)."
+  },
+  {
+    "id": "crest_factor",
+    "termEn": "Crest Factor",
+    "termPl": "Współczynnik szczytu",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Ratio of the peak amplitude of a waveform to its RMS value, indicating how extreme the spikes are relative to average energy.",
+    "defPl": "Stosunek wartości szczytowej do wartości skutecznej RMS, wskazujący ostrość pojedynczych impulsów uderzeniowych.",
+    "contextEn": "High crest factor warns of early spalling before the overall RMS vibration has had time to rise.",
+    "contextPl": "Wysoki współczynnik szczytu ostrzega o wczesnych uszkodzeniach bieżni zanim wzrośnie ogólna energia RMS."
+  },
+  {
+    "id": "correlation_matrix",
+    "termEn": "Correlation Matrix",
+    "termPl": "Macierz korelacji",
+    "category": "Preprocessing & Scaling",
+    "defEn": "A table showing pairwise correlation coefficients between multiple sensor channels to detect redundancy.",
+    "defPl": "Tabela współczynników korelacji pomiędzy wszystkimi parami czujników, pozwalająca wykryć nadmiarowe pomiary.",
+    "contextEn": "If inlet and outlet coolant sensors correlate at r=0.99, one can be dropped to reduce compute.",
+    "contextPl": "Jeśli czujniki temperatury wlotu i wylotu korelują na poziomie r=0.99, jeden z nich można pominąć w modelu."
+  },
+  {
+    "id": "confusion_matrix",
+    "termEn": "Confusion Matrix",
+    "termPl": "Macierz pomyłek",
+    "category": "Classification & Evaluation",
+    "defEn": "A tabular layout showing counts of True Positives, False Positives, True Negatives, and False Negatives produced by a classifier.",
+    "defPl": "Tabela zestawiająca liczby poprawnych i błędnych decyzji klasyfikatora: TP, FP, TN i FN.",
+    "contextEn": "Used by quality engineers to evaluate how many defective welded parts were correctly intercepted vs missed.",
+    "contextPl": "Służy inżynierom jakości do oceny, ile wadliwych spawów wykryto poprawnie, a ile przeszło kontrolę niezauważonych."
+  },
+  {
+    "id": "true_positive",
+    "termEn": "True Positive (TP)",
+    "termPl": "Prawdziwie pozytywny (TP)",
+    "category": "Classification & Evaluation",
+    "defEn": "A defective workpiece that was correctly predicted as defective by the model.",
+    "defPl": "Wadliwy detal, który model poprawnie sklasyfikował jako uszkodzony.",
+    "contextEn": "A cracked turbine blade flagged by the AI camera for rejection before engine assembly.",
+    "contextPl": "Pęknięta łopatka turbiny prawidłowo odrzucona przez system wizyjny przed montażem silnika."
+  },
+  {
+    "id": "true_negative",
+    "termEn": "True Negative (TN)",
+    "termPl": "Prawdziwie negatywny (TN)",
+    "category": "Classification & Evaluation",
+    "defEn": "A healthy workpiece that was correctly predicted as healthy and allowed to proceed down the assembly line.",
+    "defPl": "Prawidłowy detal, który model poprawnie uznał za sprawny i dopuścił do dalszej produkcji.",
+    "contextEn": "Thousands of flawless semiconductor chips passing automated optical inspection without disruption.",
+    "contextPl": "Tysiące bezbłędnych układów scalonych przechodzących automatyczną inspekcję optyczną bez zatrzymywania linii."
+  },
+  {
+    "id": "false_positive",
+    "termEn": "False Positive (FP / False Alarm)",
+    "termPl": "Fałszywy alarm (FP)",
+    "category": "Classification & Evaluation",
+    "defEn": "A flawless workpiece that the model incorrectly flagged as defective, causing unnecessary re-inspection.",
+    "defPl": "Prawidłowy detal, który model błędnie uznał za wadliwy, generując niepotrzebną inspekcję ręczną.",
+    "contextEn": "A shadow on a clean steel sheet misclassified as a scratch, wasting 2 minutes of technician time.",
+    "contextPl": "Cień na czystej blasze uznany błędnie za rysę, co kosztuje fabrykę 2 minuty pracy technika."
+  },
+  {
+    "id": "false_negative",
+    "termEn": "False Negative (FN / Missed Defect)",
+    "termPl": "Przeoczona wada (FN)",
+    "category": "Classification & Evaluation",
+    "defEn": "A defective workpiece that the model incorrectly classified as good. The most catastrophic industrial failure.",
+    "defPl": "Wadliwy produkt błędnie uznany przez model za sprawny. Najbardziej kosztowny i niebezpieczny błąd w przemyśle.",
+    "contextEn": "A micro-crack in an aircraft landing gear bolt slipping through to final delivery, risking fatal failure.",
+    "contextPl": "Mikropęknięcie śruby podwozia lotniczego przeoczone przez algorytm, grożące katastrofą w locie."
+  },
+  {
+    "id": "precision",
+    "termEn": "Precision",
+    "termPl": "Precyzja (Precision)",
+    "category": "Classification & Evaluation",
+    "defEn": "Proportion of items flagged as defective that actually were defective: TP / (TP + FP).",
+    "defPl": "Odsetek elementów oznaczonych jako wadliwe, które rzeczywiście były uszkodzone: TP / (TP + FP).",
+    "contextEn": "High precision ensures line operators don't get inundated with frustrating false alarms.",
+    "contextPl": "Wysoka precyzja gwarantuje, że operatorzy linii nie są zasypywani bezsensownymi fałszywymi alarmami."
+  },
+  {
+    "id": "recall",
+    "termEn": "Recall (Sensitivity / True Positive Rate)",
+    "termPl": "Czułość (Recall)",
+    "category": "Classification & Evaluation",
+    "defEn": "Proportion of all truly defective items that were captured by the model: TP / (TP + FN).",
+    "defPl": "Zdolność modelu do wykrycia wszystkich rzeczywistych wad na linii: TP / (TP + FN).",
+    "contextEn": "Safety-critical automotive manufacturing mandates recall > 99.5% to prevent catastrophic recalls.",
+    "contextPl": "W branży automotive wymaga się czułości > 99.5%, aby zapobiec wysyłce wadliwych podzespołów hamulcowych do klienta."
+  },
+  {
+    "id": "f1_score",
+    "termEn": "F1-Score",
+    "termPl": "Wskaźnik F1",
+    "category": "Classification & Evaluation",
+    "defEn": "Harmonic mean of precision and recall: 2 * (Precision * Recall) / (Precision + Recall).",
+    "defPl": "Średnia harmoniczna precyzji i czułości, dająca zrównoważoną ocenę modelu przy nierównych klasach.",
+    "contextEn": "Used as the benchmark metric when tuning hyper-parameters for automated soldering inspection.",
+    "contextPl": "Stosowany jako wskaźnik nadrzędny podczas doboru hiperparametrów w inspekcji lutowania płytek PCB."
+  },
+  {
+    "id": "decision_threshold",
+    "termEn": "Decision Threshold",
+    "termPl": "Próg decyzyjny",
+    "category": "Classification & Evaluation",
+    "defEn": "The probability cutoff (default 0.50) above which the classifier assigns the positive (defective) class label.",
+    "defPl": "Wartość prawdopodobieństwa (domyślnie 0.50), powyżej której model kwalifikuje detal jako wadliwy.",
+    "contextEn": "Lowering threshold to 0.15 catches every hairline crack at the cost of a few extra manual checks.",
+    "contextPl": "Obniżenie progu do 0.15 pozwala wykryć każde mikropęknięcie kosztem kilku dodatkowych weryfikacji ręcznych."
+  },
+  {
+    "id": "asymmetric_cost_matrix",
+    "termEn": "Asymmetric Cost Matrix",
+    "termPl": "Asymetryczna macierz kosztów",
+    "category": "Classification & Evaluation",
+    "defEn": "Financial matrix specifying exact monetary costs for False Negatives vs False Positives to optimize real plant profit.",
+    "defPl": "Macierz finansowa określająca realny koszt przeoczenia wady (FN) w porównaniu do kosztu fałszywego alarmu (FP).",
+    "contextEn": "Cost of FN is $10,000 (warranty catastrophe), while Cost of FP is $10 (quick manual scan). Optimal threshold is ~0.02.",
+    "contextPl": "Koszt FN to 40 000 PLN (awaria na gwarancji), a koszt FP to 40 PLN (oględziny technika). Optymalny próg decyzyjny to ~0.02."
+  },
+  {
+    "id": "class_imbalance",
+    "termEn": "Class Imbalance",
+    "termPl": "Niezbalansowanie klas",
+    "category": "Classification & Evaluation",
+    "defEn": "Occurs when normal operational samples vastly outnumber defect events (e.g. 99.9% good parts, 0.1% bad parts).",
+    "defPl": "Sytuacja, w której poprawne dane produkcyjne stanowią przytłaczającą większość (np. 99.9% wyrobów sprawnych, 0.1% wad).",
+    "contextEn": "A dummy classifier predicting 'Always Good' achieves 99.9% accuracy but is completely useless in a factory.",
+    "contextPl": "Naiwny model zwracający zawsze 'Sprawny' uzyska 99.9% dokładności, ale jest bezużyteczny, bo przepuści wszystkie awarie."
+  },
+  {
+    "id": "smote",
+    "termEn": "SMOTE (Synthetic Minority Over-sampling)",
+    "termPl": "Algorytm SMOTE",
+    "category": "Classification & Evaluation",
+    "defEn": "Generates synthetic training examples along feature vectors connecting existing minority defect instances.",
+    "defPl": "Generuje syntetyczne przykłady awarii w przestrzeni cech na odcinkach łączących rzadkie przypadki uszkodzeń.",
+    "contextEn": "Expands 5 rare furnace explosion events into 200 training vectors so the neural net learns the warning signature.",
+    "contextPl": "Rozszerza zbiór 5 rzadkich awarii pieca do 200 syntetycznych wektorów, umożliwiając sieci neuronowej naukę sygnatur."
+  },
+  {
+    "id": "pr_auc",
+    "termEn": "PR-AUC (Precision-Recall Area Under Curve)",
+    "termPl": "Pole pod krzywą PR (PR-AUC)",
+    "category": "Classification & Evaluation",
+    "defEn": "Area under the precision-recall trade-off curve across all decision thresholds; superior to ROC-AUC on imbalanced factory data.",
+    "defPl": "Całka z krzywej kompromisu między precyzją a czułością; zdecydowanie bardziej miarodajna niż ROC-AUC przy rzadkich awariach.",
+    "contextEn": "Evaluates gearbox failure classifiers where failures represent only 1 in 10,000 operational hours.",
+    "contextPl": "Służy do oceny modeli uszkodzeń przekładni, gdzie awaria zdarza się raz na 10 000 godzin pracy."
+  },
+  {
+    "id": "roc_auc",
+    "termEn": "ROC-AUC",
+    "termPl": "Krzywa ROC i AUC",
+    "category": "Classification & Evaluation",
+    "defEn": "Area under the curve plotting True Positive Rate against False Positive Rate across all thresholds.",
+    "defPl": "Wskaźnik jakości klasyfikacji określający pole pod wykresem czułości w funkcji odsetka fałszywych alarmów.",
+    "contextEn": "General benchmark, but can give an overly optimistic score on severely imbalanced defect datasets.",
+    "contextPl": "Popularny wskaźnik ogólny, lecz bywa złudnie optymistyczny przy drastycznie małej liczbie awarii w zbiorze."
+  },
+  {
+    "id": "type_1_error",
+    "termEn": "Type I Error (Alpha)",
+    "termPl": "Błąd I rodzaju (Fałszywy alarm)",
+    "category": "Classification & Evaluation",
+    "defEn": "Rejecting a true null hypothesis: declaring a machine broken when it is actually operating normally (False Positive).",
+    "defPl": "Odrzucenie hipotezy zerowej: zaalarmowanie o awarii w sytuacji, gdy maszyna pracuje w pełni poprawnie.",
+    "contextEn": "Emergency shutdown valve triggered mistakenly due to a brief harmless pressure pulse.",
+    "contextPl": "Błędne uruchomienie zaworu bezpieczeństwa z powodu nieszkodliwego, chwilowego skoku ciśnienia."
+  },
+  {
+    "id": "type_2_error",
+    "termEn": "Type II Error (Beta)",
+    "termPl": "Błąd II rodzaju (Przeoczenie awarii)",
+    "category": "Classification & Evaluation",
+    "defEn": "Failing to reject a false null hypothesis: declaring a machine healthy when it is in fact critically failing (False Negative).",
+    "defPl": "Nieodrzucenie fałszywej hipotezy zerowej: uznanie maszyny za sprawną w chwili, gdy rozwija się krytyczna awaria.",
+    "contextEn": "Failing to detect boiler tube thinning until a steam blowout halts the entire petrochemical refinery.",
+    "contextPl": "Niewykrycie pocienienia ścianek rur kotłowych aż do rozerwania instalacji i zatrzymania całej rafinerii."
+  },
+  {
+    "id": "unsupervised_learning",
+    "termEn": "Unsupervised Learning",
+    "termPl": "Uczenie nienadzorowane",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Algorithms discovering hidden patterns, clusters, or abnormal outliers in data without pre-existing failure labels.",
+    "defPl": "Algorytmy wykrywające ukryte wzorce, skupiska lub anomalie w danych bez wcześniejszych etykiet awarii od człowieka.",
+    "contextEn": "Deployed on new CNC machines before any historical breakdown records exist.",
+    "contextPl": "Wdrażane na nowych obrabiarkach CNC, zanim powstaną jakiekolwiek historyczne rejestry uszkodzeń."
+  },
+  {
+    "id": "k_means",
+    "termEn": "K-Means Clustering",
+    "termPl": "Algorytm K-Średnich (K-Means)",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Iterative algorithm partitioning data into K distinct clusters by minimizing variance between points and cluster centroids.",
+    "defPl": "Iteracyjny algorytm dzielący dane na K klastrów poprzez minimalizację odległości punktów od środków skupień (centroidów).",
+    "contextEn": "Groups continuous factory operations into 4 distinct regimes: Idle, Warmup, Full Speed, and Overload.",
+    "contextPl": "Dzieli profil pracy turbiny na 4 stany operacyjne: Bieg jałowy, Rozgrzewanie, Pełna moc i Przeciążenie."
+  },
+  {
+    "id": "dbscan",
+    "termEn": "DBSCAN",
+    "termPl": "Algorytm DBSCAN",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Density-Based Spatial Clustering: identifies clusters of arbitrary shapes and isolates low-density noise as anomalies.",
+    "defPl": "Gęstościowe grupowanie przestrzenne: znajduje klastry o dowolnym kształcie i automatycznie izoluje rzadkie punkty jako anomalie.",
+    "contextEn": "Identifies strange vibration states that do not conform to any spherical operating envelope.",
+    "contextPl": "Wykrywa nietypowe drgania, które nie mieszczą się w żadnym standardowym profilu pracy silnika."
+  },
+  {
+    "id": "pca",
+    "termEn": "PCA (Principal Component Analysis)",
+    "termPl": "Główne składowe (PCA)",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Orthogonal linear transformation projecting high-dimensional sensor data into principal axes of maximum variance.",
+    "defPl": "Transformacja rzutująca wielowymiarowe dane z dziesiątek czujników na składowe główne o największej wariancji.",
+    "contextEn": "Compresses 128 chemical reactor temperature sensors down to 3 principal indicators for real-time 3D dashboard display.",
+    "contextPl": "Redukuje 128 czujników temperatury reaktora chemicznego do 3 głównych wskaźników na trójwymiarowym panelu operatora."
+  },
+  {
+    "id": "isolation_forest",
+    "termEn": "Isolation Forest",
+    "termPl": "Las izolacyjny (Isolation Forest)",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Tree-based anomaly detection algorithm that isolates outliers by randomly partitioning feature values; anomalies require fewer splits.",
+    "defPl": "Drzewiasty algorytm wykrywania anomalii, izolujący punkty nietypowe losowymi podziałami; anomalie wymagają mniejszej liczby cięć.",
+    "contextEn": "Industry favorite for detecting subtle sensor drifts and impending bearing failures with zero labels.",
+    "contextPl": "Najpopularniejszy algorytm do wczesnego wykrywania zatarć łożysk i rozkalibrowania czujników bez etykiet awarii."
+  },
+  {
+    "id": "operational_regime",
+    "termEn": "Operational Regime",
+    "termPl": "Reżim operacyjny maszyny",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "A specific machine working mode (speed, feed rate, load) creating distinct baseline sensor behaviors.",
+    "defPl": "Konkretny tryb pracy maszyny (prędkość, posuw, obciążenie) generujący odrębne wzorce parametrów.",
+    "contextEn": "A motor at 100 RPM vibrates differently than at 3,000 RPM; anomaly thresholds must adapt to the active regime.",
+    "contextPl": "Silnik przy 100 obr/min drży inaczej niż przy 3000 obr/min; progi alarmowe muszą zależeć od bieżącego reżimu pracy."
+  },
+  {
+    "id": "centroid",
+    "termEn": "Cluster Centroid",
+    "termPl": "Centroid klastra",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "The arithmetic mean position of all data points belonging to a specific cluster in multi-dimensional feature space.",
+    "defPl": "Środek ciężkości (średnia wielowymiarowa) wszystkich punktów pomiarowych należących do danego skupiska.",
+    "contextEn": "Represents the ideal golden run parameters of an injection molding machine cycle.",
+    "contextPl": "Reprezentuje idealny, referencyjny profil wtrysku tworzywa w cyklu produkcyjnym."
+  },
+  {
+    "id": "inertia",
+    "termEn": "Inertia (Within-Cluster Sum of Squares)",
+    "termPl": "Inercja (Suma kwadratów wewnątrz klastra)",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Sum of squared Euclidean distances of samples to their closest cluster center; used in the Elbow method.",
+    "defPl": "Suma kwadratów odległości punktów od ich centroidu; używana w metodzie łokcia do wyboru liczby klastrów K.",
+    "contextEn": "Monitored to determine whether 3 or 5 operating regimes best characterize a hydraulic press.",
+    "contextPl": "Mierzona w celu ustalenia, czy 3 czy 5 reżimów pracy najlepiej opisuje cykl prasy hydraulicznej."
+  },
+  {
+    "id": "silhouette_score",
+    "termEn": "Silhouette Score",
+    "termPl": "Współczynnik sylwetki (Silhouette)",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Metric measuring how similar an object is to its own cluster compared to other clusters, ranging from -1 to +1.",
+    "defPl": "Miara jakości podziału na klastry określająca, jak blisko punkt leży względem swojej grupy w porównaniu do sąsiednich.",
+    "contextEn": "A score > 0.6 confirms that operational regimes are cleanly separated without overlapping ambiguity.",
+    "contextPl": "Wynik > 0.6 potwierdza, że stany pracy obrabiarki są wyraźnie rozdzielone i nie zachodzą na siebie."
+  },
+  {
+    "id": "anomaly_score",
+    "termEn": "Anomaly Score",
+    "termPl": "Wskaźnik anomalii (Anomaly Score)",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Continuous numerical rating indicating how deviant a current machine state is relative to learned baseline health.",
+    "defPl": "Ciągła wartość liczbowa określająca stopień odstępstwa bieżącego stanu maszyny od wyuczonego wzorca sprawności.",
+    "contextEn": "When the anomaly score crosses 0.85, the maintenance team receives an automated Slack alert.",
+    "contextPl": "Gdy wskaźnik anomalii przekracza 0.85, system utrzymania ruchu wysyła automatyczny alert do mechaników."
+  },
+  {
+    "id": "dimensionality_reduction",
+    "termEn": "Dimensionality Reduction",
+    "termPl": "Redukcja wymiarowości",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "The transformation of data from a high-dimensional space into a lower-dimensional space while preserving essential variance.",
+    "defPl": "Przekształcenie danych z przestrzeni wielu zmiennych do mniejszej liczby wymiarów z zachowaniem kluczowych informacji.",
+    "contextEn": "Eliminates multicollinearity among 50 redundant temperature sensors across a chemical reactor.",
+    "contextPl": "Eliminuje współliniowość pomiędzy 50 sąsiadującymi czujnikami temperatury w piecu hutniczym."
+  },
+  {
+    "id": "eigenvalue",
+    "termEn": "Eigenvalue / Explained Variance",
+    "termPl": "Wartość własna / Wariancja wyjaśniona",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Scalar associated with a principal component eigenvector indicating the magnitude of signal variance captured along that axis.",
+    "defPl": "Wartość liczbowa określająca ilość energii i zmienności sygnału niesioną przez dany wektor główny w PCA.",
+    "contextEn": "The top 3 principal components capture 94% of the total variance across all 40 press sensors.",
+    "contextPl": "Pierwsze 3 składowe PCA wyjaśniają aż 94% całkowitej zmienności 40 czujników prasy hydraulicznej."
+  },
+  {
+    "id": "fft",
+    "termEn": "Fast Fourier Transform (FFT)",
+    "termPl": "Szybka Transformata Fouriera (FFT)",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "Efficient mathematical algorithm computing the Discrete Fourier Transform, converting time-domain waveforms into frequency spectra.",
+    "defPl": "Algorytm przekształcający surowy sygnał w dziedzinie czasu na widmo amplitudowe w dziedzinie częstotliwości.",
+    "contextEn": "Converts continuous motor vibration into distinct peaks matching rotational speed and bearing fault signatures.",
+    "contextPl": "Przekształca surowe drgania silnika w czytelne piki odpowiadające obrotom wału i uszkodzeniom bieżni łożysk."
+  },
+  {
+    "id": "frequency_domain",
+    "termEn": "Frequency Domain",
+    "termPl": "Dziedzina częstotliwości",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "A representation of signals with respect to frequency rather than time, revealing hidden periodic vibrations.",
+    "defPl": "Reprezentacja sygnału w funkcji częstotliwości zamiast czasu, uwidaczniająca ukryte zjawiska okresowe i rezonanse.",
+    "contextEn": "Unbalance shows up as a prominent peak at exactly 1x rotational shaft speed (e.g. 29.8 Hz).",
+    "contextPl": "Niewyważenie wirnika ujawnia się jako wyraźny pik przy częstotliwości dokładnie 1x prędkości obrotowej wału (np. 29.8 Hz)."
+  },
+  {
+    "id": "time_domain",
+    "termEn": "Time Domain",
+    "termPl": "Dziedzina czasu",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "Representation of physical sensor signals showing amplitude variations over continuous timestamps.",
+    "defPl": "Reprezentacja wielkości fizycznej ukazująca zmiany napięcia lub przyspieszenia w kolejnych chwilach czasu.",
+    "contextEn": "Looking at raw time-domain waveforms shows sudden impacts from metal stamping punches.",
+    "contextPl": "Analiza sygnału w dziedzinie czasu pozwala bezpośrednio zaobserwować siłę uderzenia stempla w tłoczniku."
+  },
+  {
+    "id": "spectrogram",
+    "termEn": "Spectrogram (STFT)",
+    "termPl": "Spektrogram (STFT)",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "A 2D visual representation of the spectrum of frequencies of a signal as it varies with time (Short-Time Fourier Transform).",
+    "defPl": "Dwuwymiarowy wykres widma częstotliwościowego w funkcji upływającego czasu (Krótkoczasowa Transformata Fouriera).",
+    "contextEn": "Tracks changing motor speeds and reveals transient grinding noises during machine spool-up.",
+    "contextPl": "Pozwala śledzić zmiany prędkości obrotowej i uchwycić chwilowe zgrzyty podczas rozpędzania wrzeciona."
+  },
+  {
+    "id": "harmonics",
+    "termEn": "Harmonics",
+    "termPl": "Harmoniczne",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "Frequencies that are integer multiples of the fundamental operating frequency (2x, 3x, 4x shaft rotation).",
+    "defPl": "Częstotliwości będące całkowitymi wielokrotnościami częstotliwości podstawowej obrotu wału (2x, 3x, 4x).",
+    "contextEn": "Shaft misalignment generates pronounced 2x and 3x harmonics in the radial vibration spectrum.",
+    "contextPl": "Niewspółosiowość wałów silnika i pompy generuje silne piki harmoniczne 2x i 3x w widmie promieniowym."
+  },
+  {
+    "id": "bpfo",
+    "termEn": "BPFO (Ball Pass Frequency Outer)",
+    "termPl": "Częstotliwość BPFO (Wada bieżni zewnętrznej)",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "The characteristic frequency at which rolling elements pass over a defect located on the outer ring of a bearing.",
+    "defPl": "Charakterystyczna częstotliwość uderzania kulek lub wałeczków w uszkodzenie na bieżni zewnętrznej łożyska.",
+    "contextEn": "Calculated via bearing geometry: BPFO = (N/2) * fr * (1 - (d/D)*cos(alpha)). A spike here proves outer race pitting.",
+    "contextPl": "Wyliczana ze wzoru geometrii łożyska: pojawienie się piku przy BPFO jest bezspornym dowodem wykruszenia bieżni zewnętrznej."
+  },
+  {
+    "id": "bpfi",
+    "termEn": "BPFI (Ball Pass Frequency Inner)",
+    "termPl": "Częstotliwość BPFI (Wada bieżni wewnętrznej)",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "The characteristic frequency generated when rolling elements pass over a defect on the inner ring of a bearing.",
+    "defPl": "Częstotliwość generowana podczas przetaczania się elementów tocznych po uszkodzeniu bieżni wewnętrznej łożyska.",
+    "contextEn": "Displays sidebands spaced at running speed (1x) due to the defect moving in and out of the primary load zone.",
+    "contextPl": "Generuje wstęgi boczne o rozstawie 1x obrotów, ponieważ wada cyklicznie wchodzi w strefę największego obciążenia."
+  },
+  {
+    "id": "vibration_analysis",
+    "termEn": "Vibration Analysis",
+    "termPl": "Wibrodiagnostyka przemysłowa",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "The core diagnostic discipline measuring mechanical oscillation to assess the condition of rotating industrial machinery.",
+    "defPl": "Kluczowa dziedzina diagnostyki badająca drgania mechaniczne w celu oceny stanu technicznego maszyn wirnikowych.",
+    "contextEn": "Allows plant engineers to schedule bearing replacement during planned maintenance rather than unplanned catastrophic blowout.",
+    "contextPl": "Umożliwia zaplanowanie wymiany łożyska podczas planowanego postoju zamiast nagłej awarii w trakcie produkcji."
+  },
+  {
+    "id": "rul",
+    "termEn": "RUL (Remaining Useful Life)",
+    "termPl": "Pozostały czas eksploatacji (RUL)",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "The estimated duration of operational time left before a component (e.g. cutting tool or bearing) fails.",
+    "defPl": "Szacowany czas (w godzinach lub cyklach), jaki pozostał do awarii elementu (np. łożyska lub frezu).",
+    "contextEn": "The regression model predicts RUL = 42 operating hours, allowing the tool change to be scheduled on the weekend shift.",
+    "contextPl": "Model regresyjny szacuje RUL na 42 godziny pracy, co pozwala zaplanować wymianę frezu na przerwę weekendową."
+  },
+  {
+    "id": "degradation_curve",
+    "termEn": "Degradation Curve",
+    "termPl": "Krzywa degradacji",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "The mathematical trajectory illustrating the health degradation of industrial equipment from pristine to functional failure.",
+    "defPl": "Trajektoria matematyczna opisująca postępujące zużycie i spadek sprawności urządzenia od nowości do awarii.",
+    "contextEn": "Follows the classical bathtub curve: flat during useful life, followed by exponential degradation toward failure.",
+    "contextPl": "Odpowiada klasycznej krzywej wannowej: stabilna praca przez lata, a następnie wykładniczy wzrost drgań przed zatarciem."
+  },
+  {
+    "id": "sampling_rate",
+    "termEn": "Sampling Rate",
+    "termPl": "Tempo próbkowania",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "The rate at which physical analog quantities are digitized by an ADC into discrete time steps.",
+    "defPl": "Szybkość, z jaką przetwornik analogowo-cyfrowy (ADC) przetwarza napięcie z czujnika na ciąg liczb.",
+    "contextEn": "High sampling rate generates high data volume: 20 kHz * 3 axes = 60,000 floats per second per motor.",
+    "contextPl": "Wysokie tempo generuje olbrzymią ilość danych: 20 kHz * 3 osie to 60 000 liczb zmiennoprzecinkowych na sekundę na silnik."
+  },
+  {
+    "id": "leakage_spectral",
+    "termEn": "Spectral Leakage",
+    "termPl": "Przeciek widmowy (Spectral Leakage)",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "Smearing of energy across adjacent frequency bins caused by performing FFT on a finite non-integer period waveform.",
+    "defPl": "Rozmycie energii sygnału na sąsiednie prążki częstotliwości wywołane ucięciem sygnału w niepełnym okresie fali.",
+    "contextEn": "Mitigated by applying Hanning or Blackman window functions prior to the FFT calculation.",
+    "contextPl": "Ograniczany przez zastosowanie funkcji okna czasowego (np. Hanninga lub Blackmana) przed wyliczeniem FFT."
+  },
+  {
+    "id": "windowing",
+    "termEn": "Windowing (Hanning / Hamming)",
+    "termPl": "Okienkowanie sygnału",
+    "category": "Time Series & Frequency Domain",
+    "defEn": "Multiplying a time-domain block by a tapered curve that smoothly reaches zero at both boundaries to prevent spectral leakage.",
+    "defPl": "Przemnożenie wycinka sygnału przez funkcję dążącą do zera na brzegach okna, eliminując skoki nieciągłości.",
+    "contextEn": "Essential preprocessing step for all condition-monitoring FFT algorithms.",
+    "contextPl": "Kluczowy krok przygotowania sygnału przed każdym wyznaczeniem widma FFT w diagnostyce maszyn."
+  },
+  {
+    "id": "computer_vision",
+    "termEn": "Industrial Computer Vision",
+    "termPl": "Wizja maszynowa w przemyśle",
+    "category": "Computer Vision & Edge",
+    "defEn": "Automated visual inspection of manufacturing parts using industrial high-speed cameras and deep learning models.",
+    "defPl": "Automatyczna kontrola wizualna wyrobów na linii produkcyjnej z użyciem szybkich kamer przemysłowych i sieci neuronowych.",
+    "contextEn": "Inspects 20 bottles per second on a bottling line to verify cap tightness and label alignment.",
+    "contextPl": "Kontroluje 20 butelek na sekundę na linii rozlewniczej pod kątem domknięcia nakrętki i ułożenia etykiety."
+  },
+  {
+    "id": "bounding_box",
+    "termEn": "Bounding Box (BBox)",
+    "termPl": "Ramka ograniczająca (Bounding Box)",
+    "category": "Computer Vision & Edge",
+    "defEn": "A rectangular spatial coordinate set [x, y, width, height] enclosing a detected object or defect on an image.",
+    "defPl": "Prostokąt o współrzędnych [x, y, szerokość, wysokość] wskazujący dokładne położenie wady na zdjęciu z kamery.",
+    "contextEn": "Drawn around paint bubbles on an automotive car body to direct spot-repair robots.",
+    "contextPl": "Wyznaczany wokół pęcherza lakierniczego na karoserii w celu nakierowania ramienia robota polerskiego."
+  },
+  {
+    "id": "iou",
+    "termEn": "Intersection over Union (IoU)",
+    "termPl": "Wskaźnik IoU (Jaccard Index)",
+    "category": "Computer Vision & Edge",
+    "defEn": "Ratio of the area of overlap between predicted and ground truth bounding boxes divided by the area of their union.",
+    "defPl": "Stosunek pola części wspólnej ramki predykcji i wzorca do pola ich sumy; kluczowa miara dokładności lokalizacji wady.",
+    "contextEn": "An IoU >= 0.50 is the standard threshold to classify a detected PCB defect as a True Positive.",
+    "contextPl": "Wartość IoU >= 0.50 stanowi standardowy próg uznania wykrytego defektu płytki PCB za trafienie (True Positive)."
+  },
+  {
+    "id": "ground_truth",
+    "termEn": "Ground Truth",
+    "termPl": "Wzorzec referencyjny (Ground Truth)",
+    "category": "Computer Vision & Edge",
+    "defEn": "Empirical reality verified by expert human inspectors, used as the objective truth for training and testing ML models.",
+    "defPl": "Rzeczywisty, zweryfikowany przez inżyniera stan wyrobu, stanowiący punkt odniesienia do nauki i testów modelu.",
+    "contextEn": "X-ray scans annotated by senior metallurgical inspectors designating genuine welding pores.",
+    "contextPl": "Zdjęcia rentgenowskie opisane przez certyfikowanego kontrolera NDT oznaczające rzeczywiste pęcherze spawalnicze."
+  },
+  {
+    "id": "confidence_score",
+    "termEn": "Confidence Score",
+    "termPl": "Pewność predykcji (Confidence)",
+    "category": "Computer Vision & Edge",
+    "defEn": "Probability output from 0.0 to 1.0 indicating how certain the vision model is that an identified region contains a defect.",
+    "defPl": "Wyjściowe prawdopodobieństwo (0.0 do 1.0) określające stopień pewności modelu co do obecności wady w zaznaczonym obszarze.",
+    "contextEn": "Predictions with confidence < 0.70 are routed to an operator review screen rather than auto-scrapping the part.",
+    "contextPl": "Detale z pewnością modelu poniżej 0.70 trafiają do ręcznej weryfikacji zamiast automatycznego wyrzucenia na złom."
+  },
+  {
+    "id": "convolutional_neural_network",
+    "termEn": "CNN (Convolutional Neural Network)",
+    "termPl": "Konwolucyjna sieć neuronowa (CNN)",
+    "category": "Computer Vision & Edge",
+    "defEn": "Deep learning architecture utilizing convolutional sliding kernels to extract hierarchical spatial features from imagery.",
+    "defPl": "Architektura głębokich sieci neuronowych wykorzystująca filtry splotowe do wykrywania krawędzi, kształtów i tekstur w obrazie.",
+    "contextEn": "Scans high-resolution sheet metal surfaces for microscopic scratches and rolling indentations.",
+    "contextPl": "Skanuje arkusze blachy w poszukiwaniu mikroskopijnych rys i wgnieceń po walcowaniu."
+  },
+  {
+    "id": "feature_map",
+    "termEn": "Feature Map",
+    "termPl": "Mapa cech (Feature Map)",
+    "category": "Computer Vision & Edge",
+    "defEn": "The activation output of a convolutional layer showing where specific patterns (edges, textures, cracks) occur across the image.",
+    "defPl": "Macierz aktywacji warstwy splotowej pokazująca lokalizację wykrytych wzorców (krawędzi, tekstur, pęknięć) na obrazie.",
+    "contextEn": "Deeper feature maps highlight complex geometrical defect patterns like porous welds.",
+    "contextPl": "Głębsze mapy cech uwypuklają złożone wady geometryczne, takie jak porowatość spoiny."
+  },
+  {
+    "id": "receptive_field",
+    "termEn": "Receptive Field",
+    "termPl": "Pole recepcyjne",
+    "category": "Computer Vision & Edge",
+    "defEn": "The area in the input image that directly influences the activation of a specific neuron in a deep network layer.",
+    "defPl": "Obszar wejściowego zdjęcia, który ma bezpośredni wpływ na stan aktywacji danego neuronu w głębokiej warstwie sieci.",
+    "contextEn": "Must be large enough to encompass large structural fabric tears spanning across several centimeters.",
+    "contextPl": "Musi być wystarczająco duże, aby sieć mogła objąć spojrzeniem kilkucentymetrowe rozdarcia tkaniny na krosnie."
+  },
+  {
+    "id": "transfer_learning",
+    "termEn": "Transfer Learning",
+    "termPl": "Uczenie transferowe (Transfer Learning)",
+    "category": "Computer Vision & Edge",
+    "defEn": "Adapting a model pretrained on massive image datasets (e.g. ImageNet) to industrial defect tasks with very few factory photos.",
+    "defPl": "Dostosowanie wytrenowanej wcześniej sieci (np. na ImageNet) do specyficznego zadania fabrycznego przy użyciu małej liczby zdjęć.",
+    "contextEn": "Enables training an accurate glass scratch detector with only 50 example photos rather than 100,000.",
+    "contextPl": "Pozwala wyszkolić skuteczny detektor rys na szkle mając zaledwie 50 fotografii wad zamiast 100 000."
+  },
+  {
+    "id": "data_augmentation",
+    "termEn": "Data Augmentation",
+    "termPl": "Augmentacja danych obrazowych",
+    "category": "Computer Vision & Edge",
+    "defEn": "Artificially expanding training data by applying realistic geometric rotations, crops, lighting shifts, and blur.",
+    "defPl": "Sztuczne powiększanie zbioru uczącego poprzez obroty, przycięcia, symulację zmian oświetlenia hali i szumu.",
+    "contextEn": "Simulates dust on camera lens and shifting sun rays coming through the plant skylight.",
+    "contextPl": "Symuluje zabrudzenie soczewki kamery i zmieniające się oświetlenie słoneczne wpadające przez świetlik fabryczny."
+  },
+  {
+    "id": "surface_defect",
+    "termEn": "Surface Defect",
+    "termPl": "Wada powierzchniowa",
+    "category": "Computer Vision & Edge",
+    "defEn": "Visual imperfection on manufactured material such as scratches, inclusions, blisters, discoloration, or pinholes.",
+    "defPl": "Niedoskonałość zewnętrzna wyrobu, taka jak rysa, pęcherz, wtrącenie, odbarwienie lub porowatość materiału.",
+    "contextEn": "Scratches on automotive windshields degrade optical clarity and lead to customer warranty claims.",
+    "contextPl": "Rysa na szybie samochodowej obniża widoczność i skutkuje natychmiastowym odrzuceniem partii przez odbiorcę."
+  },
+  {
+    "id": "edge_ai",
+    "termEn": "Edge AI",
+    "termPl": "Sztuczna inteligencja na brzegu sieci (Edge AI)",
+    "category": "MLOps & Deployment",
+    "defEn": "Running machine learning models locally on embedded hardware near sensors (e.g. NVIDIA Jetson, Raspberry Pi, industrial PC).",
+    "defPl": "Uruchamianie modeli ML lokalnie na urządzeniach wbudowanych w pobliżu maszyn bez konieczności wysyłania danych do chmury.",
+    "contextEn": "Enables sub-millisecond defect sorting without relying on external internet connectivity.",
+    "contextPl": "Umożliwia sortowanie detali w czasie poniżej 10 milisekund bez ryzyka związanego z brakiem łączności internetowej."
+  },
+  {
+    "id": "inference_latency",
+    "termEn": "Inference Latency",
+    "termPl": "Opóźnienie wnioskowania (Latencja)",
+    "category": "MLOps & Deployment",
+    "defEn": "The total elapsed time taken for a model to receive an input vector/image, execute forward pass, and return a prediction.",
+    "defPl": "Czas potrzebny modelowi na pobranie próbki, przetworzenie przez sieć i zwrócenie decyzji klasyfikacyjnej.",
+    "contextEn": "High-speed conveyor belts moving at 2 m/s require inference latency < 15 ms to trigger pneumatic ejectors in time.",
+    "contextPl": "Taśmociąg poruszający się z prędkością 2 m/s wymaga latencji < 15 ms, aby zdążyć uruchomić siłownik odrzucający wadliwy detal."
+  },
+  {
+    "id": "throughput",
+    "termEn": "Inference Throughput",
+    "termPl": "Przepustowość wnioskowania",
+    "category": "MLOps & Deployment",
+    "defEn": "The number of inferences or processed frames the system can complete per second (FPS or samples/sec).",
+    "defPl": "Liczba operacji wnioskowania lub klatek wideo, jakie system potrafi obsłużyć w ciągu jednej sekundy (FPS).",
+    "contextEn": "Multi-threaded edge vision nodes achieve 120 FPS to monitor 4 parallel stamping streams.",
+    "contextPl": "Wielowątkowy węzeł brzegowy osiąga 120 FPS, obsługując równolegle 4 linie wykrawania blach."
+  },
+  {
+    "id": "concept_drift",
+    "termEn": "Concept Drift",
+    "termPl": "Dryf pojęcia (Concept Drift)",
+    "category": "MLOps & Deployment",
+    "defEn": "A change in the underlying statistical relationship between sensor features and target labels over time.",
+    "defPl": "Zmiana relacji pomiędzy cechami pomiarowymi a rzeczywistym stanem awarii spowodowana np. modyfikacją procesu.",
+    "contextEn": "Switching raw steel suppliers from German to Korean metallurgy changes the vibration signature of normal cutting.",
+    "contextPl": "Zmiana dostawcy stali ze stopu niemieckiego na koreański zmienia naturalne drgania podczas skrawania."
+  },
+  {
+    "id": "data_drift",
+    "termEn": "Data Drift (Covariate Shift)",
+    "termPl": "Dryf danych (Data Drift)",
+    "category": "MLOps & Deployment",
+    "defEn": "A change in the statistical distribution of input sensor variables while the fundamental failure logic remains identical.",
+    "defPl": "Zmiana rozkładu statystycznego danych wejściowych z czujników przy zachowaniu tej samej definicji uszkodzenia.",
+    "contextEn": "Summer ambient factory temperature increases baseline coolant temperatures by 12°C across all machines.",
+    "contextPl": "Letnie upały podnoszą bazową temperaturę chłodziwa o 12°C na całej hali fabrycznej."
+  },
+  {
+    "id": "covariate_shift",
+    "termEn": "Covariate Shift",
+    "termPl": "Przesunięcie współzmiennych (Covariate Shift)",
+    "category": "MLOps & Deployment",
+    "defEn": "Distribution P(X) shifts between training and production environments, but conditional defect probability P(Y|X) remains constant.",
+    "defPl": "Zjawisko, w którym rozkład wejść P(X) ulega zmianie, ale zależność P(Y|X) określająca prawdopodobieństwo awarii pozostaje bez zmian.",
+    "contextEn": "Training data collected on brand new CNC lathes deployed onto a 15-year-old machine with looser mechanical tolerances.",
+    "contextPl": "Model wyszkolony na nowych obrabiarkach wdrożony na 15-letniej tokarce z większymi luzami mechanicznymi."
+  },
+  {
+    "id": "ks_test",
+    "termEn": "Kolmogorov-Smirnov Test (K-S Test)",
+    "termPl": "Test Kołmogorowa-Smirnowa",
+    "category": "MLOps & Deployment",
+    "defEn": "Non-parametric statistical test comparing the cumulative distributions of two data series to detect automated drift.",
+    "defPl": "Nieparametryczny test statystyczny porównujący dystrybuanty dwóch prób w celu wykrycia dryfu parametrów czujnika.",
+    "contextEn": "Triggering a daily KS-test on pressure readings automatically flags sensor decalibration before false alarms arise.",
+    "contextPl": "Codzienny test K-S na odczytach ciśnienia automatycznie wykrywa rozkalibrowanie manometru."
+  },
+  {
+    "id": "quantization",
+    "termEn": "Model Quantization",
+    "termPl": "Kwantyzacja modelu",
+    "category": "MLOps & Deployment",
+    "defEn": "Converting model weights and activations from 32-bit floating point (FP32) to 8-bit integers (INT8) to boost edge speed.",
+    "defPl": "Konwersja wag i obliczeń sieci neuronowej z liczb zmiennoprzecinkowych FP32 na 8-bitowe liczby całkowite INT8.",
+    "contextEn": "Shrinks model size by 75% and speeds up inference by 3x on an edge Jetson Nano with < 0.5% accuracy loss.",
+    "contextPl": "Zmniejsza rozmiar modelu o 75% i przyspiesza działanie 3-krotnie na module Jetson z minimalną utratą dokładności."
+  },
+  {
+    "id": "int8",
+    "termEn": "INT8 Precision",
+    "termPl": "Precyzja INT8",
+    "category": "MLOps & Deployment",
+    "defEn": "8-bit signed integer format offering extremely high throughput on modern tensor acceleration cores.",
+    "defPl": "Format liczb 8-bitowych zapewniający maksymalną prędkość obliczeń na dedykowanych akceleratorach tensorowych.",
+    "contextEn": "Standard deployment format for high-speed automated visual inspection on factory floors.",
+    "contextPl": "Standard wdrożeniowy dla systemów wizyjnych pracujących przy dużych prędkościach na liniach produkcyjnych."
+  },
+  {
+    "id": "fp32",
+    "termEn": "FP32 (Single Precision)",
+    "termPl": "Pojedyncza precyzja zmiennoprzecinkowa (FP32)",
+    "category": "MLOps & Deployment",
+    "defEn": "Standard 32-bit IEEE 754 floating point representation used during neural network training.",
+    "defPl": "Standardowy 32-bitowy format zapisu liczb zmiennoprzecinkowych używany podczas trenowania sieci neuronowych.",
+    "contextEn": "Used during backpropagation in PyTorch before exporting to INT8 for edge deployment.",
+    "contextPl": "Stosowany podczas propagacji wstecznej w PyTorch przed optymalizacją do INT8 na sterownik brzegowy."
+  },
+  {
+    "id": "tensorrt",
+    "termEn": "NVIDIA TensorRT",
+    "termPl": "Optymalizator TensorRT",
+    "category": "MLOps & Deployment",
+    "defEn": "High-performance deep learning inference optimizer and runtime for NVIDIA edge GPUs.",
+    "defPl": "Silnik optymalizacyjny i środowisko uruchomieniowe maksymalizujące prędkość modeli deep learning na układach NVIDIA.",
+    "contextEn": "Fuses convolution and activation layers to cut camera defect detection latency from 45 ms down to 6 ms.",
+    "contextPl": "Łączy warstwy splotu i aktywacji, skracając czas analizy wady z 45 ms do zaledwie 6 ms."
+  },
+  {
+    "id": "onnx",
+    "termEn": "ONNX (Open Neural Network Exchange)",
+    "termPl": "Format ONNX",
+    "category": "MLOps & Deployment",
+    "defEn": "An open standard format for representing machine learning models, allowing interoperability between PyTorch, Scikit-Learn, and C++ runtimes.",
+    "defPl": "Otwarty format wymiany modeli uczenia maszynowego, umożliwiający eksport z PyTorch do C++ i uruchomienie na sterownikach PLC.",
+    "contextEn": "Train models in Python/Colab, export to ONNX, and run inside a C++ Siemens industrial PC application.",
+    "contextPl": "Trenujesz model w Pythonie na Colabie, eksportujesz do ONNX i odpalasz bezpośrednio w C++ na komputerze przemysłowym Siemens."
+  },
+  {
+    "id": "model_monitoring",
+    "termEn": "Production Model Monitoring",
+    "termPl": "Monitoring modeli produkcyjnych",
+    "category": "MLOps & Deployment",
+    "defEn": "Continuous telemetry tracking input distributions, prediction confidence, latency, and hardware health of deployed ML systems.",
+    "defPl": "Ciągły nadzór nad rozkładem wejść, pewnością predykcji, czasem odpowiedzi i zużyciem pamięci wdrożonego modelu ML.",
+    "contextEn": "Displays a Grafana dashboard alerting automation engineers if model confidence drops below 80% on shift change.",
+    "contextPl": "Panel Grafana ostrzegający inżynierów automatyki, gdy pewność modelu spada poniżej 80% po zmianie obsady."
+  },
+  {
+    "id": "pipeline_retraining",
+    "termEn": "Automated Retraining Pipeline",
+    "termPl": "Zautomatyzowany potok przetrenowania",
+    "category": "MLOps & Deployment",
+    "defEn": "CI/CD automated workflow that triggers model re-fitting on newly acquired sensor failure logs when performance degrades.",
+    "defPl": "Zautomatyzowany proces CI/CD pobierający nowe dane awaryjne i dotrenowujący model w przypadku wykrycia dryfu.",
+    "contextEn": "Automatically incorporates verified false alarms into the training set every Sunday night.",
+    "contextPl": "W każdą niedzielę automatycznie włącza zweryfikowane fałszywe alarmy do zbioru treningowego."
+  }
+]
