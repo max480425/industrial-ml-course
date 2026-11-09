@@ -1,0 +1,79 @@
+{
+  "id": "m01_l04_data_cleaning_spike_removal",
+  "module_id": "mod-1",
+  "module_number": 1,
+  "lesson_number": 4,
+  "title_en": "Industrial Data Cleaning & Telemetry Spike Removal",
+  "titlePl": "Czyszczenie Danych Przemysłowych i Usuwanie Szpilek Zakłócających",
+  "summary_en": "Implement Hampel filtering (rolling median + MAD), forward-fill state imputation, and cubic spline interpolation on corrupted plant telemetry.",
+  "summary_pl": "Zaimplementuj filtr Hampela (krocząca mediana + MAD), uzupełnianie w przód (LOCF) i interpolację sklejaną na uszkodzonej telemetrii.",
+  "visual_widget": "signal_filter_sandbox",
+  "colab_notebook": "m01_l04_data_cleaning_spike_removal.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m1-4-1",
+      "textEn": "Implement Hampel outlier filter using rolling median and Median Absolute Deviation (MAD)",
+      "textPl": "Zaimplementuj filtr Hampela z kroczącą medianą i odchyleniem medianowym MAD"
+    },
+    {
+      "id": "chk-m1-4-2",
+      "textEn": "Handle intermittent wireless packet dropouts using Last Observation Carried Forward (LOCF)",
+      "textPl": "Obsłuż utratę pakietów w sieci bezprzewodowej metodą przenoszenia ostatniej wartości (LOCF)"
+    },
+    {
+      "id": "chk-m1-4-3",
+      "textEn": "Interpolate continuous physical pressure drops using cubic splines without edge ripple",
+      "textPl": "Zinterpoluj ubytki ciągłego sygnału ciśnienia funkcjami sklejanymi 3. stopnia"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Robust Outlier Rejection: The Hampel Filter",
+      "titlePl": "Odporna Filtracja Szpilek: Filtr Hampela",
+      "en": "Standard standard-deviation bounds fail when sensor dropouts create huge {{term:sensor_noise}} and extreme spikes. The {{term:hampel_filter}} computes a rolling window median and replaces samples exceeding $3 \\times 1.4826 \\times \\text{MAD}$. This effectively cleans contact bounce glitches while preserving genuine industrial process step changes.",
+      "pl": "Klasyczne reguły oparte na odchyleniu standardowym zawodzą, gdy błędy czujników tworzą silny {{term:sensor_noise}} i gigantyczne piki. {{term:hampel_filter}} wyznacza medianę w oknie kroczącym i zastępuje punkty przekraczające próg $3 \\times 1.4826 \\times \\text{MAD}$. Skutecznie usuwa to zakłócenia elektryczne, zachowując rzeczywiste skoki parametrów technologicznych."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m1-4-1",
+      "questionEn": "Why is Median Absolute Deviation (MAD) superior to standard deviation for detecting electrical contact spikes?",
+      "questionPl": "Dlaczego odchylenie medianowe (MAD) jest lepsze od odchylenia standardowego przy wykrywaniu szpilek elektrycznych?",
+      "optionsEn": [
+        "MAD runs on 8-bit microcontrollers only",
+        "A single huge spike severely inflates standard deviation, but has zero impact on the median and MAD scale",
+        "MAD is calculated using Fast Fourier Transforms",
+        "Standard deviation cannot be computed on floating point arrays"
+      ],
+      "optionsPl": [
+        "Wskaźnik MAD działa wyłącznie na 8-bitowych mikrokontrolerach",
+        "Pojedyncza potężna szpilka drastycznie zawyża odchylenie standardowe, ale nie ma wpływu na medianę i wskaźnik MAD",
+        "Wskaźnik MAD jest wyliczany za pomocą Szybkiej Transformaty Fouriera",
+        "Odchylenie standardowe nie może być liczone na liczbach zmiennoprzecinkowych"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "The median has a 50% breakdown point, meaning up to half the points can be contaminated by severe spikes without skewing the scale estimate.",
+      "explanationPl": "Mediana ma punkt załamania 50%, co oznacza, że nawet do połowy próbek może być skrajnie zafałszowanych, a estymator skali MAD nadal pozostanie stabilny."
+    }
+  ],
+  "titleEn": "Industrial Data Cleaning & Telemetry Spike Removal",
+  "title_pl": "Czyszczenie Danych Przemysłowych i Usuwanie Szpilek Zakłócających",
+  "summaryEn": "Implement Hampel filtering (rolling median + MAD), forward-fill state imputation, and cubic spline interpolation on corrupted plant telemetry.",
+  "summaryPl": "Zaimplementuj filtr Hampela (krocząca mediana + MAD), uzupełnianie w przód (LOCF) i interpolację sklejaną na uszkodzonej telemetrii.",
+  "sandboxType": "signal_filter_sandbox",
+  "notebook": "m01_l04_data_cleaning_spike_removal.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Robust Outlier Rejection: The Hampel Filter",
+      "titlePl": "Odporna Filtracja Szpilek: Filtr Hampela",
+      "en": "Standard standard-deviation bounds fail when sensor dropouts create huge {{term:sensor_noise}} and extreme spikes. The {{term:hampel_filter}} computes a rolling window median and replaces samples exceeding $3 \\times 1.4826 \\times \\text{MAD}$. This effectively cleans contact bounce glitches while preserving genuine industrial process step changes.",
+      "pl": "Klasyczne reguły oparte na odchyleniu standardowym zawodzą, gdy błędy czujników tworzą silny {{term:sensor_noise}} i gigantyczne piki. {{term:hampel_filter}} wyznacza medianę w oknie kroczącym i zastępuje punkty przekraczające próg $3 \\times 1.4826 \\times \\text{MAD}$. Skutecznie usuwa to zakłócenia elektryczne, zachowując rzeczywiste skoki parametrów technologicznych."
+    }
+  ],
+  "estimatedMinutes": 25
+}

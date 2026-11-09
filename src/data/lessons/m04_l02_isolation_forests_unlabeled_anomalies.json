@@ -1,0 +1,79 @@
+{
+  "id": "m04_l02_isolation_forests_unlabeled_anomalies",
+  "module_id": "mod-4",
+  "module_number": 4,
+  "lesson_number": 2,
+  "title_en": "Isolation Forests & Elliptic Envelope for Zero-Label Anomalies",
+  "titlePl": "Lasy Izolacyjne w Bezetykietowej Detekcji Anomalii Maszyn",
+  "summary_en": "Train tree-based Isolation Forests and Elliptic Envelopes on raw multi-sensor telemetry to assign continuous anomaly health scores without historical failure logs.",
+  "summary_pl": "Trenuj Lasy Izolacyjne na danych z czujników, wyliczając ciągły wskaźnik zdrowia maszyny bez konieczności posiadania historii uszkodzeń.",
+  "visual_widget": "clustering_sandbox",
+  "colab_notebook": "m04_l02_isolation_forests_unlabeled_anomalies.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m4-2-1",
+      "textEn": "Fit sklearn.ensemble.IsolationForest on healthy baseline machine telemetry",
+      "textPl": "Dopasuj IsolationForest do wzorcowych danych ze sprawnych cykli produkcyjnych"
+    },
+    {
+      "id": "chk-m4-2-2",
+      "textEn": "Compute decision_function continuous anomaly health scores across operating shifts",
+      "textPl": "Oblicz ciągły wskaźnik anomalii za pomocą decision_function na przestrzeni zmian roboczych"
+    },
+    {
+      "id": "chk-m4-2-3",
+      "textEn": "Set dynamic alarm thresholds based on statistical anomaly score percentiles",
+      "textPl": "Skonfiguruj dynamiczne progi alarmowe w oparciu o percentyle wskaźnika anomalii"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Zero-Shot Anomaly Detection in Practice",
+      "titlePl": "Detekcja Anomalii 'Zero-Shot' w Praktyce Fabrycznej",
+      "en": "On newly commissioned production lines, engineers do not have historical breakdown logs. {{term:isolation_forest}} bypasses this bottleneck: instead of modeling normal density, it isolates anomalies through random feature partitions. Because anomalies are few and structurally distinct, they are separated near the top of the decision trees with short path lengths, yielding an instant {{term:anomaly_score}}.",
+      "pl": "Na nowo uruchomionych liniach produkcyjnych inżynierowie nie dysponują bazą historycznych awarii. {{term:isolation_forest}} rozwiązuje ten problem: zamiast modelować profil normalności, izoluje punkty losowymi podziałami cech. Ponieważ awarie są nieliczne i nietypowe, zostają odcięte tuż przy korzeniach drzew decyzyjnych, dając natychmiastowy {{term:anomaly_score}}."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m4-2-1",
+      "questionEn": "Why do anomalous machine measurements exhibit shorter average tree path lengths in an Isolation Forest?",
+      "questionPl": "Dlaczego anomalne pomiary mają krótszą średnią długość ścieżki w drzewach Lasu Izolacyjnego?",
+      "optionsEn": [
+        "Anomalies reside in sparse, low-density regions far from normal clusters, requiring very few random cuts to isolate",
+        "Anomalous rows are processed on higher-speed CPU cores",
+        "Tree depth is hardcoded to 1 for defects",
+        "Anomalies have higher numerical values than healthy data"
+      ],
+      "optionsPl": [
+        "Anomalie leżą w rzadkich obszarach przestrzeni cech, więc losowe cięcia odseparowują je w zaledwie 2-3 krokach",
+        "Wiersze z awariami są przetwarzane na szybszych rdzeniach procesora",
+        "Głębokość drzewa jest sztucznie ustawiona na 1 dla wad",
+        "Anomalie przyjmują zawsze wyższe wartości liczbowe niż dane sprawne"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Points inside dense operational clusters require dozens of splits to isolate, while outliers in empty feature space are isolated within 2-4 splits.",
+      "explanationPl": "Punkty w gęstym skupisku normalnej pracy wymagają dziesiątek podziałów do wyizolowania, podczas gdy anomalie w pustej przestrzeni zostają odcięte błyskawicznie."
+    }
+  ],
+  "titleEn": "Isolation Forests & Elliptic Envelope for Zero-Label Anomalies",
+  "title_pl": "Lasy Izolacyjne w Bezetykietowej Detekcji Anomalii Maszyn",
+  "summaryEn": "Train tree-based Isolation Forests and Elliptic Envelopes on raw multi-sensor telemetry to assign continuous anomaly health scores without historical failure logs.",
+  "summaryPl": "Trenuj Lasy Izolacyjne na danych z czujników, wyliczając ciągły wskaźnik zdrowia maszyny bez konieczności posiadania historii uszkodzeń.",
+  "sandboxType": "clustering_sandbox",
+  "notebook": "m04_l02_isolation_forests_unlabeled_anomalies.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Zero-Shot Anomaly Detection in Practice",
+      "titlePl": "Detekcja Anomalii 'Zero-Shot' w Praktyce Fabrycznej",
+      "en": "On newly commissioned production lines, engineers do not have historical breakdown logs. {{term:isolation_forest}} bypasses this bottleneck: instead of modeling normal density, it isolates anomalies through random feature partitions. Because anomalies are few and structurally distinct, they are separated near the top of the decision trees with short path lengths, yielding an instant {{term:anomaly_score}}.",
+      "pl": "Na nowo uruchomionych liniach produkcyjnych inżynierowie nie dysponują bazą historycznych awarii. {{term:isolation_forest}} rozwiązuje ten problem: zamiast modelować profil normalności, izoluje punkty losowymi podziałami cech. Ponieważ awarie są nieliczne i nietypowe, zostają odcięte tuż przy korzeniach drzew decyzyjnych, dając natychmiastowy {{term:anomaly_score}}."
+    }
+  ],
+  "estimatedMinutes": 25
+}

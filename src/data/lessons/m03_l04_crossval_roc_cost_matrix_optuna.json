@@ -1,0 +1,79 @@
+{
+  "id": "m03_l04_crossval_roc_cost_matrix_optuna",
+  "module_id": "mod-3",
+  "module_number": 3,
+  "lesson_number": 4,
+  "title_en": "Cost-Sensitive Evaluation, PR-AUC & Optuna Hyperparameter Tuning",
+  "titlePl": "Ewaluacja Kosztowa, Krzywe PR i Optymalizacja Hiperparametrów z Optuna",
+  "summary_en": "Implement TimeSeriesSplit cross-validation, align models with real financial failure costs, and run Optuna Bayesian hyperparameter optimization.",
+  "summary_pl": "Zaimplementuj walidację krzyżową TimeSeriesSplit, powiąż model z finansowym kosztem awarii i zoptymalizuj hiperparametry z Optuna.",
+  "visual_widget": "cost_matrix_sandbox",
+  "colab_notebook": "m03_l04_crossval_roc_cost_matrix_optuna.ipynb",
+  "estimated_minutes": 30,
+  "checklist": [
+    {
+      "id": "chk-m3-4-1",
+      "textEn": "Implement TimeSeriesSplit cross-validation to prevent future-data contamination",
+      "textPl": "Zaimplementuj walidację krzyżową TimeSeriesSplit, zapobiegając wyciekom z przyszłości"
+    },
+    {
+      "id": "chk-m3-4-2",
+      "textEn": "Calculate Precision-Recall Area Under Curve (PR-AUC) under 99.5% class imbalance",
+      "textPl": "Wylicz pole pod krzywą PR (PR-AUC) przy niezbalansowaniu klas na poziomie 99.5%"
+    },
+    {
+      "id": "chk-m3-4-3",
+      "textEn": "Run an Optuna Bayesian study minimizing plant financial loss function ($10,000 FN vs $50 FP)",
+      "textPl": "Przeprowadź badanie bayesowskie w Optuna minimalizujące funkcję strat ($10 000 za FN vs $50 za FP)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Time-Aware Cross-Validation & Financial Objectives",
+      "titlePl": "Walidacja Czasowa i Optymalizacja Strat Finansowych",
+      "en": "Standard random K-Fold cross-validation destroys the temporal arrow of time in machine data, causing massive validation leakage. We must use TimeSeriesSplit forward-chaining. Furthermore, by defining a custom loss metric driven by our {{term:asymmetric_cost_matrix}}, we employ {{term:optuna}} Bayesian optimization to tune decision thresholds and tree hyperparameters to minimize dollar costs rather than generic log-loss.",
+      "pl": "Standardowa losowa walidacja K-Fold łamie porządek chronologiczny danych maszynowych, prowadząc do zafałszowania wyników testów. Należy stosować podział kroczący TimeSeriesSplit. Dodatkowo, definiując funkcję straty w oparciu o naszą {{term:asymmetric_cost_matrix}}, zaprzęgamy optymalizator {{term:optuna}} do odnalezienia progu decyzyjnego minimalizującego realne straty finansowe fabryki."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m3-4-1",
+      "questionEn": "Why is standard random K-Fold cross-validation forbidden for industrial predictive maintenance models?",
+      "questionPl": "Dlaczego standardowa losowa walidacja K-Fold jest niedopuszczalna w modelach predykcyjnego utrzymania ruchu?",
+      "optionsEn": [
+        "Random splitting leaks future failure patterns into training folds, yielding unrealistically optimistic test scores that fail in production",
+        "K-Fold only works when all features are normalized between 0 and 1",
+        "K-Fold produces negative probabilities",
+        "Scikit-learn blocks K-Fold on time-series datasets"
+      ],
+      "optionsPl": [
+        "Losowy podział sprawia, że dane z przyszłości wyciekają do zbioru uczącego, dając złudnie wysokie wyniki testów nieweryfikowalne na produkcji",
+        "K-Fold działa wyłącznie, gdy wszystkie cechy są znormalizowane od 0 do 1",
+        "K-Fold zwraca ujemne prawdopodobieństwa",
+        "Scikit-learn blokuje K-Fold dla szeregów czasowych"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Predictive maintenance relies on learning degradation trajectories over time. Random shuffling lets the model memorize surrounding time points, creating severe data leakage.",
+      "explanationPl": "Diagnostyka maszyn bazuje na trajektoriach postępującego zużycia. Losowe wymieszanie wierszy pozwala modelowi podejmować decyzje na podstawie sąsiadujących chwil czasu."
+    }
+  ],
+  "titleEn": "Cost-Sensitive Evaluation, PR-AUC & Optuna Hyperparameter Tuning",
+  "title_pl": "Ewaluacja Kosztowa, Krzywe PR i Optymalizacja Hiperparametrów z Optuna",
+  "summaryEn": "Implement TimeSeriesSplit cross-validation, align models with real financial failure costs, and run Optuna Bayesian hyperparameter optimization.",
+  "summaryPl": "Zaimplementuj walidację krzyżową TimeSeriesSplit, powiąż model z finansowym kosztem awarii i zoptymalizuj hiperparametry z Optuna.",
+  "sandboxType": "cost_matrix_sandbox",
+  "notebook": "m03_l04_crossval_roc_cost_matrix_optuna.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Time-Aware Cross-Validation & Financial Objectives",
+      "titlePl": "Walidacja Czasowa i Optymalizacja Strat Finansowych",
+      "en": "Standard random K-Fold cross-validation destroys the temporal arrow of time in machine data, causing massive validation leakage. We must use TimeSeriesSplit forward-chaining. Furthermore, by defining a custom loss metric driven by our {{term:asymmetric_cost_matrix}}, we employ {{term:optuna}} Bayesian optimization to tune decision thresholds and tree hyperparameters to minimize dollar costs rather than generic log-loss.",
+      "pl": "Standardowa losowa walidacja K-Fold łamie porządek chronologiczny danych maszynowych, prowadząc do zafałszowania wyników testów. Należy stosować podział kroczący TimeSeriesSplit. Dodatkowo, definiując funkcję straty w oparciu o naszą {{term:asymmetric_cost_matrix}}, zaprzęgamy optymalizator {{term:optuna}} do odnalezienia progu decyzyjnego minimalizującego realne straty finansowe fabryki."
+    }
+  ],
+  "estimatedMinutes": 30
+}

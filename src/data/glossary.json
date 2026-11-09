@@ -898,5 +898,115 @@
     "defPl": "Zautomatyzowany proces CI/CD pobierający nowe dane awaryjne i dotrenowujący model w przypadku wykrycia dryfu.",
     "contextEn": "Automatically incorporates verified false alarms into the training set every Sunday night.",
     "contextPl": "W każdą niedzielę automatycznie włącza zweryfikowane fałszywe alarmy do zbioru treningowego."
+  },
+  {
+    "id": "current_loop_4_20ma",
+    "termEn": "4-20mA Current Loop",
+    "termPl": "Pętla prądowa 4-20mA",
+    "category": "Signals & Acquisition",
+    "defEn": "Universal industrial analog signaling standard where 4mA represents 0% scale and 20mA represents 100% scale, inherently resistant to voltage drops.",
+    "defPl": "Powszechny standard analogowy w automatyce, gdzie 4mA oznacza zero skali, a 20mA maksimum; zapewnia odporność na spadki napięcia na długich przewodach.",
+    "contextEn": "Transmitters measuring chemical pipe pressure transmit 4-20mA directly to PLC analog input cards.",
+    "contextPl": "Przetworniki ciśnienia w rurociągach przesyłają sygnał 4-20mA bezpośrednio do wejść analogowych PLC."
+  },
+  {
+    "id": "polars",
+    "termEn": "Polars DataFrame Library",
+    "termPl": "Biblioteka Polars",
+    "category": "Signals & Acquisition",
+    "defEn": "Blazingly fast multi-threaded DataFrame library written in Rust using Apache Arrow memory format, optimized for large time-series logs.",
+    "defPl": "Niezwykle wydajna, wielowątkowa biblioteka DataFrame napisana w Rust, operująca na formacie Apache Arrow, idealna do wielomilionowych logów SCADA.",
+    "contextEn": "Processes 50 million machine vibration rows in seconds where traditional Pandas would run out of RAM.",
+    "contextPl": "Przetwarza 50 milionów próbek wibracji w kilka sekund, podczas gdy tradycyjny Pandas przepełniłby pamięć RAM."
+  },
+  {
+    "id": "duckdb",
+    "termEn": "DuckDB OLAP Engine",
+    "termPl": "Silnik analityczny DuckDB",
+    "category": "Signals & Acquisition",
+    "defEn": "In-process SQL analytical database management system optimized for fast aggregations directly over Parquet files without a server.",
+    "defPl": "Wbudowana baza analityczna SQL zoptymalizowana do błyskawicznych agregacji bezpośrednio na plikach Parquet bez potrzeby stawiania serwera.",
+    "contextEn": "Executes complex time-weighted rolling SQL queries directly across years of historian archives in milliseconds.",
+    "contextPl": "Wykonuje złożone agregacje czasowe bezpośrednio na wieloletnich archiwach historiana w ułamku sekundy."
+  },
+  {
+    "id": "parquet",
+    "termEn": "Apache Parquet",
+    "termPl": "Kolumnowy format Parquet",
+    "category": "Signals & Acquisition",
+    "defEn": "Open source, column-oriented data file format designed for efficient data storage and rapid query retrieval with ZSTD/Snappy compression.",
+    "defPl": "Otwarty format kolumnowy zapewniający wysoką kompresję (np. ZSTD) i błyskawiczny odczyt wybranych kanałów czujników z archiwów SCADA.",
+    "contextEn": "Shrinks 1 TB of CSV plant telemetry down to 90 GB of compressed Parquet with 10x faster query speeds.",
+    "contextPl": "Zmniejsza 1 TB plików CSV z telemetrią fabryczną do 90 GB Parquet, skracając czas odczytu 10-krotnie."
+  },
+  {
+    "id": "hampel_filter",
+    "termEn": "Hampel Filter",
+    "termPl": "Filtr Hampela",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Robust outlier detection algorithm using rolling median and Median Absolute Deviation (MAD) to replace localized sensor spikes.",
+    "defPl": "Odporny filtr anomalii oparty na kroczącej medianie i bezwzględnym odchyleniu medianowym (MAD), skutecznie usuwający szpilki pomiarowe.",
+    "contextEn": "Replaces loose cable contact spikes with physical continuous values without distorting genuine process steps.",
+    "contextPl": "Usuwa pojedyncze skoki od zakłóceń styków bez zniekształcania rzeczywistych skoków ciśnienia w procesie."
+  },
+  {
+    "id": "lag_features",
+    "termEn": "Lag Features (Time Delays)",
+    "termPl": "Cechy opóźnione (Lag Features)",
+    "category": "Preprocessing & Scaling",
+    "defEn": "Historical values of sensor variables shifted backwards in time (t-1, t-5, t-30) to give regression models access to process memory.",
+    "defPl": "Wartości pomiarów przesunięte wstecz w czasie (t-1, t-5, t-30), dostarczające modelom regresji wiedzę o bezwładności termicznej i pamięci procesu.",
+    "contextEn": "Furnace heating temperature at t-10 minutes strongly determines the power required at current time t.",
+    "contextPl": "Temperatura pieca sprzed 10 minut determinuje ilość energii potrzebną do utrzymania zadanego profilu grzania."
+  },
+  {
+    "id": "random_forest",
+    "termEn": "Random Forest Ensemble",
+    "termPl": "Las Losowy (Random Forest)",
+    "category": "Classification & Evaluation",
+    "defEn": "Ensemble learning method operating by constructing a multitude of decision trees at training time and outputting mode/mean prediction.",
+    "defPl": "Algorytm zespołowy budujący setki drzew decyzyjnych na podzbiorach danych, zapewniający wysoką stabilność i odporność na przeuczenie.",
+    "contextEn": "Industry benchmark for classifying motor failure modes based on engineered vibration statistics.",
+    "contextPl": "Standard branżowy w klasyfikacji typów awarii silników na podstawie wyznaczonych wskaźników drgań."
+  },
+  {
+    "id": "xgboost",
+    "termEn": "XGBoost (Extreme Gradient Boosting)",
+    "termPl": "Algorytm XGBoost",
+    "category": "Classification & Evaluation",
+    "defEn": "Highly optimized gradient boosted decision tree library designed for maximum speed, accuracy, and handling of missing telemetry.",
+    "defPl": "Zoptymalizowana biblioteka drzew gradientowych zapewniająca najwyższą celność na tabelarycznych danych z czujników przemysłowych.",
+    "contextEn": "Predicts turbine overhaul requirements weeks ahead with industry-leading tabular classification scores.",
+    "contextPl": "Przewiduje konieczność remontu turbiny z wielotygodniowym wyprzedzeniem na podstawie parametrów ze SCADA."
+  },
+  {
+    "id": "lightgbm",
+    "termEn": "LightGBM",
+    "termPl": "Algorytm LightGBM",
+    "category": "Classification & Evaluation",
+    "defEn": "High-performance gradient boosting framework based on histogram algorithms and leaf-wise tree growth, ideal for giant industrial datasets.",
+    "defPl": "Szybki framework drzew gradientowych oparty na histogramach cech, zużywający minimalną ilość pamięci przy milionach wierszy pomiarów.",
+    "contextEn": "Trains in 15 seconds on 5 million rows of continuous rolling mill sensor data.",
+    "contextPl": "Trenuje w 15 sekund na 5 milionach wierszy parametrów walcarki hutniczej."
+  },
+  {
+    "id": "optuna",
+    "termEn": "Optuna Hyperparameter Tuning",
+    "termPl": "Optymalizator hiperparametrów Optuna",
+    "category": "Classification & Evaluation",
+    "defEn": "Next-generation hyperparameter optimization framework featuring Tree-structured Parzen Estimator (TPE) Bayesian search and automated trial pruning.",
+    "defPl": "Nowoczesny framework bayesowski do automatycznego doboru hiperparametrów modeli ML, minimalizujący asymetryczne koszty awarii fabryki.",
+    "contextEn": "Finds the cost-optimal decision threshold and tree depth in 50 trials instead of thousands of brute-force grid searches.",
+    "contextPl": "W 50 próbach odnajduje optymalny próg decyzyjny minimalizujący straty finansowe fabryki."
+  },
+  {
+    "id": "umap",
+    "termEn": "UMAP (Uniform Manifold Approximation)",
+    "termPl": "Algorytm UMAP",
+    "category": "Clustering & Anomaly Detection",
+    "defEn": "Non-linear dimensionality reduction technique based on Riemannian geometry and algebraic topology, preserving both local and global data structure.",
+    "defPl": "Nieliniowa metoda redukcji wymiarowości zachowująca strukturę globalną i lokalną skupisk, idealna do wizualizacji reżimów pracy maszyn.",
+    "contextEn": "Projects 64 chemical reactor thermocouple variables into an intuitive 2D topological map where degraded states form distinct islands.",
+    "contextPl": "Rzutuje 64 czujniki temperatury reaktora na mapę 2D, gdzie stany awaryjne tworzą wyraźnie odseparowane wyspy."
   }
 ]

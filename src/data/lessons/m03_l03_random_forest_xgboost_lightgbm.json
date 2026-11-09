@@ -1,0 +1,79 @@
+{
+  "id": "m03_l03_random_forest_xgboost_lightgbm",
+  "module_id": "mod-3",
+  "module_number": 3,
+  "lesson_number": 3,
+  "title_en": "Random Forests & Gradient Boosting (XGBoost / LightGBM)",
+  "titlePl": "Lasy Losowe i Gradient Boosting w Danych Tabularnych z Czujników",
+  "summary_en": "Deploy Random Forests, XGBoost, and LightGBM on multi-sensor telemetry to benchmark defect classification accuracy, training speed, and feature importance.",
+  "summary_pl": "Wdróż Lasy Losowe, XGBoost i LightGBM na danych z czujników, porównując precyzję detekcji wad, czas trenowania i wagę cech.",
+  "visual_widget": "cost_matrix_sandbox",
+  "colab_notebook": "m03_l03_random_forest_xgboost_lightgbm.ipynb",
+  "estimated_minutes": 30,
+  "checklist": [
+    {
+      "id": "chk-m3-3-1",
+      "textEn": "Train a Random Forest classifier with balanced class weights on imbalanced defect logs",
+      "textPl": "Wytrenuj klasyfikator Lasu Losowego z wagami balanced na niezbalansowanym zbiorze awarii"
+    },
+    {
+      "id": "chk-m3-3-2",
+      "textEn": "Fit XGBoost and LightGBM models with histogram-based binning",
+      "textPl": "Wytrenuj modele XGBoost i LightGBM z dyskretyzacją histogramową cech"
+    },
+    {
+      "id": "chk-m3-3-3",
+      "textEn": "Extract and plot Gini and SHAP feature importance rankings to identify leading failure indicators",
+      "textPl": "Wyznacz i wykreśl ranking istotności cech (SHAP i Gini), identyfikując główne wskaźniki awarii"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Ensemble Domination on Tabular Sensor Data",
+      "titlePl": "Dominacja Modeli Zespołowych w Danych Tabularnych",
+      "en": "While deep learning excels in computer vision, tree ensemble methods like {{term:random_forest}}, {{term:xgboost}}, and {{term:lightgbm}} dominate tabular industrial telemetry. They handle non-linear sensor relationships, tolerate unscaled columns, and naturally accommodate missing data packets without requiring extensive manual preprocessing.",
+      "pl": "Podczas gdy deep learning dominuje w wizji maszynowej, modele drzewiaste, takie jak {{term:random_forest}}, {{term:xgboost}} i {{term:lightgbm}}, są bezkonkurencyjne na tabelarycznych danych z czujników. Doskonale radzą sobie z nieliniowościami, nie wymagają rygorystycznego skalowania i są odporne na pojedyncze braki w transmisji."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m3-3-1",
+      "questionEn": "Why is LightGBM significantly faster than traditional Random Forests on multi-million row sensor archives?",
+      "questionPl": "Dlaczego LightGBM trenuje się znacznie szybciej niż klasyczny Las Losowy na wielomilionowych archiwach danych?",
+      "optionsEn": [
+        "LightGBM uses feature histogram binning and leaf-wise tree growth rather than sorting continuous values at every split",
+        "LightGBM does not use decision trees",
+        "LightGBM trains on quantum TPU hardware only",
+        "LightGBM discards all sensor data except the first column"
+      ],
+      "optionsPl": [
+        "LightGBM grupuje ciągłe wartości w dyskretne histogramy i rośnie w sposób liściowy (leaf-wise), unikając ciągłego sortowania liczb",
+        "LightGBM w ogóle nie korzysta z drzew decyzyjnych",
+        "LightGBM wymaga kwantowych procesorów TPU",
+        "LightGBM odrzuca wszystkie kolumny danych poza pierwszą"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Histogram-based discretization groups continuous sensor floats into discrete bins (e.g. 256 bins), speeding up split evaluations by orders of magnitude.",
+      "explanationPl": "Dyskretyzacja histogramowa dzieli ciągłe liczby z czujników na 256 kubełków, przyspieszając testowanie podziałów drzewa o całe rzędy wielkości."
+    }
+  ],
+  "titleEn": "Random Forests & Gradient Boosting (XGBoost / LightGBM)",
+  "title_pl": "Lasy Losowe i Gradient Boosting w Danych Tabularnych z Czujników",
+  "summaryEn": "Deploy Random Forests, XGBoost, and LightGBM on multi-sensor telemetry to benchmark defect classification accuracy, training speed, and feature importance.",
+  "summaryPl": "Wdróż Lasy Losowe, XGBoost i LightGBM na danych z czujników, porównując precyzję detekcji wad, czas trenowania i wagę cech.",
+  "sandboxType": "cost_matrix_sandbox",
+  "notebook": "m03_l03_random_forest_xgboost_lightgbm.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Ensemble Domination on Tabular Sensor Data",
+      "titlePl": "Dominacja Modeli Zespołowych w Danych Tabularnych",
+      "en": "While deep learning excels in computer vision, tree ensemble methods like {{term:random_forest}}, {{term:xgboost}}, and {{term:lightgbm}} dominate tabular industrial telemetry. They handle non-linear sensor relationships, tolerate unscaled columns, and naturally accommodate missing data packets without requiring extensive manual preprocessing.",
+      "pl": "Podczas gdy deep learning dominuje w wizji maszynowej, modele drzewiaste, takie jak {{term:random_forest}}, {{term:xgboost}} i {{term:lightgbm}}, są bezkonkurencyjne na tabelarycznych danych z czujników. Doskonale radzą sobie z nieliniowościami, nie wymagają rygorystycznego skalowania i są odporne na pojedyncze braki w transmisji."
+    }
+  ],
+  "estimatedMinutes": 30
+}

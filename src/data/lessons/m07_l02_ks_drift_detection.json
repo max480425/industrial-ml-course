@@ -1,0 +1,79 @@
+{
+  "id": "m07_l02_ks_drift_detection",
+  "module_id": "mod-7",
+  "module_number": 7,
+  "lesson_number": 2,
+  "title_en": "Automated Drift Detection with Kolmogorov-Smirnov Tests",
+  "title_pl": "Automatyczna Detekcja Dryfu Testem Kołmogorowa-Smirnowa",
+  "summary_en": "Run statistical hypothesis tests comparing baseline reference distributions against live production streaming telemetry.",
+  "summary_pl": "Wykonuj testy statystyczne porównujące rozkład referencyjny z bieżącą telemetrią produkcyjną.",
+  "visual_widget": "drift_latency_sandbox",
+  "colab_notebook": "m07_l02_ks_drift_detection.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m7-2-1",
+      "textEn": "Extract reference baseline distribution from verified training set",
+      "textPl": "Wyodrębnij rozkład referencyjny z poprawnego zbioru treningowego"
+    },
+    {
+      "id": "chk-m7-2-2",
+      "textEn": "Run scipy.stats.ks_2samp across incoming daily telemetry windows",
+      "textPl": "Uruchamiaj scipy.stats.ks_2samp dla kolejnych dziennych okien danych"
+    },
+    {
+      "id": "chk-m7-2-3",
+      "textEn": "Trigger automated alert when KS p-value drops below 0.01",
+      "textPl": "Wywołaj powiadomienie alarmowe, gdy wartość p-value testu KS spadnie poniżej 0.01"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "titleEn": "Statistical Drift Guardrails",
+      "titlePl": "Statystyczne Strażniki Dryfu Danych",
+      "en": "Plant engineers cannot wait for catastrophic machine breakdowns to discover that an ML model has gone out of calibration. By running the non-parametric {{term:ks_test}} on daily sensor logs, we compare the cumulative distribution function of live telemetry against the golden baseline. When the statistical distance exceeds safety thresholds, an automated maintenance ticket is raised.",
+      "pl": "Inżynierowie utrzymania ruchu nie mogą czekać na katastrofalną awarię, by zorientować się, że model utracił dokładność. Uruchamiając nieparametryczny {{term:ks_test}} na dziennych logach, porównujemy dystrybuantę bieżącej telemetrii z profilem wzorcowym. Gdy odległość statystyczna przekroczy normę, system generuje zlecenie kalibracji."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m7-2-1",
+      "questionEn": "What does a Kolmogorov-Smirnov p-value of 0.0001 (alpha = 0.05) indicate?",
+      "questionPl": "Co oznacza wynik p-value = 0.0001 (dla poziomu istotności alpha = 0.05) w teście Kołmogorowa-Smirnowa?",
+      "optionsEn": [
+        "The distributions are identical and the model is healthy",
+        "Reject the null hypothesis: there is statistically significant drift between the baseline and live telemetry",
+        "The sensor has lost electrical power",
+        "The test has timed out"
+      ],
+      "optionsPl": [
+        "Rozkłady są identyczne, a model jest w pełni zdatny do pracy",
+        "Odrzucenie hipotezy zerowej: wystąpił istotny statystycznie dryf parametrów między bazą a produkcją",
+        "Czujnik utracił zasilanie elektryczne",
+        "Test przekroczył limit czasu wykonania"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "A very small p-value indicates that the probability of observing this distributional difference under the null hypothesis (identical distributions) is near zero, proving significant data drift.",
+      "explanationPl": "Bardzo małe p-value oznacza, że prawdopodobieństwo zaobserwowania takich różnic przy braku dryfu jest bliskie zeru, co stanowi dowód na rozkalibrowanie parametrów."
+    }
+  ],
+  "titleEn": "Automated Drift Detection with Kolmogorov-Smirnov Tests",
+  "titlePl": "Automatyczna Detekcja Dryfu Testem Kołmogorowa-Smirnowa",
+  "summaryEn": "Run statistical hypothesis tests comparing baseline reference distributions against live production streaming telemetry.",
+  "summaryPl": "Wykonuj testy statystyczne porównujące rozkład referencyjny z bieżącą telemetrią produkcyjną.",
+  "sandboxType": "drift_latency_sandbox",
+  "notebook": "m07_l02_ks_drift_detection.ipynb",
+  "contentBlocks": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "titleEn": "Statistical Drift Guardrails",
+      "titlePl": "Statystyczne Strażniki Dryfu Danych",
+      "en": "Plant engineers cannot wait for catastrophic machine breakdowns to discover that an ML model has gone out of calibration. By running the non-parametric {{term:ks_test}} on daily sensor logs, we compare the cumulative distribution function of live telemetry against the golden baseline. When the statistical distance exceeds safety thresholds, an automated maintenance ticket is raised.",
+      "pl": "Inżynierowie utrzymania ruchu nie mogą czekać na katastrofalną awarię, by zorientować się, że model utracił dokładność. Uruchamiając nieparametryczny {{term:ks_test}} na dziennych logach, porównujemy dystrybuantę bieżącej telemetrii z profilem wzorcowym. Gdy odległość statystyczna przekroczy normę, system generuje zlecenie kalibracji."
+    }
+  ],
+  "estimatedMinutes": 25
+}

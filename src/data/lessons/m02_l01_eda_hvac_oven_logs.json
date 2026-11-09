@@ -1,0 +1,79 @@
+{
+  "id": "m02_l01_eda_hvac_oven_logs",
+  "module_id": "mod-2",
+  "module_number": 2,
+  "lesson_number": 1,
+  "title_en": "Exploratory Data Analysis (EDA) on Industrial HVAC & Oven Logs",
+  "titlePl": "Eksploracyjna Analiza Danych (EDA) Pieców Hutniczych i HVAC",
+  "summary_en": "Analyze industrial thermal profiles, identify heating/cooling hysteresis, and spot thermal sensor cross-correlations across oven zones.",
+  "summary_pl": "Badaj profile termiczne pieców, identyfikuj histerezę nagrzewania i chłodzenia oraz wyliczaj korelacje między strefami grzewczymi.",
+  "visual_widget": "scaling_outlier_sandbox",
+  "colab_notebook": "m02_l01_eda_hvac_oven_logs.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m2-1-1",
+      "textEn": "Visualize multi-zone oven temperature telemetry over a continuous 24-hour shift",
+      "textPl": "Zwizualizuj profile temperatury stref pieca w trakcie 24-godzinnej zmiany roboczej"
+    },
+    {
+      "id": "chk-m2-1-2",
+      "textEn": "Calculate thermal cross-correlation matrix across all 12 heating zones",
+      "textPl": "Oblicz macierz korelacji wzajemnej dla 12 stref grzewczych pieca"
+    },
+    {
+      "id": "chk-m2-1-3",
+      "textEn": "Identify thermal lag hysteresis loops between heating element power and thermocouple readings",
+      "textPl": "Zidentyfikuj pętle histerezy termicznej między mocą grzałek a odczytem termopar"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Thermal Inertia & Zone Interactions",
+      "titlePl": "Bezwładność Cieplna i Wpływ Stref na Siebie",
+      "en": "In glass annealing and semiconductor diffusion furnaces, temperature must be regulated across adjacent heating zones with 0.5°C precision. Because heat conducts through metal baffles, changes in Zone 1 physically influence Zone 2 with a delay of several minutes. Constructing a {{term:correlation_matrix}} reveals which sensor channels provide redundant signals.",
+      "pl": "W piecach do obróbki cieplnej szkła i metali temperatura musi być utrzymywana z precyzją do 0.5°C w wielu strefach grzewczych. Ze względu na przewodnictwo cieplne zmiana mocy w Strefie 1 wpływa na Strefę 2 z kilkuminutowym opóźnieniem. Zbudowanie {{term:correlation_matrix}} pozwala wykryć nadmiarowe czujniki i zbadać przenikanie ciepła."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m2-1-1",
+      "questionEn": "If adjacent thermocouple readings correlate at r = 0.985, what feature engineering action is recommended?",
+      "questionPl": "Jeśli odczyty sąsiednich termopar korelują na poziomie r = 0.985, jakie działanie inżynierskie jest zalecane?",
+      "optionsEn": [
+        "Delete both sensors immediately from the plant SCADA system",
+        "Compute their temperature gradient (delta) or retain one channel to avoid multicollinearity",
+        "Multiply both sensor values together to create an exponential feature",
+        "Invert the sign of the thermocouple readings"
+      ],
+      "optionsPl": [
+        "Natychmiast usunąć oba czujniki z fizycznej instalacji SCADA",
+        "Wyliczyć ich gradient (różnicę temperatur) lub zachować jeden kanał, eliminując współliniowość",
+        "Przemnożyć odczyty przez siebie, tworząc cechę wykładniczą",
+        "Odwrócić znak odczytów napięcia termopary"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Extremely correlated features cause unstable weights in regression and tree splits. Computing the gradient (T2 - T1) isolates the actual physical heat transfer.",
+      "explanationPl": "Wysoko skorelowane zmienne wywołują niestabilność wag modeli. Zastąpienie ich różnicą (T2 - T1) izoluje rzeczywisty przepływ ciepła."
+    }
+  ],
+  "titleEn": "Exploratory Data Analysis (EDA) on Industrial HVAC & Oven Logs",
+  "title_pl": "Eksploracyjna Analiza Danych (EDA) Pieców Hutniczych i HVAC",
+  "summaryEn": "Analyze industrial thermal profiles, identify heating/cooling hysteresis, and spot thermal sensor cross-correlations across oven zones.",
+  "summaryPl": "Badaj profile termiczne pieców, identyfikuj histerezę nagrzewania i chłodzenia oraz wyliczaj korelacje między strefami grzewczymi.",
+  "sandboxType": "scaling_outlier_sandbox",
+  "notebook": "m02_l01_eda_hvac_oven_logs.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Thermal Inertia & Zone Interactions",
+      "titlePl": "Bezwładność Cieplna i Wpływ Stref na Siebie",
+      "en": "In glass annealing and semiconductor diffusion furnaces, temperature must be regulated across adjacent heating zones with 0.5°C precision. Because heat conducts through metal baffles, changes in Zone 1 physically influence Zone 2 with a delay of several minutes. Constructing a {{term:correlation_matrix}} reveals which sensor channels provide redundant signals.",
+      "pl": "W piecach do obróbki cieplnej szkła i metali temperatura musi być utrzymywana z precyzją do 0.5°C w wielu strefach grzewczych. Ze względu na przewodnictwo cieplne zmiana mocy w Strefie 1 wpływa na Strefę 2 z kilkuminutowym opóźnieniem. Zbudowanie {{term:correlation_matrix}} pozwala wykryć nadmiarowe czujniki i zbadać przenikanie ciepła."
+    }
+  ],
+  "estimatedMinutes": 25
+}

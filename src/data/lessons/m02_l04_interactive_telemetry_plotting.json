@@ -1,0 +1,79 @@
+{
+  "id": "m02_l04_interactive_telemetry_plotting",
+  "module_id": "mod-2",
+  "module_number": 2,
+  "lesson_number": 4,
+  "title_en": "Interactive Telemetry Plotting with Matplotlib & Plotly",
+  "titlePl": "Interaktywna Wizualizacja Telemetrii z Matplotlib i Plotly",
+  "summary_en": "Build synchronized multi-channel dashboards for machine telemetry, overlay threshold alarms, and enable sub-second zoom into high-speed events.",
+  "summary_pl": "Twórz zsynchronizowane pulpity telemetryczne maszyn, nakładaj progi alarmowe i badaj szybkie zdarzenia awaryjne w powiększeniu.",
+  "visual_widget": "scaling_outlier_sandbox",
+  "colab_notebook": "m02_l04_interactive_telemetry_plotting.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m2-4-1",
+      "textEn": "Construct a multi-panel synchronized time-series figure in Matplotlib",
+      "textPl": "Zbuduj wielopanelowy, zsynchronizowany w czasie wykres w Matplotlib"
+    },
+    {
+      "id": "chk-m2-4-2",
+      "textEn": "Overlay ISO 10816 machinery vibration severity limit bands (Green, Yellow, Red)",
+      "textPl": "Nałóż strefy alarmowe normy ISO 10816 (Zielona, Żółta, Czerwona)"
+    },
+    {
+      "id": "chk-m2-4-3",
+      "textEn": "Render an interactive zoomable Plotly telemetry dashboard for plant operators",
+      "textPl": "Wygeneruj interaktywny wykres Plotly z płynnym zoomem dla operatorów linii"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Dashboarding & Operator Trust",
+      "titlePl": "Wizualizacja Inżynierska i Zaufanie Operatora",
+      "en": "In modern smart manufacturing, an algorithm is only as good as the operator's ability to interpret its output. Synchronizing multiple physical axes (Spindle RPM on top, Motor Current in middle, Bearing Vibration on bottom) with interactive pan/zoom enables engineers to immediately confirm whether a detected anomaly represents mechanical tool chatter or electrical drive noise.",
+      "pl": "W nowoczesnej fabryce model ML jest tak użyteczny, jak zdolność operatora do zrozumienia jego wyników. Zsynchronizowanie osi czasu dla kilku parametrów (obroty wrzeciona na górze, prąd w środku, drgania łożysk na dole) z interaktywnym zoomem pozwala mechanikowi natychmiast ocenić, czy alarm to wypracowany frez, czy zakłócenie falownika."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m2-4-1",
+      "questionEn": "Why is x-axis time synchronization critical when plotting multi-sensor SCADA streams?",
+      "questionPl": "Dlaczego synchronizacja osi czasu jest kluczowa przy wykreślaniu wielu kanałów ze SCADA?",
+      "optionsEn": [
+        "It allows zooming into a motor current trip to see the exact millisecond vibration spike that triggered it",
+        "It makes the chart load without CSS styling",
+        "It prevents the GPU from throttling",
+        "It automatically computes the FFT magnitude"
+      ],
+      "optionsPl": [
+        "Umożliwia przybliżenie momentu zadziałania zabezpieczenia i zbadanie drgań w dokładnej milisekundzie awarii",
+        "Sprawia, że wykres ładuje się bez stylów CSS",
+        "Zapobiega przegrzewaniu układu graficznego",
+        "Automatycznie wylicza widmo amplitudowe FFT"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Synchronized time axes ensure that when zooming into an electrical fault event, all temperature and vibration channels pan together to pinpoint root cause.",
+      "explanationPl": "Wspólna oś czasu gwarantuje, że przybliżając moment przeciążenia elektrycznego, wszystkie wykresy temperatur i drgań przesuwają się wspólnie, ułatwiając analizę przyczyn."
+    }
+  ],
+  "titleEn": "Interactive Telemetry Plotting with Matplotlib & Plotly",
+  "title_pl": "Interaktywna Wizualizacja Telemetrii z Matplotlib i Plotly",
+  "summaryEn": "Build synchronized multi-channel dashboards for machine telemetry, overlay threshold alarms, and enable sub-second zoom into high-speed events.",
+  "summaryPl": "Twórz zsynchronizowane pulpity telemetryczne maszyn, nakładaj progi alarmowe i badaj szybkie zdarzenia awaryjne w powiększeniu.",
+  "sandboxType": "scaling_outlier_sandbox",
+  "notebook": "m02_l04_interactive_telemetry_plotting.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Dashboarding & Operator Trust",
+      "titlePl": "Wizualizacja Inżynierska i Zaufanie Operatora",
+      "en": "In modern smart manufacturing, an algorithm is only as good as the operator's ability to interpret its output. Synchronizing multiple physical axes (Spindle RPM on top, Motor Current in middle, Bearing Vibration on bottom) with interactive pan/zoom enables engineers to immediately confirm whether a detected anomaly represents mechanical tool chatter or electrical drive noise.",
+      "pl": "W nowoczesnej fabryce model ML jest tak użyteczny, jak zdolność operatora do zrozumienia jego wyników. Zsynchronizowanie osi czasu dla kilku parametrów (obroty wrzeciona na górze, prąd w środku, drgania łożysk na dole) z interaktywnym zoomem pozwala mechanikowi natychmiast ocenić, czy alarm to wypracowany frez, czy zakłócenie falownika."
+    }
+  ],
+  "estimatedMinutes": 25
+}

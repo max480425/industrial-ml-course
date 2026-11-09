@@ -1,0 +1,79 @@
+{
+  "id": "m07_l04_mlops_pipeline",
+  "module_id": "mod-7",
+  "module_number": 7,
+  "lesson_number": 4,
+  "title_en": "Factory Deployment & Continuous Retraining Pipelines",
+  "title_pl": "Wdrożenie Fabryczne i Zautomatyzowane Potoki Dotrenowania",
+  "summary_en": "Architect an end-to-end industrial MLOps loop: stream edge telemetry, trigger drift alerts, and automate retraining on false alarms.",
+  "summary_pl": "Zaprojektuj pełną pętlę przemysłowego MLOps: zbieraj telemetrię, wyłapuj dryf i automatycznie dotrenowuj model na fałszywych alarmach.",
+  "visual_widget": "drift_latency_sandbox",
+  "colab_notebook": "m07_l04_mlops_pipeline.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m7-4-1",
+      "textEn": "Design edge telemetry ingestion queue buffer using MQTT/Kafka",
+      "textPl": "Zaprojektuj kolejkę buforującą odczyty maszyn w oparciu o MQTT/Kafka"
+    },
+    {
+      "id": "chk-m7-4-2",
+      "textEn": "Build human-in-the-loop operator feedback interface for false alarms",
+      "textPl": "Stwórz panel operatora do weryfikacji i oznaczania fałszywych alarmów"
+    },
+    {
+      "id": "chk-m7-4-3",
+      "textEn": "Automate scheduled weekly retraining and model registry deployment",
+      "textPl": "Zautomatyzuj cotygodniowe dotrenowanie i rejestrację nowego modelu"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "titleEn": "Closing the MLOps Loop on the Shop Floor",
+      "titlePl": "Domknięcie Pętli MLOps na Hali Fabrycznej",
+      "en": "A successful industrial AI system is not a static Python script—it is a continuous operational lifecycle. By deploying {{term:model_monitoring}}, production telemetry is continuously validated. When the line quality supervisor marks a false alarm, that verified edge sample is queued into the {{term:pipeline_retraining}} workflow, ensuring the model adapts gracefully to mechanical tool wear over the lifespan of the manufacturing line.",
+      "pl": "Skuteczny przemysłowy system AI to nie statyczny skrypt w Pythonie, lecz ciągły cykl życia. Wdrażając {{term:model_monitoring}}, nieustannie weryfikujemy telemetrię z hali. Gdy brygadzista jakości zweryfikuje fałszywy alarm, ten sprawdzony przykład trafia do kolejki w {{term:pipeline_retraining}}, dzięki czemu model samoczynnie adaptuje się do naturalnego zużywania się maszyn."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m7-4-1",
+      "questionEn": "Why is 'Human-in-the-Loop' operator feedback essential for automated retraining pipelines in manufacturing?",
+      "questionPl": "Dlaczego pętla zwrotna od operatora (Human-in-the-Loop) jest kluczowa w potokach dotrenowania modeli w fabrykach?",
+      "optionsEn": [
+        "Operators write the C++ code for the PLC drivers",
+        "Plant technicians provide the ground-truth verification on whether flagged anomalies were genuine breakdowns or harmless false alarms",
+        "Without humans, computers cannot run cron jobs",
+        "To slow down the manufacturing line"
+      ],
+      "optionsPl": [
+        "Operatorzy piszą kod sterowników PLC w języku C++",
+        "Technicy na linii dostarczają bezspornej prawdy referencyjnej: czy zaalarmowany detal był rzeczywistą wadą, czy nieszkodliwym błędem czujnika",
+        "Bez człowieka serwer nie potrafi uruchomić zaplanowanego zadania w cronie",
+        "Aby celowo spowolnić tempo pracy taśmociągu"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Automating retraining without human validation causes the model to learn its own errors (feedback loop collapse). Operator confirmation provides the verified ground truth.",
+      "explanationPl": "Dotrenowywanie bez ludzkiej weryfikacji prowadzi do utrwalania własnych błędów modelu. Potwierdzenie technika daje wiarygodny punkt odniesienia (ground truth)."
+    }
+  ],
+  "titleEn": "Factory Deployment & Continuous Retraining Pipelines",
+  "titlePl": "Wdrożenie Fabryczne i Zautomatyzowane Potoki Dotrenowania",
+  "summaryEn": "Architect an end-to-end industrial MLOps loop: stream edge telemetry, trigger drift alerts, and automate retraining on false alarms.",
+  "summaryPl": "Zaprojektuj pełną pętlę przemysłowego MLOps: zbieraj telemetrię, wyłapuj dryf i automatycznie dotrenowuj model na fałszywych alarmach.",
+  "sandboxType": "drift_latency_sandbox",
+  "notebook": "m07_l04_mlops_pipeline.ipynb",
+  "contentBlocks": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "titleEn": "Closing the MLOps Loop on the Shop Floor",
+      "titlePl": "Domknięcie Pętli MLOps na Hali Fabrycznej",
+      "en": "A successful industrial AI system is not a static Python script—it is a continuous operational lifecycle. By deploying {{term:model_monitoring}}, production telemetry is continuously validated. When the line quality supervisor marks a false alarm, that verified edge sample is queued into the {{term:pipeline_retraining}} workflow, ensuring the model adapts gracefully to mechanical tool wear over the lifespan of the manufacturing line.",
+      "pl": "Skuteczny przemysłowy system AI to nie statyczny skrypt w Pythonie, lecz ciągły cykl życia. Wdrażając {{term:model_monitoring}}, nieustannie weryfikujemy telemetrię z hali. Gdy brygadzista jakości zweryfikuje fałszywy alarm, ten sprawdzony przykład trafia do kolejki w {{term:pipeline_retraining}}, dzięki czemu model samoczynnie adaptuje się do naturalnego zużywania się maszyn."
+    }
+  ],
+  "estimatedMinutes": 25
+}

@@ -1,0 +1,79 @@
+{
+  "id": "m01_l03_duckdb_parquet_industrial_archives",
+  "module_id": "mod-1",
+  "module_number": 1,
+  "lesson_number": 3,
+  "title_en": "DuckDB & Parquet for Industrial SCADA Historian Archives",
+  "titlePl": "DuckDB i Parquet w Archiwizacji Danych Historiana SCADA",
+  "summary_en": "Execute blazingly fast SQL aggregations over multi-gigabyte partitioned Parquet directories directly without spinning up heavy database servers.",
+  "summary_pl": "Wykonuj błyskawiczne zapytania SQL na wielogigabajtowych archiwach Parquet bez konieczności instalowania ciężkich serwerów bazodanowych.",
+  "visual_widget": "signal_filter_sandbox",
+  "colab_notebook": "m01_l03_duckdb_parquet_industrial_archives.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m1-3-1",
+      "textEn": "Partition plant telemetry into hierarchical Parquet year/month/machine folders",
+      "textPl": "Podziel dane telemetrii na hierarchiczne partycje Parquet (rok/miesiąc/maszyna)"
+    },
+    {
+      "id": "chk-m1-3-2",
+      "textEn": "Query partitioned Parquet files directly using DuckDB vectorized SQL",
+      "textPl": "Wykonaj analityczne zapytanie SQL bezpośrednio na plikach Parquet za pomocą DuckDB"
+    },
+    {
+      "id": "chk-m1-3-3",
+      "textEn": "Compute time-weighted rolling machine availability (OEE) metrics in SQL",
+      "textPl": "Oblicz wskaźnik dostępności maszyny (OEE) w oknie czasowym z poziomu SQL"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "The Power of In-Process Columnar OLAP",
+      "titlePl": "Zalety Wbudowanej Bazy Kolumnowej OLAP",
+      "en": "{{term:parquet}} has replaced CSV as the enterprise storage standard for industrial historians. Combined with {{term:duckdb}}, an engineer can query millions of historical sensor readings using standard SQL without needing a running PostgreSQL or InfluxDB database server. Parquet's snappy/zstd compression slashes disk storage requirements by up to 85%.",
+      "pl": "Format {{term:parquet}} wyparł CSV z roli przemysłowego standardu archiwizacji danych w systemach typu historian. W połączeniu z {{term:duckdb}} inżynier może wykonywać zapytania analityczne SQL na gigabajtach danych bez konieczności stawiania serwera bazodanowego. Kompresja Parquet redukuje przestrzeń dyskową o ponad 80%."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m1-3-1",
+      "questionEn": "Why is columnar storage like Parquet dramatically faster than CSV for querying sensor temperature averages?",
+      "questionPl": "Dlaczego format kolumnowy Parquet jest wielokrotnie szybszy niż CSV przy wyliczaniu średniej temperatury?",
+      "optionsEn": [
+        "Parquet is stored in GPU VRAM memory only",
+        "DuckDB reads only the temperature byte column from disk, skipping all other sensor columns completely",
+        "CSV files cannot store decimal numbers",
+        "Parquet converts strings into XML tokens"
+      ],
+      "optionsPl": [
+        "Pliki Parquet są przechowywane wyłącznie w pamięci VRAM karty graficznej",
+        "DuckDB odczytuje z dysku wyłącznie kolumnę z temperaturą, całkowicie pomijając pozostałe dane",
+        "Pliki CSV nie potrafią zapisywać liczb zmiennoprzecinkowych",
+        "Parquet zamienia tekst na tokeny XML"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "In columnar storage, each column is stored contiguously on disk. To average one sensor across 10 million rows, only that column is read, bypassing gigabytes of irrelevant data.",
+      "explanationPl": "W formacie kolumnowym dane każdej zmiennej leżą ciągle na dysku. Aby policzyć średnią, silnik pobiera z dysku jedynie bajty badanej kolumny, omijając gigabajty pozostałych danych."
+    }
+  ],
+  "titleEn": "DuckDB & Parquet for Industrial SCADA Historian Archives",
+  "title_pl": "DuckDB i Parquet w Archiwizacji Danych Historiana SCADA",
+  "summaryEn": "Execute blazingly fast SQL aggregations over multi-gigabyte partitioned Parquet directories directly without spinning up heavy database servers.",
+  "summaryPl": "Wykonuj błyskawiczne zapytania SQL na wielogigabajtowych archiwach Parquet bez konieczności instalowania ciężkich serwerów bazodanowych.",
+  "sandboxType": "signal_filter_sandbox",
+  "notebook": "m01_l03_duckdb_parquet_industrial_archives.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "The Power of In-Process Columnar OLAP",
+      "titlePl": "Zalety Wbudowanej Bazy Kolumnowej OLAP",
+      "en": "{{term:parquet}} has replaced CSV as the enterprise storage standard for industrial historians. Combined with {{term:duckdb}}, an engineer can query millions of historical sensor readings using standard SQL without needing a running PostgreSQL or InfluxDB database server. Parquet's snappy/zstd compression slashes disk storage requirements by up to 85%.",
+      "pl": "Format {{term:parquet}} wyparł CSV z roli przemysłowego standardu archiwizacji danych w systemach typu historian. W połączeniu z {{term:duckdb}} inżynier może wykonywać zapytania analityczne SQL na gigabajtach danych bez konieczności stawiania serwera bazodanowego. Kompresja Parquet redukuje przestrzeń dyskową o ponad 80%."
+    }
+  ],
+  "estimatedMinutes": 25
+}

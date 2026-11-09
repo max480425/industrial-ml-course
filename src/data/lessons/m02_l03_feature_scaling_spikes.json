@@ -1,0 +1,95 @@
+{
+  "id": "m02_l03_feature_scaling_spikes",
+  "module_id": "mod-2",
+  "module_number": 2,
+  "lesson_number": 3,
+  "title_en": "Feature Scaling (Standard, MinMax, Robust) under Sensor Spikes",
+  "titlePl": "Odporne Skalowanie Cech w Obecności Szpilek Czujników",
+  "summary_en": "Evaluate StandardScaler, MinMaxScaler, and RobustScaler on industrial motor telemetry contaminated with 5,000A electrical short-circuit spikes.",
+  "summary_pl": "Porównaj zachowanie StandardScaler, MinMaxScaler i RobustScaler na danych silnika zaburzonych impulsami zwarciowymi o wartości 5000A.",
+  "visual_widget": "scaling_outlier_sandbox",
+  "colab_notebook": "m02_l03_feature_scaling_spikes.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m2-3-1",
+      "textEn": "Inject severe electrical short-circuit spikes into motor current telemetry",
+      "textPl": "Zasymuluj skrajne piki zwarciowe w telemetrii prądu pobieranego przez silnik"
+    },
+    {
+      "id": "chk-m2-3-2",
+      "textEn": "Fit StandardScaler, MinMaxScaler, and RobustScaler pipelines on contaminated data",
+      "textPl": "Dopasuj skalery StandardScaler, MinMaxScaler i RobustScaler do zanieczyszczonych danych"
+    },
+    {
+      "id": "chk-m2-3-3",
+      "textEn": "Inspect variance compression and numerical resolution of normal operating data",
+      "textPl": "Zbadaj spłaszczenie wariancji i rozdzielczość poprawnych danych operacyjnych"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Why StandardScaler Fails on Heavy Industrial Spikes",
+      "titlePl": "Dlaczego StandardScaler Zawodzi przy Pikach Przemysłowych",
+      "en": "{{term:standard_scaler}} normalizes features by subtracting mean and dividing by standard deviation. When an arc fault injects a single 5,000A spike into a 25A baseline signal, the calculated standard deviation explodes from 3.5 to 450. As a result, 99.8% of legitimate operating readings are compressed into a tiny sliver between -0.05 and +0.05.",
+      "pl": "{{term:standard_scaler}} normalizuje cechy odejmując średnią i dzieląc przez odchylenie standardowe. Gdy pojedyncze zwarcie wstrzyknie pik 5000A do sygnału o bazie 25A, odchylenie standardowe eksploduje z 3.5 do 450. W rezultacie 99.8% poprawnych danych roboczych zostaje ściśniętych w bezużyteczny pasek między -0.05 a +0.05."
+    },
+    {
+      "id": "sec-2",
+      "type": "paragraph",
+      "titleEn": "RobustScaler: The Industrial Benchmark",
+      "titlePl": "RobustScaler: Złoty Standard w Przemyśle",
+      "en": "{{term:robust_scaler}} centers data using median and scales by the {{term:iqr}} ($Q_3 - Q_1$). Because median and IQR ignore data in the extreme upper and lower 25% tails, the scaling multipliers remain pristine and immune to equipment surges.",
+      "pl": "{{term:robust_scaler}} centruje dane za pomocą mediany i skaluje przez rozstęp {{term:iqr}} ($Q_3 - Q_1$). Ponieważ mediana i IQR nie zależą od skrajnych 25% wartości brzegowych, parametry skalera pozostają stabilne i niewrażliwe na udary sieciowe."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m2-3-1",
+      "questionEn": "What mathematical properties make RobustScaler resilient against motor startup current spikes?",
+      "questionPl": "Jakie właściwości matematyczne zapewniają odporność RobustScaler na piki rozruchowe silnika?",
+      "optionsEn": [
+        "It converts numbers to integers",
+        "It uses the median (50th percentile) and IQR (75th - 25th percentile), which completely ignore extreme outer values",
+        "It requires GPU matrix acceleration",
+        "It clips all values strictly between 0 and 1"
+      ],
+      "optionsPl": [
+        "Zamienia liczby na wartości całkowite",
+        "Używa mediany i rozstępu IQR (75. - 25. percentyl), które ignorują skrajne wartości w ogonach rozkładu",
+        "Wymaga akceleracji macierzowej na GPU",
+        "Przycina wszystkie wartości sztywno do przedziału od 0 do 1"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Because IQR measures the distance between Q3 and Q1, spikes outside the 25th-75th percentile range have zero influence on the scaling factor.",
+      "explanationPl": "Rozstęp IQR mierzy odległość między kwartylami Q3 i Q1; piki leżące poza środkowym pasmem 50% próbek nie mają żadnego wpływu na współczynnik skalowania."
+    }
+  ],
+  "titleEn": "Feature Scaling (Standard, MinMax, Robust) under Sensor Spikes",
+  "title_pl": "Odporne Skalowanie Cech w Obecności Szpilek Czujników",
+  "summaryEn": "Evaluate StandardScaler, MinMaxScaler, and RobustScaler on industrial motor telemetry contaminated with 5,000A electrical short-circuit spikes.",
+  "summaryPl": "Porównaj zachowanie StandardScaler, MinMaxScaler i RobustScaler na danych silnika zaburzonych impulsami zwarciowymi o wartości 5000A.",
+  "sandboxType": "scaling_outlier_sandbox",
+  "notebook": "m02_l03_feature_scaling_spikes.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Why StandardScaler Fails on Heavy Industrial Spikes",
+      "titlePl": "Dlaczego StandardScaler Zawodzi przy Pikach Przemysłowych",
+      "en": "{{term:standard_scaler}} normalizes features by subtracting mean and dividing by standard deviation. When an arc fault injects a single 5,000A spike into a 25A baseline signal, the calculated standard deviation explodes from 3.5 to 450. As a result, 99.8% of legitimate operating readings are compressed into a tiny sliver between -0.05 and +0.05.",
+      "pl": "{{term:standard_scaler}} normalizuje cechy odejmując średnią i dzieląc przez odchylenie standardowe. Gdy pojedyncze zwarcie wstrzyknie pik 5000A do sygnału o bazie 25A, odchylenie standardowe eksploduje z 3.5 do 450. W rezultacie 99.8% poprawnych danych roboczych zostaje ściśniętych w bezużyteczny pasek między -0.05 a +0.05."
+    },
+    {
+      "id": "sec-2",
+      "type": "paragraph",
+      "titleEn": "RobustScaler: The Industrial Benchmark",
+      "titlePl": "RobustScaler: Złoty Standard w Przemyśle",
+      "en": "{{term:robust_scaler}} centers data using median and scales by the {{term:iqr}} ($Q_3 - Q_1$). Because median and IQR ignore data in the extreme upper and lower 25% tails, the scaling multipliers remain pristine and immune to equipment surges.",
+      "pl": "{{term:robust_scaler}} centruje dane za pomocą mediany i skaluje przez rozstęp {{term:iqr}} ($Q_3 - Q_1$). Ponieważ mediana i IQR nie zależą od skrajnych 25% wartości brzegowych, parametry skalera pozostają stabilne i niewrażliwe na udary sieciowe."
+    }
+  ],
+  "estimatedMinutes": 25
+}

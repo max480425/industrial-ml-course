@@ -1,0 +1,79 @@
+{
+  "id": "m02_l02_feature_engineering_lag_variables",
+  "module_id": "mod-2",
+  "module_number": 2,
+  "lesson_number": 2,
+  "title_en": "Feature Engineering & Temporal Lag Variables",
+  "titlePl": "Inżynieria Cech i Zmienne Opóźnione (Lag Features)",
+  "summary_en": "Engineer historical memory into tabular models by creating rolling means, standard deviations, and multi-step lag variables (t-1, t-5, t-30).",
+  "summary_pl": "Wprowadź pamięć procesu do modeli tabelarycznych, tworząc kroczące statystyki oraz zmienne opóźnione w czasie (t-1, t-5, t-30).",
+  "visual_widget": "scaling_outlier_sandbox",
+  "colab_notebook": "m02_l02_feature_engineering_lag_variables.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m2-2-1",
+      "textEn": "Construct temporal lag features (shift by 1, 5, 15, and 30 minutes)",
+      "textPl": "Stwórz cechy opóźnione w czasie (przesunięcia o 1, 5, 15 i 30 minut)"
+    },
+    {
+      "id": "chk-m2-2-2",
+      "textEn": "Compute rolling window statistical aggregations (mean, std, min, max, skew)",
+      "textPl": "Oblicz statystyki w oknach przesuwnych (średnia, odchylenie, min, max, skośność)"
+    },
+    {
+      "id": "chk-m2-2-3",
+      "textEn": "Prevent temporal data leakage by dropping forward-looking shift operations",
+      "textPl": "Zabezpiecz potok przed wyciekiem danych (data leakage) eliminując przesunięcia w przód"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Encoding Dynamic Process Memory",
+      "titlePl": "Kodowanie Dynamiki i Pamięci Układu Fizycznego",
+      "en": "Standard machine learning algorithms have no concept of time; they treat each row as independent. In manufacturing physics, an overheating event is dictated by heat input accumulated over the past 30 minutes. Through {{term:lag_features}} and {{term:time_domain_features}}, we feed historical context ($t-1, t-5, t-30$) directly into regression and tree ensemble columns.",
+      "pl": "Standardowe modele ML traktują każdy wiersz danych jako niezależny pomiar, nie mając pojęcia o upływie czasu. W fizyce przemysłowej przegrzanie reaktora wynika z energii dostarczanej przez ostatnie 30 minut. Dzięki zastosowaniu {{term:lag_features}} oraz {{term:time_domain_features}} przekazujemy historię procesu ($t-1, t-5, t-30$) bezpośrednio do kolumn modelu."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m2-2-1",
+      "questionEn": "What constitutes temporal data leakage when creating lag features for training machine learning models?",
+      "questionPl": "Co stanowi wyciek danych (data leakage) podczas tworzenia cech opóźnionych w modelach szeregów czasowych?",
+      "optionsEn": [
+        "Using sensor values from future timestamps t+1 to predict failure at time t",
+        "Using sensor values from t-5 minutes to predict t",
+        "Calculating rolling mean over historical 10-minute windows",
+        "Sorting the dataframe by timestamp in ascending order"
+      ],
+      "optionsPl": [
+        "Użycie odczytów z przyszłych chwil czasowych t+1 do prognozowania awarii w chwili t",
+        "Użycie odczytów z chwili t-5 minut do predykcji stanu w chwili t",
+        "Obliczenie kroczącej średniej z ostatnich 10 minut pracy",
+        "Posortowanie tabeli danych rosnąco według znacznika czasu"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Data leakage occurs when features contain information from the future (e.g. shift(-1)) that cannot exist at the moment of live inference.",
+      "explanationPl": "Wyciek danych następuje w chwili użycia wartości z przyszłości (np. shift(-1)), które w rzeczywistym wdrożeniu na linii nie są jeszcze znane."
+    }
+  ],
+  "titleEn": "Feature Engineering & Temporal Lag Variables",
+  "title_pl": "Inżynieria Cech i Zmienne Opóźnione (Lag Features)",
+  "summaryEn": "Engineer historical memory into tabular models by creating rolling means, standard deviations, and multi-step lag variables (t-1, t-5, t-30).",
+  "summaryPl": "Wprowadź pamięć procesu do modeli tabelarycznych, tworząc kroczące statystyki oraz zmienne opóźnione w czasie (t-1, t-5, t-30).",
+  "sandboxType": "scaling_outlier_sandbox",
+  "notebook": "m02_l02_feature_engineering_lag_variables.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Encoding Dynamic Process Memory",
+      "titlePl": "Kodowanie Dynamiki i Pamięci Układu Fizycznego",
+      "en": "Standard machine learning algorithms have no concept of time; they treat each row as independent. In manufacturing physics, an overheating event is dictated by heat input accumulated over the past 30 minutes. Through {{term:lag_features}} and {{term:time_domain_features}}, we feed historical context ($t-1, t-5, t-30$) directly into regression and tree ensemble columns.",
+      "pl": "Standardowe modele ML traktują każdy wiersz danych jako niezależny pomiar, nie mając pojęcia o upływie czasu. W fizyce przemysłowej przegrzanie reaktora wynika z energii dostarczanej przez ostatnie 30 minut. Dzięki zastosowaniu {{term:lag_features}} oraz {{term:time_domain_features}} przekazujemy historię procesu ($t-1, t-5, t-30$) bezpośrednio do kolumn modelu."
+    }
+  ],
+  "estimatedMinutes": 25
+}

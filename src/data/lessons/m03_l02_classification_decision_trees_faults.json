@@ -1,0 +1,79 @@
+{
+  "id": "m03_l02_classification_decision_trees_faults",
+  "module_id": "mod-3",
+  "module_number": 3,
+  "lesson_number": 2,
+  "title_en": "Decision Trees for Interpretable Machine Fault Diagnosis",
+  "titlePl": "Drzewa Decyzyjne w Interpretowalnej Diagnostyce Usterek Maszyn",
+  "summary_en": "Train white-box decision trees on engineered vibration features, visualize decision boundaries, and export logic directly to PLC ladder rules.",
+  "summary_pl": "Trenuj interpretowalne drzewa decyzyjne na cechach drganiowych, wizualizuj granice podziału i eksportuj reguły do logiki drabinkowej PLC.",
+  "visual_widget": "cost_matrix_sandbox",
+  "colab_notebook": "m03_l02_classification_decision_trees_faults.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m3-2-1",
+      "textEn": "Train a DecisionTreeClassifier to categorize machinery states (Healthy, Unbalance, Bearing Fault)",
+      "textPl": "Wytrenuj klasyfikator drzewa decyzyjnego do podziału stanów maszyny (Sprawna, Niewyważenie, Awaria Łożyska)"
+    },
+    {
+      "id": "chk-m3-2-2",
+      "textEn": "Tune tree depth (max_depth) and minimum split samples to prevent overfitting",
+      "textPl": "Dobierz maksymalną głębokość drzewa i min_samples_split, zapobiegając przeuczeniu"
+    },
+    {
+      "id": "chk-m3-2-3",
+      "textEn": "Export tree decision path rules into human-readable PLC IF-THEN ladder logic",
+      "textPl": "Wyeksportuj reguły drzewa decyzyjnego do czytelnej logiki IF-THEN dla sterownika PLC"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "White-Box Interpretability for Plant Safety",
+      "titlePl": "Interpretowalność Modeli 'White-Box' w Bezpieczeństwie Ruchu",
+      "en": "In safety-critical manufacturing, automation engineers cannot accept 'black-box' neural network predictions without explainable physical justification. Decision trees provide transparent, deterministic threshold rules (e.g. IF RMS > 4.5 mm/s AND Kurtosis > 6.2 THEN Alert Bearing Fault). These rules can be audited and embedded directly into PLC safety control loops.",
+      "pl": "W krytycznych instalacjach przemysłowych inżynierowie automatyki nie mogą ufać czarnym skrzynkom sieci neuronowych bez fizycznego uzasadnienia decyzji. Drzewa decyzyjne generują w pełni przejrzyste reguły progowe (np. JEŚLI RMS > 4.5 mm/s ORAZ Kurtoza > 6.2 WTEDY Alarm Łożyska), które można wdrożyć wprost do programu sterownika PLC."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m3-2-1",
+      "questionEn": "Why is restricting max_depth essential when training decision trees on industrial telemetry?",
+      "questionPl": "Dlaczego ograniczenie parametru max_depth jest kluczowe przy trenowaniu drzew decyzyjnych na telemetrii?",
+      "optionsEn": [
+        "Deep trees memorize single electrical noise glitches, creating overly complex, brittle branches that fail in production",
+        "Trees with depth > 5 cannot be saved to disk",
+        "Decision trees only operate when depth is equal to 1",
+        "To increase the training time"
+      ],
+      "optionsPl": [
+        "Głębokie drzewa zapamiętują pojedyncze szumy czujników, tworząc kruche i przeuczone reguły zawodzące na produkcji",
+        "Drzewa o głębokości > 5 nie mogą być zapisane na dysku",
+        "Drzewa decyzyjne potrafią działać wyłącznie przy głębokości równej 1",
+        "Aby celowo wydłużyć czas uczenia modelu"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Unconstrained trees grow until every noise point is isolated. Pruning with max_depth forces the tree to capture robust general physical rules.",
+      "explanationPl": "Nieograniczone drzewa rozrastają się, aż odizolują każdy pojedynczy szum. Przycinanie parametrem max_depth zmusza model do nauki ogólnych praw fizycznych."
+    }
+  ],
+  "titleEn": "Decision Trees for Interpretable Machine Fault Diagnosis",
+  "title_pl": "Drzewa Decyzyjne w Interpretowalnej Diagnostyce Usterek Maszyn",
+  "summaryEn": "Train white-box decision trees on engineered vibration features, visualize decision boundaries, and export logic directly to PLC ladder rules.",
+  "summaryPl": "Trenuj interpretowalne drzewa decyzyjne na cechach drganiowych, wizualizuj granice podziału i eksportuj reguły do logiki drabinkowej PLC.",
+  "sandboxType": "cost_matrix_sandbox",
+  "notebook": "m03_l02_classification_decision_trees_faults.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "White-Box Interpretability for Plant Safety",
+      "titlePl": "Interpretowalność Modeli 'White-Box' w Bezpieczeństwie Ruchu",
+      "en": "In safety-critical manufacturing, automation engineers cannot accept 'black-box' neural network predictions without explainable physical justification. Decision trees provide transparent, deterministic threshold rules (e.g. IF RMS > 4.5 mm/s AND Kurtosis > 6.2 THEN Alert Bearing Fault). These rules can be audited and embedded directly into PLC safety control loops.",
+      "pl": "W krytycznych instalacjach przemysłowych inżynierowie automatyki nie mogą ufać czarnym skrzynkom sieci neuronowych bez fizycznego uzasadnienia decyzji. Drzewa decyzyjne generują w pełni przejrzyste reguły progowe (np. JEŚLI RMS > 4.5 mm/s ORAZ Kurtoza > 6.2 WTEDY Alarm Łożyska), które można wdrożyć wprost do programu sterownika PLC."
+    }
+  ],
+  "estimatedMinutes": 25
+}

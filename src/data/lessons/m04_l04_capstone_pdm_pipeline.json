@@ -1,0 +1,79 @@
+{
+  "id": "m04_l04_capstone_pdm_pipeline",
+  "module_id": "mod-4",
+  "module_number": 4,
+  "lesson_number": 4,
+  "title_en": "Capstone 1: End-to-End Predictive Maintenance Pipeline",
+  "titlePl": "Projekt Zwieńczeniowy 1: Kompletny Potok Predykcyjnego Utrzymania Ruchu",
+  "summary_en": "Architect a production-grade predictive maintenance pipeline: ingest raw telemetry, clean spikes, extract lag features, cluster operational regimes, and dispatch cost-optimal breakdown warnings.",
+  "summary_pl": "Zaprojektuj kompletny przemysłowy potok predykcyjny: wczytaj telemetrię, usuń szpilki, wylicz cechy czasowe, wykryj reżimy pracy i wyślij optymalny kosztowo alert awarii.",
+  "visual_widget": "clustering_sandbox",
+  "colab_notebook": "m04_l04_capstone_pdm_pipeline.ipynb",
+  "estimated_minutes": 35,
+  "checklist": [
+    {
+      "id": "chk-m4-4-1",
+      "textEn": "Ingest multi-sensor industrial milling machine dataset (vibration, current, temperature)",
+      "textPl": "Wczytaj wielokanałowy zbiór danych frezarki (drgania, prąd, temperatura wrzeciona)"
+    },
+    {
+      "id": "chk-m4-4-2",
+      "textEn": "Construct an end-to-end scikit-learn cleaning and feature extraction Pipeline",
+      "textPl": "Zbuduj potok Pipeline w scikit-learn łączący filtrację szpilek i inżynierię cech"
+    },
+    {
+      "id": "chk-m4-4-3",
+      "textEn": "Implement regime-aware anomaly scoring and calculate expected financial ROI savings ($)",
+      "textPl": "Wdróż detekcję anomalii zależną od reżimu pracy i wylicz realne oszczędności finansowe ROI ($)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Synthesizing Modules 1 to 4 into Production ROI",
+      "titlePl": "Integracja Modułów 1-4 w Realny Zysk Biznesowy",
+      "en": "In this comprehensive Capstone project, we integrate all techniques learned across Modules 1 to 4 into an industrial-grade maintenance engine. Raw 4-20mA sensor data is converted via vectorized NumPy, cleaned of spikes with Hampel filtering, enriched with temporal lag features, partitioned into machine operating regimes, and evaluated with cost-sensitive threshold scoring to deliver measurable plant ROI.",
+      "pl": "W tym projekcie zwieńczeniowym łączymy wszystkie techniki z Modułów 1-4 w kompletny silnik predykcyjny. Surowe dane 4-20mA są wektoryzowane w NumPy, oczyszczane filtrem Hampela, wzbogacane o cechy opóźnione w czasie, segmentowane na stany pracy i oceniane progami kosztowymi, dostarczając mierzalny zysk finansowy (ROI) dla fabryki."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m4-4-1",
+      "questionEn": "What is the primary operational metric that demonstrates the business success of a predictive maintenance pipeline?",
+      "questionPl": "Jaki jest główny wskaźnik operacyjny dowodzący biznesowego sukcesu wdrożenia systemu predykcyjnego?",
+      "optionsEn": [
+        "Reduction in total unplanned downtime hours and eliminated False Negative failure costs ($)",
+        "Number of Python dependencies installed in the virtual environment",
+        "File size of the final model artifact on the hard drive",
+        "Number of print statements executed per second"
+      ],
+      "optionsPl": [
+        "Redukcja nieplanowanych przestojów linii i eliminacja kosztów przeoczonych awarii (False Negatives)",
+        "Liczba bibliotek Pythona zainstalowanych w środowisku",
+        "Rozmiar pliku modelu na dysku komputera",
+        "Liczba komunikatów drukowanych na konsoli w ciągu sekundy"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Executive plant management measures ML success strictly by reduced downtime, saved repair expenses, and avoided warranty failures.",
+      "explanationPl": "Dyrektorzy fabryk oceniają sukces systemów AI wyłącznie przez pryzmat skróconego czasu awarii, zaoszczędzonych kosztów napraw i wyeliminowanych strat gwarancyjnych."
+    }
+  ],
+  "titleEn": "Capstone 1: End-to-End Predictive Maintenance Pipeline",
+  "title_pl": "Projekt Zwieńczeniowy 1: Kompletny Potok Predykcyjnego Utrzymania Ruchu",
+  "summaryEn": "Architect a production-grade predictive maintenance pipeline: ingest raw telemetry, clean spikes, extract lag features, cluster operational regimes, and dispatch cost-optimal breakdown warnings.",
+  "summaryPl": "Zaprojektuj kompletny przemysłowy potok predykcyjny: wczytaj telemetrię, usuń szpilki, wylicz cechy czasowe, wykryj reżimy pracy i wyślij optymalny kosztowo alert awarii.",
+  "sandboxType": "clustering_sandbox",
+  "notebook": "m04_l04_capstone_pdm_pipeline.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Synthesizing Modules 1 to 4 into Production ROI",
+      "titlePl": "Integracja Modułów 1-4 w Realny Zysk Biznesowy",
+      "en": "In this comprehensive Capstone project, we integrate all techniques learned across Modules 1 to 4 into an industrial-grade maintenance engine. Raw 4-20mA sensor data is converted via vectorized NumPy, cleaned of spikes with Hampel filtering, enriched with temporal lag features, partitioned into machine operating regimes, and evaluated with cost-sensitive threshold scoring to deliver measurable plant ROI.",
+      "pl": "W tym projekcie zwieńczeniowym łączymy wszystkie techniki z Modułów 1-4 w kompletny silnik predykcyjny. Surowe dane 4-20mA są wektoryzowane w NumPy, oczyszczane filtrem Hampela, wzbogacane o cechy opóźnione w czasie, segmentowane na stany pracy i oceniane progami kosztowymi, dostarczając mierzalny zysk finansowy (ROI) dla fabryki."
+    }
+  ],
+  "estimatedMinutes": 35
+}

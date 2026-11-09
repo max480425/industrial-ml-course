@@ -1,0 +1,79 @@
+{
+  "id": "m06_l03_iou_evaluation",
+  "module_id": "mod-6",
+  "module_number": 6,
+  "lesson_number": 3,
+  "title_en": "Intersection over Union (IoU) & Model Validation",
+  "title_pl": "Wskaźnik IoU (Intersection over Union) i Ewaluacja",
+  "summary_en": "Compute IoU between ground truth annotations and model predictions to assess defect localization precision.",
+  "summary_pl": "Obliczaj wskaźnik IoU między wzorcem a predykcją, by precyzyjnie ocenić jakość lokalizacji wad.",
+  "visual_widget": "cnn_iou_sandbox",
+  "colab_notebook": "m06_l03_iou_evaluation.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m6-3-1",
+      "textEn": "Implement numpy vectorized IoU calculation function",
+      "textPl": "Zaimplementuj zwektoryzowaną funkcję wyliczania IoU w numpy"
+    },
+    {
+      "id": "chk-m6-3-2",
+      "textEn": "Analyze the impact of IoU thresholding (e.g. 0.50 vs 0.75)",
+      "textPl": "Przeanalizuj wpływ progu IoU (np. 0.50 vs 0.75) na wyniki"
+    },
+    {
+      "id": "chk-m6-3-3",
+      "textEn": "Calculate mean Average Precision (mAP@0.50) on test inspection batch",
+      "textPl": "Wylicz wskaźnik mean Average Precision (mAP@0.50) na partii testowej"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "titleEn": "Measuring Localization Precision",
+      "titlePl": "Mierzenie Precyzji Lokalizacji Wad",
+      "en": "{{term:iou}} measures the overlap between the human inspector's {{term:ground_truth}} bounding box and the neural network's predicted box. It is calculated as the area of overlap divided by the area of union. An IoU of 1.0 represents a flawless pixel-perfect match, while an IoU < 0.50 typically fails industrial certification.",
+      "pl": "Wskaźnik {{term:iou}} mierzy stopień pokrycia między zaznaczeniem wzorcowym {{term:ground_truth}} inżyniera jakości a ramką wyznaczoną przez sieć neuronową. Wylicza się go jako pole części wspólnej podzielone przez pole sumy obu obszarów. Wartość 1.0 to idealne dopasowanie, natomiast IoU < 0.50 dyskwalifikuje algorytm w testach odbiorczych."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m6-3-1",
+      "questionEn": "What is the IoU of two bounding boxes that touch at a single line edge without overlapping internal area?",
+      "questionPl": "Ile wynosi IoU dwóch ramek stykających się jedynie krawędzią bez wspólnego pola wewnętrznego?",
+      "optionsEn": [
+        "0.0",
+        "0.5",
+        "1.0",
+        "-1.0"
+      ],
+      "optionsPl": [
+        "0.0",
+        "0.5",
+        "1.0",
+        "-1.0"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "Because the area of intersection is zero, the numerator is 0, yielding IoU = 0 / Union = 0.0.",
+      "explanationPl": "Pole części wspólnej wynosi 0, zatem licznik ułamka jest równy zero, co daje wynik IoU = 0.0."
+    }
+  ],
+  "titleEn": "Intersection over Union (IoU) & Model Validation",
+  "titlePl": "Wskaźnik IoU (Intersection over Union) i Ewaluacja",
+  "summaryEn": "Compute IoU between ground truth annotations and model predictions to assess defect localization precision.",
+  "summaryPl": "Obliczaj wskaźnik IoU między wzorcem a predykcją, by precyzyjnie ocenić jakość lokalizacji wad.",
+  "sandboxType": "cnn_iou_sandbox",
+  "notebook": "m06_l03_iou_evaluation.ipynb",
+  "contentBlocks": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "titleEn": "Measuring Localization Precision",
+      "titlePl": "Mierzenie Precyzji Lokalizacji Wad",
+      "en": "{{term:iou}} measures the overlap between the human inspector's {{term:ground_truth}} bounding box and the neural network's predicted box. It is calculated as the area of overlap divided by the area of union. An IoU of 1.0 represents a flawless pixel-perfect match, while an IoU < 0.50 typically fails industrial certification.",
+      "pl": "Wskaźnik {{term:iou}} mierzy stopień pokrycia między zaznaczeniem wzorcowym {{term:ground_truth}} inżyniera jakości a ramką wyznaczoną przez sieć neuronową. Wylicza się go jako pole części wspólnej podzielone przez pole sumy obu obszarów. Wartość 1.0 to idealne dopasowanie, natomiast IoU < 0.50 dyskwalifikuje algorytm w testach odbiorczych."
+    }
+  ],
+  "estimatedMinutes": 25
+}

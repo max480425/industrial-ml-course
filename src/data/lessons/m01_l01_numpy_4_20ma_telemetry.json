@@ -1,0 +1,97 @@
+{
+  "id": "m01_l01_numpy_4_20ma_telemetry",
+  "module_id": "mod-1",
+  "module_number": 1,
+  "lesson_number": 1,
+  "title_en": "Vectorized NumPy on 4-20mA Industrial Telemetry",
+  "title_pl": "Wektoryzacja NumPy w Przetwarzaniu Pętli Prądowych 4-20mA",
+  "summary_en": "Convert raw 16-bit ADC integer counts into calibrated 4-20mA current loop telemetry with vectorized NumPy, eliminating Python loop bottlenecks.",
+  "summary_pl": "Przeliczaj surowe 16-bitowe liczby z przetwornika ADC na pętlę prądową 4-20mA za pomocą wektoryzacji NumPy, eliminując powolne pętle w Pythonie.",
+  "visual_widget": "signal_filter_sandbox",
+  "colab_notebook": "m01_l01_numpy_4_20ma_telemetry.ipynb",
+  "estimated_minutes": 20,
+  "checklist": [
+    {
+      "id": "chk-m1-1-1",
+      "textEn": "Map 16-bit unsigned ADC counts [0, 65535] linearly to [4.0, 20.0] mA range",
+      "textPl": "Przeskaluj 16-bitowe rejestry ADC [0, 65535] do zakresu pętli prądowej [4.0, 20.0] mA"
+    },
+    {
+      "id": "chk-m1-1-2",
+      "textEn": "Benchmark vectorized NumPy operations against native Python loops on 1M samples",
+      "textPl": "Zmierz czas wektoryzacji NumPy w porównaniu do pętli for na 1 milionie próbek"
+    },
+    {
+      "id": "chk-m1-1-3",
+      "textEn": "Detect line breaks (< 3.8mA) and short circuits (> 20.5mA) using boolean bitmasks",
+      "textPl": "Zidentyfikuj przerwanie przewodu (< 3.8mA) i zwarcie (> 20.5mA) za pomocą masek binarnych"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial 4-20mA Current Loops in SCADA",
+      "titlePl": "Pętla Prądowa 4-20mA w Architekturze SCADA",
+      "en": "In heavy industrial automation, {{term:current_loop_4_20ma}} signaling is the dominant physical standard for pressure, flow, and temperature transmitters connected to {{term:plc}} and {{term:scada}} systems. Unlike voltage signals, a 4-20mA current is immune to wire resistance over hundreds of meters. A reading of 4.0 mA corresponds to 0% measurement scale, while 20.0 mA represents 100% full-scale value.",
+      "pl": "W przemyśle {{term:current_loop_4_20ma}} to podstawowy standard fizyczny dla czujników ciśnienia, przepływu i temperatury podłączonych do sterowników {{term:plc}} i systemów {{term:scada}}. Sygnał prądowy jest niewrażliwy na spadki napięcia na długich liniach kablowych. Wartość 4.0 mA odpowiada 0% zakresu pomiarowego, a 20.0 mA oznacza 100% skali."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Fault Diagnosis: Live Zero",
+      "titlePl": "Diagnostyka Linii: 'Żywe Zero' (Live Zero)",
+      "en": "The reason the scale starts at 4 mA instead of 0 mA is the 'Live Zero' principle. If a wire snaps or a thermocouple disconnects, the current drops to 0.0 mA. By applying vectorized boolean masks in NumPy, we instantly classify values below 3.6 mA as broken wire faults rather than a genuine physical zero measurement.",
+      "pl": "Powodem, dla którego skala zaczyna się od 4 mA, a nie 0 mA, jest zasada 'żywego zera' (Live Zero). Jeśli kabel zostanie przerwany, prąd spada do 0.0 mA. Stosując maski binarne w NumPy, błyskawicznie kategoryzujemy odczyty poniżej 3.6 mA jako awarię linii, a nie rzeczywistą wartość zerową procesu."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m1-1-1",
+      "questionEn": "What does a current reading of 1.2 mA indicate on an industrial 4-20mA pressure transmitter?",
+      "questionPl": "Co oznacza odczyt 1.2 mA na przemysłowym przetworniku ciśnienia z pętlą 4-20mA?",
+      "optionsEn": [
+        "Zero pressure in the pipeline",
+        "A severed transmitter wire or loose connector fault (drop below 3.8 mA Live Zero)",
+        "Maximum operational pressure (20 mA)",
+        "Normal operation under negative gauge vacuum"
+      ],
+      "optionsPl": [
+        "Zerowe ciśnienie w rurociągu",
+        "Przerwany kabel lub uszkodzenie przetwornika (spadek poniżej 3.8 mA żywego zera)",
+        "Maksymalne dopuszczalne ciśnienie (20 mA)",
+        "Poprawną pracę w warunkach głębokiego podciśnienia"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Because 4.0 mA represents true 0% physical scale, any reading below 3.6-3.8 mA is interpreted by the PLC as an open-circuit fault or broken cable.",
+      "explanationPl": "Wartość 4.0 mA reprezentuje 0% skali; spadek poniżej 3.8 mA oznacza dla sterownika PLC przerwę w obwodzie lub uszkodzenie zasilania czujnika."
+    }
+  ],
+  "titleEn": "Vectorized NumPy on 4-20mA Industrial Telemetry",
+  "titlePl": "Wektoryzacja NumPy w Przetwarzaniu Pętli Prądowych 4-20mA",
+  "summaryEn": "Convert raw 16-bit ADC integer counts into calibrated 4-20mA current loop telemetry with vectorized NumPy, eliminating Python loop bottlenecks.",
+  "summaryPl": "Przeliczaj surowe 16-bitowe liczby z przetwornika ADC na pętlę prądową 4-20mA za pomocą wektoryzacji NumPy, eliminując powolne pętle w Pythonie.",
+  "sandboxType": "signal_filter_sandbox",
+  "notebook": "m01_l01_numpy_4_20ma_telemetry.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial 4-20mA Current Loops in SCADA",
+      "titlePl": "Pętla Prądowa 4-20mA w Architekturze SCADA",
+      "en": "In heavy industrial automation, {{term:current_loop_4_20ma}} signaling is the dominant physical standard for pressure, flow, and temperature transmitters connected to {{term:plc}} and {{term:scada}} systems. Unlike voltage signals, a 4-20mA current is immune to wire resistance over hundreds of meters. A reading of 4.0 mA corresponds to 0% measurement scale, while 20.0 mA represents 100% full-scale value.",
+      "pl": "W przemyśle {{term:current_loop_4_20ma}} to podstawowy standard fizyczny dla czujników ciśnienia, przepływu i temperatury podłączonych do sterowników {{term:plc}} i systemów {{term:scada}}. Sygnał prądowy jest niewrażliwy na spadki napięcia na długich liniach kablowych. Wartość 4.0 mA odpowiada 0% zakresu pomiarowego, a 20.0 mA oznacza 100% skali."
+    },
+    {
+      "id": "sec-2",
+      "type": "callout",
+      "calloutType": "engineering",
+      "titleEn": "Fault Diagnosis: Live Zero",
+      "titlePl": "Diagnostyka Linii: 'Żywe Zero' (Live Zero)",
+      "en": "The reason the scale starts at 4 mA instead of 0 mA is the 'Live Zero' principle. If a wire snaps or a thermocouple disconnects, the current drops to 0.0 mA. By applying vectorized boolean masks in NumPy, we instantly classify values below 3.6 mA as broken wire faults rather than a genuine physical zero measurement.",
+      "pl": "Powodem, dla którego skala zaczyna się od 4 mA, a nie 0 mA, jest zasada 'żywego zera' (Live Zero). Jeśli kabel zostanie przerwany, prąd spada do 0.0 mA. Stosując maski binarne w NumPy, błyskawicznie kategoryzujemy odczyty poniżej 3.6 mA jako awarię linii, a nie rzeczywistą wartość zerową procesu."
+    }
+  ],
+  "estimatedMinutes": 20
+}

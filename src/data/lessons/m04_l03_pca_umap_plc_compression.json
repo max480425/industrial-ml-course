@@ -1,0 +1,79 @@
+{
+  "id": "m04_l03_pca_umap_plc_compression",
+  "module_id": "mod-4",
+  "module_number": 4,
+  "lesson_number": 3,
+  "title_en": "Dimensionality Reduction: PCA & UMAP for 50+ PLC Telemetry Tags",
+  "titlePl": "Redukcja Wymiarowości: PCA i UMAP dla Ponad 50 Sygnałów PLC",
+  "summary_en": "Compress high-dimensional multi-sensor arrays (temperatures, pressures, motor currents) into 2D and 3D visual health manifolds using PCA and non-linear UMAP.",
+  "summary_pl": "Zredukuj dziesiątki skorelowanych zmiennych z PLC (temperatury, ciśnienia, prądy) do czytelnych map 2D/3D stanu technicznego za pomocą PCA i UMAP.",
+  "visual_widget": "clustering_sandbox",
+  "colab_notebook": "m04_l03_pca_umap_plc_compression.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m4-3-1",
+      "textEn": "Fit Principal Component Analysis (PCA) on a 50-channel chemical reactor telemetry array",
+      "textPl": "Dopasuj analizę składowych głównych (PCA) do 50 kanałów pomiarowych reaktora chemicznego"
+    },
+    {
+      "id": "chk-m4-3-2",
+      "textEn": "Plot explained variance ratio scree plot to determine the minimum number of principal components",
+      "textPl": "Wykreśl wykres osypiska wariancji wyjaśnionej, dobierając optymalną liczbę składowych"
+    },
+    {
+      "id": "chk-m4-3-3",
+      "textEn": "Project complex machine degradation trajectories onto a 2D non-linear UMAP manifold",
+      "textPl": "Zrzutuj trajektorie zużywania się maszyny na dwuwymiarową mapę nieliniową UMAP"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Compressing Multi-Sensor Instrumentation",
+      "titlePl": "Kompresja Rozbudowanego Oprzyrządowania Czujnikowego",
+      "en": "Modern industrial equipment is blanketed with dozens of sensors that produce high-dimensional multicollinear data streams. {{term:pca}} identifies orthogonal directions of maximum variance, allowing operators to monitor an entire 64-sensor chemical cracker on a single 2D screen. Non-linear techniques like {{term:umap}} preserve complex manifold geometry, showing distinct islands for normal operation versus developing wear.",
+      "pl": "Nowoczesne instalacje przemysłowe są opomiarowane dziesiątkami czujników generujących wielowymiarowe, skorelowane strumienie danych. {{term:pca}} wyznacza prostopadłe osie największej wariancji, umożliwiając operatorowi nadzorowanie 64-czujnikowego reaktora na pojedynczym ekranie 2D. Nieliniowy {{term:umap}} zachowuje złożoną geometrię, ukazując stany zużycia jako odrębne wyspy."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m4-3-1",
+      "questionEn": "What does it mean if the top 3 principal components in PCA capture 91.5% of total explained variance?",
+      "questionPl": "Co oznacza, że pierwsze 3 składowe główne w PCA wyjaśniają 91.5% całkowitej wariancji?",
+      "optionsEn": [
+        "91.5% of the sensors were broken and excluded",
+        "Reducing 50 sensor channels down to 3 coordinates preserves 91.5% of the total informational variance",
+        "The model has a 91.5% error rate",
+        "The machine will break down in 91.5 hours"
+      ],
+      "optionsPl": [
+        "91.5% czujników uległo awarii i zostało wykluczonych",
+        "Redukcja 50 kanałów pomiarowych do zaledwie 3 współrzędnych zachowuje aż 91.5% całkowitej informacji i dynamiki",
+        "Model popełnia błąd na poziomie 91.5%",
+        "Maszyna ulegnie awarii za 91.5 godziny"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Explained variance measures the proportion of system information retained after projection; 91.5% confirms that 3 coordinates fully describe the plant's physical state.",
+      "explanationPl": "Wariancja wyjaśniona określa stopień zachowania informacji; 91.5% dowodzi, że zaledwie 3 liczby wystarczą do wiernego opisania stanu całej instalacji."
+    }
+  ],
+  "titleEn": "Dimensionality Reduction: PCA & UMAP for 50+ PLC Telemetry Tags",
+  "title_pl": "Redukcja Wymiarowości: PCA i UMAP dla Ponad 50 Sygnałów PLC",
+  "summaryEn": "Compress high-dimensional multi-sensor arrays (temperatures, pressures, motor currents) into 2D and 3D visual health manifolds using PCA and non-linear UMAP.",
+  "summaryPl": "Zredukuj dziesiątki skorelowanych zmiennych z PLC (temperatury, ciśnienia, prądy) do czytelnych map 2D/3D stanu technicznego za pomocą PCA i UMAP.",
+  "sandboxType": "clustering_sandbox",
+  "notebook": "m04_l03_pca_umap_plc_compression.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Compressing Multi-Sensor Instrumentation",
+      "titlePl": "Kompresja Rozbudowanego Oprzyrządowania Czujnikowego",
+      "en": "Modern industrial equipment is blanketed with dozens of sensors that produce high-dimensional multicollinear data streams. {{term:pca}} identifies orthogonal directions of maximum variance, allowing operators to monitor an entire 64-sensor chemical cracker on a single 2D screen. Non-linear techniques like {{term:umap}} preserve complex manifold geometry, showing distinct islands for normal operation versus developing wear.",
+      "pl": "Nowoczesne instalacje przemysłowe są opomiarowane dziesiątkami czujników generujących wielowymiarowe, skorelowane strumienie danych. {{term:pca}} wyznacza prostopadłe osie największej wariancji, umożliwiając operatorowi nadzorowanie 64-czujnikowego reaktora na pojedynczym ekranie 2D. Nieliniowy {{term:umap}} zachowuje złożoną geometrię, ukazując stany zużycia jako odrębne wyspy."
+    }
+  ],
+  "estimatedMinutes": 25
+}

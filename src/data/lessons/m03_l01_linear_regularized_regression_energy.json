@@ -1,0 +1,79 @@
+{
+  "id": "m03_l01_linear_regularized_regression_energy",
+  "module_id": "mod-3",
+  "module_number": 3,
+  "lesson_number": 1,
+  "title_en": "Linear & Regularized Regression for Plant Energy Forecasting",
+  "titlePl": "Regresja Liniowa i Regularyzacja w Prognozowaniu Zużycia Energii",
+  "summary_en": "Forecast factory electric kilowatt load using Ridge (L2) and Lasso (L1) regression, handling multicollinear sensor tags and physical constraints.",
+  "summary_pl": "Prognozuj zapotrzebowanie fabryki na moc (kW) za pomocą regresji Ridge i Lasso, opanowując współliniowość czujników i ograniczenia fizyczne.",
+  "visual_widget": "cost_matrix_sandbox",
+  "colab_notebook": "m03_l01_linear_regularized_regression_energy.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m3-1-1",
+      "textEn": "Fit Ordinary Least Squares (OLS) regression on plant power consumption telemetry",
+      "textPl": "Dopasuj klasyczną regresję OLS do danych poboru mocy fabryki"
+    },
+    {
+      "id": "chk-m3-1-2",
+      "textEn": "Apply Ridge (L2) regression to stabilize weights under high sensor multicollinearity",
+      "textPl": "Zastosuj regularyzację Ridge (L2), stabilizując wagi przy skorelowanych czujnikach"
+    },
+    {
+      "id": "chk-m3-1-3",
+      "textEn": "Perform automated feature selection using Lasso (L1) sparsity penalty",
+      "textPl": "Wykonaj selekcję kluczowych parametrów za pomocą rzadkich wag Lasso (L1)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Energy Management & Peak Shaving",
+      "titlePl": "Zarządzanie Energią i Ścinanie Szczytów Mocy (Peak Shaving)",
+      "en": "Industrial electricity contracts impose severe financial penalties when a plant exceeds its contracted power limit (15-minute peak demand). Predicting hourly megawatt demand enables automated scheduling of energy-intensive processes like arc furnaces. Regularization through Ridge (L2) prevents model coefficients from oscillating wildly when multiple sensor channels track similar thermal trends.",
+      "pl": "Taryfy przemysłowe nakładają dotkliwe kary finansowe za przekroczenie mocy zamówionej w 15-minutowych oknach rozliczeniowych. Przewidywanie zapotrzebowania na energię pozwala zautomatyzować włączanie energochłonnych pieców łukowych. Regularyzacja Ridge (L2) stabilizuje wagi modelu w obecności wielu skorelowanych czujników."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m3-1-1",
+      "questionEn": "What unique advantage does Lasso (L1) regression offer over Ridge (L2) for industrial sensor selection?",
+      "questionPl": "Jaką unikalną przewagę oferuje regularyzacja Lasso (L1) nad Ridge (L2) przy doborze czujników?",
+      "optionsEn": [
+        "Lasso drives coefficients of redundant, uninformative sensors exactly to zero, performing automatic feature selection",
+        "Lasso requires zero training data",
+        "Lasso works only on categorical string labels",
+        "Lasso guarantees 100% R-squared accuracy"
+      ],
+      "optionsPl": [
+        "Lasso zeruje współczynniki nieistotnych, nadmiarowych czujników, dokonując automatycznej selekcji cech",
+        "Lasso nie wymaga żadnych danych uczących",
+        "Lasso działa wyłącznie na etykietach tekstowych",
+        "Lasso gwarantuje 100% dokładności R-kwadrat"
+      ],
+      "correctIndex": 0,
+      "explanationEn": "L1 regularization uses diamond-shaped parameter constraints that force weights of non-predictive variables to absolute zero, simplifying hardware instrumentation.",
+      "explanationPl": "Regularyzacja L1 wymusza dokładnie zerowe wagi dla mało istotnych zmiennych, co pozwala zredukować liczbę drogich czujników na instalacji."
+    }
+  ],
+  "titleEn": "Linear & Regularized Regression for Plant Energy Forecasting",
+  "title_pl": "Regresja Liniowa i Regularyzacja w Prognozowaniu Zużycia Energii",
+  "summaryEn": "Forecast factory electric kilowatt load using Ridge (L2) and Lasso (L1) regression, handling multicollinear sensor tags and physical constraints.",
+  "summaryPl": "Prognozuj zapotrzebowanie fabryki na moc (kW) za pomocą regresji Ridge i Lasso, opanowując współliniowość czujników i ograniczenia fizyczne.",
+  "sandboxType": "cost_matrix_sandbox",
+  "notebook": "m03_l01_linear_regularized_regression_energy.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Industrial Energy Management & Peak Shaving",
+      "titlePl": "Zarządzanie Energią i Ścinanie Szczytów Mocy (Peak Shaving)",
+      "en": "Industrial electricity contracts impose severe financial penalties when a plant exceeds its contracted power limit (15-minute peak demand). Predicting hourly megawatt demand enables automated scheduling of energy-intensive processes like arc furnaces. Regularization through Ridge (L2) prevents model coefficients from oscillating wildly when multiple sensor channels track similar thermal trends.",
+      "pl": "Taryfy przemysłowe nakładają dotkliwe kary finansowe za przekroczenie mocy zamówionej w 15-minutowych oknach rozliczeniowych. Przewidywanie zapotrzebowania na energię pozwala zautomatyzować włączanie energochłonnych pieców łukowych. Regularyzacja Ridge (L2) stabilizuje wagi modelu w obecności wielu skorelowanych czujników."
+    }
+  ],
+  "estimatedMinutes": 25
+}

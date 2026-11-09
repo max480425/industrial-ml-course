@@ -1,0 +1,79 @@
+{
+  "id": "m01_l02_pandas_vs_polars_highspeed_logs",
+  "module_id": "mod-1",
+  "module_number": 1,
+  "lesson_number": 2,
+  "title_en": "Pandas 2.x vs Polars for High-Speed Factory Logs",
+  "titlePl": "Pandas 2.x kontra Polars w Analizie Szybkich Logów Fabrycznych",
+  "summary_en": "Process millions of high-frequency sensor events using Apache Arrow backends in Pandas 2.0 and multithreaded lazy evaluation in Polars.",
+  "summary_pl": "Przetwarzaj miliony wierszy logów za pomocą formatu Apache Arrow w Pandas 2.0 oraz wielowątkowych leniwych zapytań w Polars.",
+  "visual_widget": "signal_filter_sandbox",
+  "colab_notebook": "m01_l02_pandas_vs_polars_highspeed_logs.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m1-2-1",
+      "textEn": "Ingest a 2,000,000 row millisecond vibration CSV log using Pandas with PyArrow engine",
+      "textPl": "Wczytaj 2 miliony wierszy logu wibracji w Pandas przy użyciu silnika PyArrow"
+    },
+    {
+      "id": "chk-m1-2-2",
+      "textEn": "Construct a Polars LazyFrame query pipeline with rolling group aggregations",
+      "textPl": "Zbuduj potok Polars LazyFrame z kroczącymi agregacjami czasowymi"
+    },
+    {
+      "id": "chk-m1-2-3",
+      "textEn": "Measure memory footprint and execution speed differences between Pandas and Polars",
+      "textPl": "Porównaj zużycie pamięci RAM i czas wykonania zapytań w Pandas i Polars"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Scaling to Multi-Gigabyte Factory Telemetry",
+      "titlePl": "Skalowanie Obliczeń dla Wielkich Zbiorów SCADA",
+      "en": "Traditional Pandas relies on NumPy memory buffers, causing heavy RAM duplication during joins and rolling window operations. {{term:polars}} is built from the ground up in Rust on Apache Arrow. With query graph optimization and lazy execution, Polars processes multi-million row millisecond telemetry up to 10-30x faster while using 70% less memory.",
+      "pl": "Tradycyjny Pandas opiera się na tablicach NumPy, co przy dużych zbiorach powoduje wielokrotne kopiowanie danych w pamięci RAM. {{term:polars}} został stworzony od zera w języku Rust na formacie Apache Arrow. Dzięki optymalizacji grafu obliczeń (LazyFrame) Polars analizuje miliony wierszy z czujników do 30 razy szybciej przy 70% mniejszym zużyciu RAM."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m1-2-1",
+      "questionEn": "Why is Polars LazyFrame (scan_csv) significantly more memory-efficient than Pandas read_csv?",
+      "questionPl": "Dlaczego Polars LazyFrame (scan_csv) zużywa znacznie mniej pamięci niż read_csv w Pandas?",
+      "optionsEn": [
+        "Polars compresses all numbers into 8-bit integers automatically",
+        "Polars pushes down projection and filter predicates before loading rows into memory",
+        "Pandas is not compatible with multithreaded x86 CPUs",
+        "Polars only reads every tenth row from the disk"
+      ],
+      "optionsPl": [
+        "Polars automatycznie kompresuje wszystkie liczby do 8-bitowych intów",
+        "Polars stosuje optymalizację predykatów (filter pushdown) i wczytuje z dysku tylko potrzebne kolumny",
+        "Pandas nie potrafi działać na procesorach wielordzeniowych x86",
+        "Polars domyślnie odczytuje z pliku co dziesiąty wiersz"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Polars query planner optimizes the computation graph, reading only requested columns and applying filters prior to memory allocation.",
+      "explanationPl": "Planer zapytań Polars analizuje cały graf operacji, odczytując z pliku wyłącznie niezbędne kolumny i filtrując wiersze jeszcze przed alokacją pamięci."
+    }
+  ],
+  "titleEn": "Pandas 2.x vs Polars for High-Speed Factory Logs",
+  "title_pl": "Pandas 2.x kontra Polars w Analizie Szybkich Logów Fabrycznych",
+  "summaryEn": "Process millions of high-frequency sensor events using Apache Arrow backends in Pandas 2.0 and multithreaded lazy evaluation in Polars.",
+  "summaryPl": "Przetwarzaj miliony wierszy logów za pomocą formatu Apache Arrow w Pandas 2.0 oraz wielowątkowych leniwych zapytań w Polars.",
+  "sandboxType": "signal_filter_sandbox",
+  "notebook": "m01_l02_pandas_vs_polars_highspeed_logs.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Scaling to Multi-Gigabyte Factory Telemetry",
+      "titlePl": "Skalowanie Obliczeń dla Wielkich Zbiorów SCADA",
+      "en": "Traditional Pandas relies on NumPy memory buffers, causing heavy RAM duplication during joins and rolling window operations. {{term:polars}} is built from the ground up in Rust on Apache Arrow. With query graph optimization and lazy execution, Polars processes multi-million row millisecond telemetry up to 10-30x faster while using 70% less memory.",
+      "pl": "Tradycyjny Pandas opiera się na tablicach NumPy, co przy dużych zbiorach powoduje wielokrotne kopiowanie danych w pamięci RAM. {{term:polars}} został stworzony od zera w języku Rust na formacie Apache Arrow. Dzięki optymalizacji grafu obliczeń (LazyFrame) Polars analizuje miliony wierszy z czujników do 30 razy szybciej przy 70% mniejszym zużyciu RAM."
+    }
+  ],
+  "estimatedMinutes": 25
+}

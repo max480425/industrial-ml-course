@@ -1,0 +1,79 @@
+{
+  "id": "m04_l01_kmeans_dbscan_regimes",
+  "module_id": "mod-4",
+  "module_number": 4,
+  "lesson_number": 1,
+  "title_en": "K-Means & DBSCAN for Machine Operational Regime Detection",
+  "titlePl": "Algorytmy K-Średnich i DBSCAN w Wykrywaniu Reżimów Pracy Maszyn",
+  "summary_en": "Discover multi-state CNC operating modes (Idle, Warmup, Full Speed) without human labels using K-Means and isolate anomalous points with DBSCAN.",
+  "summary_pl": "Odkrywaj stany pracy obrabiarki (Bieg jałowy, Rozgrzewanie, Pełna moc) bez etykiet za pomocą K-Średnich i izoluj anomalie z DBSCAN.",
+  "visual_widget": "clustering_sandbox",
+  "colab_notebook": "m04_l01_kmeans_dbscan_regimes.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-m4-1-1",
+      "textEn": "Partition multi-sensor CNC machine logs using K-Means across clusters K=2 to K=6",
+      "textPl": "Podziel logi z maszyny CNC algorytmem K-Means dla liczby klastrów od 2 do 6"
+    },
+    {
+      "id": "chk-m4-1-2",
+      "textEn": "Compute Elbow curve inertia and Silhouette scores to select the optimal regime count",
+      "textPl": "Wykreśl krzywą inercji (metoda łokcia) i wskaźnik Silhouette, wybierając optymalną liczbę reżimów"
+    },
+    {
+      "id": "chk-m4-1-3",
+      "textEn": "Deploy DBSCAN with tuned epsilon (eps) to detect non-spherical clusters and flag noise as anomalies",
+      "textPl": "Zastosuj DBSCAN z dobranym parametrem epsilon do detekcji nieregularnych klastrów i izolacji szumu"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Automatic State Discovery in Manufacturing",
+      "titlePl": "Automatyczne Odkrywanie Stanów Pracy Maszyn",
+      "en": "Industrial machines rarely operate at a single operating point. An industrial mixer operates in discrete {{term:operational_regime}} modes: Idle Standby, Ingredient Blending, High-Shear Emulsification, and Cleaning-in-Place (CIP). Using {{term:k_means}}, we cluster multidimensional speed and torque telemetry into distinct clusters whose {{term:centroid}} coordinates represent golden operational baselines.",
+      "pl": "Maszyny przemysłowe rzadko pracują w jednym punkcie pracy. Mieszalnik przemysłowy działa w odrębnych fazach ({{term:operational_regime}}): Bieg jałowy, Dozowanie, Mieszanie z wysokim ścinaniem i Mycie CIP. Wykorzystując {{term:k_means}}, grupujemy wielowymiarowe sygnały obrotów i momentu w klastry, których {{term:centroid}} wyznacza wzorcowy profil poboru mocy."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-m4-1-1",
+      "questionEn": "What does a DBSCAN noise label of -1 signify in machine telemetry clustering?",
+      "questionPl": "Co oznacza etykieta -1 w algorytmie DBSCAN w kontekście telemetrii maszynowej?",
+      "optionsEn": [
+        "The machine is operating in cluster number 1 backwards",
+        "An anomalous operating state that does not satisfy density criteria of any recognized healthy operating regime",
+        "The sensor has zero electrical current",
+        "The algorithm has failed to converge"
+      ],
+      "optionsPl": [
+        "Maszyna pracuje w klastrze nr 1 w przeciwnym kierunku",
+        "Anomalny stan pracy, który nie mieści się w żadnym ze znanych, gęstych klastrów poprawnej pracy",
+        "Czujnik wykazuje brak przepływu prądu",
+        "Algorytm nie zbiegł się numerycznie"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "DBSCAN labels points in sparse regions as noise (-1). In predictive maintenance, these isolated noise points represent unmodeled candidate breakdown events.",
+      "explanationPl": "DBSCAN oznacza rzadkie, odizolowane punkty etykietą -1 (szum). W diagnostyce maszyn te punkty stanowią bezpośrednich kandydatów na awarie lub nietypowe stany pracy."
+    }
+  ],
+  "titleEn": "K-Means & DBSCAN for Machine Operational Regime Detection",
+  "title_pl": "Algorytmy K-Średnich i DBSCAN w Wykrywaniu Reżimów Pracy Maszyn",
+  "summaryEn": "Discover multi-state CNC operating modes (Idle, Warmup, Full Speed) without human labels using K-Means and isolate anomalous points with DBSCAN.",
+  "summaryPl": "Odkrywaj stany pracy obrabiarki (Bieg jałowy, Rozgrzewanie, Pełna moc) bez etykiet za pomocą K-Średnich i izoluj anomalie z DBSCAN.",
+  "sandboxType": "clustering_sandbox",
+  "notebook": "m04_l01_kmeans_dbscan_regimes.ipynb",
+  "contentBlocks": [
+    {
+      "id": "sec-1",
+      "type": "paragraph",
+      "titleEn": "Automatic State Discovery in Manufacturing",
+      "titlePl": "Automatyczne Odkrywanie Stanów Pracy Maszyn",
+      "en": "Industrial machines rarely operate at a single operating point. An industrial mixer operates in discrete {{term:operational_regime}} modes: Idle Standby, Ingredient Blending, High-Shear Emulsification, and Cleaning-in-Place (CIP). Using {{term:k_means}}, we cluster multidimensional speed and torque telemetry into distinct clusters whose {{term:centroid}} coordinates represent golden operational baselines.",
+      "pl": "Maszyny przemysłowe rzadko pracują w jednym punkcie pracy. Mieszalnik przemysłowy działa w odrębnych fazach ({{term:operational_regime}}): Bieg jałowy, Dozowanie, Mieszanie z wysokim ścinaniem i Mycie CIP. Wykorzystując {{term:k_means}}, grupujemy wielowymiarowe sygnały obrotów i momentu w klastry, których {{term:centroid}} wyznacza wzorcowy profil poboru mocy."
+    }
+  ],
+  "estimatedMinutes": 25
+}
