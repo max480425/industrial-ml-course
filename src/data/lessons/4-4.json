@@ -1,0 +1,61 @@
+{
+  "id": "4-4",
+  "module_id": "mod-4",
+  "module_number": 4,
+  "module_title_en": "Unsupervised Diagnostics & Regime Clustering",
+  "module_title_pl": "Diagnostyka Nienadzorowana i Klastrowanie Reżimów",
+  "title_en": "Isolation Forests for Early Machine Breakdown Warning",
+  "title_pl": "Lasy Izolacyjne (Isolation Forest) do Wykrywania Uszkodzeń",
+  "summary_en": "Train tree-based isolation ensembles to assign continuous anomaly scores to impending mechanical seizures.",
+  "summary_pl": "Wytrenuj las izolacyjny do wyliczania ciągłego wskaźnika anomalii zwiastującego zatarcie mechanizmu.",
+  "visual_widget": "clustering_sandbox",
+  "colab_notebook": "04_04_isolation_forest.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-4-4-1",
+      "textEn": "Instantiate sklearn.ensemble.IsolationForest on healthy baseline runs",
+      "textPl": "Zainicjuj IsolationForest na danych ze sprawnego cyklu produkcyjnego"
+    },
+    {
+      "id": "chk-4-4-2",
+      "textEn": "Compute decision_function continuous anomaly scores",
+      "textPl": "Wylicz ciągły wskaźnik anomalii za pomocą decision_function"
+    },
+    {
+      "id": "chk-4-4-3",
+      "textEn": "Set plant alert trigger threshold at anomaly score > 0.80",
+      "textPl": "Ustaw próg powiadomień alarmowych na poziomie wskaźnika > 0.80"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "en": "{{term:isolation_forest}} is the industry standard algorithm for zero-shot equipment monitoring. Instead of modeling what normal data looks like, it isolates anomalies by randomly partitioning feature ranges. Because anomalies are few and structurally distinct, they are isolated close to the root of the decision trees with very few splits.",
+      "pl": "{{term:isolation_forest}} to branżowy standard monitorowania stanu maszyn bez posiadania bazy awarii. Zamiast budować skomplikowany model 'normalności', algorytm izoluje punkty losowymi podziałami cech. Ponieważ awarie są rzadkie i nietypowe, zostają odcięte tuż przy korzeniach drzew decyzyjnych przy minimalnej liczbie podziałów."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-4-4-1",
+      "questionEn": "Why do anomalous data points have shorter average path lengths in an Isolation Forest?",
+      "questionPl": "Dlaczego punkty anomalne mają krótszą średnią długość ścieżki w drzewach Lasu Izolacyjnego?",
+      "optionsEn": [
+        "They are processed on faster SSD drives",
+        "Because they are located in sparse regions far from the dense clusters, random splits easily isolate them",
+        "Tree depth is artificially hardcoded to 1 for all defects",
+        "Anomalies have lower floating point precision"
+      ],
+      "optionsPl": [
+        "Są zapisywane na szybszych dyskach SSD",
+        "Leżą w rzadkich obszarach daleko od skupisk, więc losowe cięcia z łatwością je odcinają",
+        "Głębokość drzewa jest sztucznie ustawiona na 1 dla wad",
+        "Anomalie mają niższą precyzję zapisu zmiennoprzecinkowego"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Points in dense normal clusters require many random splits to isolate; outliers in sparse space require very few splits, resulting in short path lengths.",
+      "explanationPl": "Punkty w gęstym skupisku wymagają wielu cięć do odseparowania; anomalie w pustej przestrzeni zostają odcięte już po 2-3 losowych podziałach."
+    }
+  ]
+}

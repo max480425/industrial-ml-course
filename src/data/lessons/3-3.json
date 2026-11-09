@@ -1,0 +1,61 @@
+{
+  "id": "3-3",
+  "module_id": "mod-3",
+  "module_number": 3,
+  "module_title_en": "Industrial Classification & Cost-Sensitive Learning",
+  "module_title_pl": "Klasyfikacja Przemysłowa i Modele Kosztowe",
+  "title_en": "Conquering Severe 99.9% Class Imbalance",
+  "title_pl": "Walka z Niezbalansowaniem Klas (99.9% Sprawnych)",
+  "summary_en": "Overcome the 'accuracy paradox' when defects represent 1 in 1000 parts using balanced weights and SMOTE.",
+  "summary_pl": "Przezwycięż 'paradoks dokładności' przy 1 wadzie na 1000 wyrobów za pomocą wag klas i algorytmu SMOTE.",
+  "visual_widget": "cost_matrix_sandbox",
+  "colab_notebook": "03_03_class_imbalance_smote.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-3-3-1",
+      "textEn": "Expose the dummy 'Always Normal' model flaw (99.9% accuracy, 0% recall)",
+      "textPl": "Zdemaskuj naiwny model 'Zawsze Sprawny' (99.9% accuracy, 0% recall)"
+    },
+    {
+      "id": "chk-3-3-2",
+      "textEn": "Apply class_weight='balanced' in logistic regression and tree ensembles",
+      "textPl": "Zastosuj wagę class_weight='balanced' w modelach drzewiastych"
+    },
+    {
+      "id": "chk-3-3-3",
+      "textEn": "Synthesize realistic defect vectors using SMOTE",
+      "textPl": "Wygeneruj syntetyczne wektory rzadkich awarii za pomocą SMOTE"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "en": "In well-maintained plants, defects are thankfully rare: 99.9% of manufactured parts are flawless. This extreme {{term:class_imbalance}} renders standard accuracy meaningless. A naive classifier that simply outputs 'Normal' for everything achieves 99.9% accuracy, yet misses 100% of real breakdowns.",
+      "pl": "W sprawnie zarządzanych fabrykach awarie są na szczęście rzadkością: 99.9% detali spełnia normy. To skrajne {{term:class_imbalance}} sprawia, że tradycyjna dokładność (accuracy) staje się bezużyteczna. Naiwny model zgadujący 'Sprawny' ma 99.9% accuracy, lecz przepuszcza 100% realnych uszkodzeń."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-3-3-1",
+      "questionEn": "Which metric provides the most reliable evaluation of a defect classifier on severe class imbalance?",
+      "questionPl": "Jaki wskaźnik daje najbardziej wiarygodną ocenę modelu przy skrajnym braku równowagi klas?",
+      "optionsEn": [
+        "Overall Accuracy",
+        "Precision-Recall AUC (PR-AUC)",
+        "Mean Absolute Error",
+        "R-Squared"
+      ],
+      "optionsPl": [
+        "Ogólna dokładność (Accuracy)",
+        "Pole pod krzywą precyzji i czułości (PR-AUC)",
+        "Średni błąd bezwzględny (MAE)",
+        "Współczynnik determinacji R-Kwadrat"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "PR-AUC focuses directly on the minority class performance without being inflated by millions of True Negatives.",
+      "explanationPl": "Wskaźnik PR-AUC skupia się bezpośrednio na klasie rzadkiej (wadach) i nie jest sztucznie zawyżany przez miliony poprawnych detali."
+    }
+  ]
+}

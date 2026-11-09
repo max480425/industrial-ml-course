@@ -1,0 +1,61 @@
+{
+  "id": "6-1",
+  "module_id": "mod-6",
+  "module_number": 6,
+  "module_title_en": "Edge Vision & Surface Quality Inspection",
+  "module_title_pl": "Wizja Komputerowa na Brzegu i Kontrola Powierzchni",
+  "title_en": "Industrial Computer Vision & Surface Defects",
+  "title_pl": "Wizja Przemysłowa i Wady Powierzchniowe",
+  "summary_en": "Formulate optical quality control on moving sheet metal, PCB assemblies, and automotive paint surfaces.",
+  "summary_pl": "Projektuj optyczną kontrolę jakości na walcowanej blasze, płytkach PCB i lakierowanych karoseriach.",
+  "visual_widget": "cnn_iou_sandbox",
+  "colab_notebook": "06_01_industrial_vision_intro.ipynb",
+  "estimated_minutes": 20,
+  "checklist": [
+    {
+      "id": "chk-6-1-1",
+      "textEn": "Inspect factory line-scan camera image pipeline",
+      "textPl": "Zbadaj potok akwizycji obrazu z przemysłowej kamery linijkowej"
+    },
+    {
+      "id": "chk-6-1-2",
+      "textEn": "Label surface scratch, pitting, and void defect classes",
+      "textPl": "Sklasyfikuj wady powierzchniowe: rysy, wżery i pęcherze"
+    },
+    {
+      "id": "chk-6-1-3",
+      "textEn": "Implement color and lighting normalization under shifting plant sunlight",
+      "textPl": "Wdróż normalizację oświetlenia kompensującą światło słoneczne na hali"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "en": "{{term:computer_vision}} has replaced tedious, error-prone human eye inspection in high-speed manufacturing. High-resolution industrial cameras photograph every stamped car door, semiconductor wafer, or fabric roll at speeds up to 50 frames per second to flag microscopic {{term:surface_defect}} formations.",
+      "pl": "{{term:computer_vision}} zastępuje męczącą i podatną na pomyłki kontrolę wzrokową na szybkich liniach produkcyjnych. Przemysłowe kamery o wysokiej rozdzielczości fotografują wytłoczki karoserii, krzemowe wafle scalone czy bele tkaniny z prędkością do 50 klatek na sekundę, wykrywając {{term:surface_defect}} w ułamku sekundy."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-6-1-1",
+      "questionEn": "What is the primary operational challenge for computer vision systems deployed on factory shop floors?",
+      "questionPl": "Co stanowi największe wyzwanie operacyjne dla systemów wizyjnych na hali produkcyjnej?",
+      "optionsEn": [
+        "Cameras cannot record digital pixels in industrial buildings",
+        "Lighting variability: shifting daylight from skylights, shadows from cranes, and oil mist on lenses",
+        "Robots refuse to inspect colored components",
+        "Neural networks only run when connected to cloud data centers"
+      ],
+      "optionsPl": [
+        "Kamery nie potrafią rejestrować cyfrowych pikseli w budynkach przemysłowych",
+        "Zmienne oświetlenie: słońce wpadające przez świetliki, cienie suwnic i mgła olejowa na obiektywach",
+        "Roboty odmawiają inspekcji kolorowych detali",
+        "Sieci neuronowe działają wyłącznie przy stałym połączeniu z chmurą"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Factory environments suffer from shifting natural lighting, flickering fluorescent fixtures, vibrations shaking camera mounts, and airborne dust settling on optics.",
+      "explanationPl": "Fabryki borykają się ze zmieniającym się światłem dziennym, migotaniem lamp, drganiami konstrukcji i osadzaniem się pyłu oraz oleju na optyce."
+    }
+  ]
+}

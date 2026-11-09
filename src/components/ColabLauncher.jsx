@@ -10,8 +10,9 @@ export const ColabLauncher = ({ lesson }) => {
 
   if (!lesson) return null;
 
-  const colabUrl = CONFIG.getColabUrl(lesson.notebook);
-  const downloadUrl = CONFIG.getNotebookDownloadUrl(lesson.notebook);
+  const notebookFile = lesson.notebook || lesson.colab_notebook || '';
+  const colabUrl = CONFIG.getColabUrl(notebookFile);
+  const downloadUrl = CONFIG.getNotebookDownloadUrl(notebookFile);
   const checklist = lesson.checklist || [];
 
   const completedCount = checklist.filter(task => isTaskChecked(lesson.id, task.id)).length;

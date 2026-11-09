@@ -24,7 +24,7 @@ A specialized interactive engineering platform bridging machine learning and man
 
 ### Phase Roadmap
 
-#### Phase 1: Core Foundation & Scaffold (CURRENT)
+#### Phase 1: Core Foundation & Scaffold
 - [x] Vite + React 18 + Tailwind CSS application scaffolding.
 - [x] Configurable GitHub repository configuration (`src/config.js`) for Colab URL generation.
 - [x] Core layout & navigation:
@@ -48,12 +48,18 @@ A specialized interactive engineering platform bridging machine learning and man
 - [x] Complete data stores:
   - `src/data/syllabus.json`: 7 modules, 28 lessons.
   - `src/data/glossary.json`: 90 bilingual ML and engineering terms.
-- [x] 28 notebook templates in `public/notebooks/`.
+  - `src/data/lessons/`: 28 individual lesson JSON files.
 
-#### Phase 2: Notebook Content Deep-Dive & Real Plant Datasets
-- [ ] Implement fully runnable data pipelines in each of the 28 `.ipynb` notebooks.
-- [ ] Integrate real open-source industrial datasets (NASA C-MAPSS turbofan, Case Western Reserve bearing vibration, NEU surface defect database, Tennessee Eastman process).
-- [ ] Add ONNX and TensorRT edge deployment scripts.
+#### Phase 2: Notebook Compiler, Integrity Validator & CI/CD Pipeline (CURRENT)
+- [x] `scripts/build_notebooks.py`: Automated compiler using Python's `nbformat` (v4) generating 28 runnable industrial notebooks in `public/notebooks/`.
+- [x] `scripts/validate_course.py`: Comprehensive test suite verifying:
+  - 100% parity between `syllabus.json` and `src/data/lessons/`.
+  - Schema requirements (`title_en`, `title_pl`, `sections`, `visual_widget`, `colab_notebook`, `quiz`).
+  - Glossary tag integrity (`{{term:id}}` validation against `glossary.json`).
+  - Valid `nbformat` parsing of all 28 `.ipynb` files.
+- [x] GitHub Actions workflow (`.github/workflows/deploy.yml`):
+  - Automatic validation and Vite build on push to `main`.
+  - Automated deployment to GitHub Pages.
 
 #### Phase 3: Telemetry Stream Playground & Hardware Bridge
 - [ ] Add simulated WebSocket MQTT / Modbus TCP streaming telemetry mock.

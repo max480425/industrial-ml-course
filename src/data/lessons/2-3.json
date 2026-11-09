@@ -1,0 +1,67 @@
+{
+  "id": "2-3",
+  "module_id": "mod-2",
+  "module_number": 2,
+  "module_title_en": "Feature Extraction & Robust Preprocessing",
+  "module_title_pl": "Inżynieria Cech i Odporne Przetwarzanie",
+  "title_en": "RobustScaler vs StandardScaler on Factory Telemetry",
+  "title_pl": "RobustScaler vs StandardScaler w Danych Przemysłowych",
+  "summary_en": "Demonstrate why StandardScaler collapses under extreme machine spikes, and why RobustScaler is the gold standard.",
+  "summary_pl": "Zobacz, dlaczego StandardScaler zawodzi przy skrajnych pikach i dlaczego RobustScaler to standard w przemyśle.",
+  "visual_widget": "scaling_outlier_sandbox",
+  "colab_notebook": "02_03_robust_scaling.ipynb",
+  "estimated_minutes": 20,
+  "checklist": [
+    {
+      "id": "chk-2-3-1",
+      "textEn": "Simulate a severe electrical current spike (10,000A) in telemetry",
+      "textPl": "Zasymuluj skrajny pik prądu (10 000A) w telemetrii"
+    },
+    {
+      "id": "chk-2-3-2",
+      "textEn": "Compare feature compression between StandardScaler and RobustScaler",
+      "textPl": "Porównaj spłaszczenie cech między StandardScaler a RobustScaler"
+    },
+    {
+      "id": "chk-2-3-3",
+      "textEn": "Inspect preserved variance in scikit-learn pipeline",
+      "textPl": "Zbadaj zachowaną wariancję w potoku scikit-learn"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "en": "{{term:standard_scaler}} normalizes features by subtracting the mean and dividing by the standard deviation. However, both mean and variance are extremely sensitive to single large spikes: a single 5000A motor startup pulse artificially inflates the standard deviation, crushing all normal 20A operating readings into a near-zero band.",
+      "pl": "{{term:standard_scaler}} normalizuje cechy odejmując średnią i dzieląc przez odchylenie standardowe. Niestety obie te statystyki są bezbronne wobec skrajnych pików: pojedynczy prąd rozruchowy 5000A sztucznie nadmuchuje odchylenie, spłaszczając normalne wartości 20A do mikroskopijnego przedziału wokół zera."
+    },
+    {
+      "id": "b2",
+      "type": "paragraph",
+      "en": "In contrast, {{term:robust_scaler}} uses the median and the {{term:iqr}}. Because the median and IQR ignore the outer 25% extremes, the scaling parameters remain robust and retain the natural variance of normal operating telemetry.",
+      "pl": "Dla kontrastu, {{term:robust_scaler}} opiera się na medianie oraz rozstępie {{term:iqr}}. Ponieważ mediana i IQR nie zależą od skrajnych 25% wartości, współczynniki skalera zachowują naturalną rozpiętość codziennej pracy urządzenia."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-2-3-1",
+      "questionEn": "What mathematical statistics does RobustScaler use for centering and scaling?",
+      "questionPl": "Jakich statystyk matematycznych używa RobustScaler do centrowania i skalowania?",
+      "optionsEn": [
+        "Mean and Variance",
+        "Median and Interquartile Range (IQR)",
+        "Minimum and Maximum",
+        "Mode and Skewness"
+      ],
+      "optionsPl": [
+        "Średniej arytmetycznej i wariancji",
+        "Mediany i rozstępu międzykwartylowego (IQR)",
+        "Wartości minimalnej i maksymalnej",
+        "Dominanty (mody) i skośności"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "RobustScaler subtracts the 50th percentile (median) and scales by the difference between the 75th and 25th percentiles (IQR).",
+      "explanationPl": "RobustScaler odejmuje 50. percentyl (medianę) i dzieli przez różnicę między 75. a 25. percentylem (IQR)."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "1-3",
+  "module_id": "mod-1",
+  "module_number": 1,
+  "module_title_en": "Industrial Data Ingestion & Signal Conditioning",
+  "module_title_pl": "Akwizycja Danych Przemysłowych i Kondycjonowanie Sygnałów",
+  "title_en": "Digital Filtering with Butterworth Filters",
+  "title_pl": "Filtry Cyfrowe Butterwortha",
+  "summary_en": "Design low-pass, high-pass, and bandpass Butterworth filters using scipy.signal for machine vibration analysis.",
+  "summary_pl": "Projektuj filtry dolnoprzepustowe i pasmowe Butterwortha w scipy.signal do analizy drgań maszyn.",
+  "visual_widget": "signal_filter_sandbox",
+  "colab_notebook": "01_03_butterworth_filters.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-1-3-1",
+      "textEn": "Design a 4th-order low-pass filter using scipy.signal.butter",
+      "textPl": "Zaprojektuj filtr dolnoprzepustowy 4. rzędu za pomocą scipy.signal.butter"
+    },
+    {
+      "id": "chk-1-3-2",
+      "textEn": "Apply zero-phase forward-backward filtering using filtfilt",
+      "textPl": "Zastosuj dwukierunkową filtrację bez przesunięcia fazowego (filtfilt)"
+    },
+    {
+      "id": "chk-1-3-3",
+      "textEn": "Analyze the Bode frequency response plot",
+      "textPl": "Przeanalizuj charakterystykę częstotliwościową na wykresie Bodego"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "en": "Unlike moving averages, the {{term:butterworth_filter}} allows precise mathematical separation between signal frequency bands. It features a maximally flat passband with zero ripple, making it the preferred choice for pre-processing machine vibration data before computing {{term:time_domain_features}}.",
+      "pl": "W przeciwieństwie do prostych średnich, {{term:butterworth_filter}} umożliwia precyzyjne odcięcie konkretnych pasm częstotliwości. Charakteryzuje się maksymalnie płaskim pasmem przepustowym bez tętnień, co czyni go standardem w obróbce sygnałów drganiowych."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-1-3-1",
+      "questionEn": "Why is scipy.signal.filtfilt (forward-backward filtering) preferred over lfilter in offline analysis?",
+      "questionPl": "Dlaczego filtfilt (filtracja w przód i w tył) jest lepsza od lfilter w analizie wsadowej?",
+      "optionsEn": [
+        "It runs completely in integer arithmetic",
+        "It results in zero phase distortion (no time lag in signal peaks)",
+        "It requires 50% fewer CPU clock cycles",
+        "It automatically labels anomalous defect events"
+      ],
+      "optionsPl": [
+        "Działa w całości na liczbach całkowitych",
+        "Eliminuje zniekształcenia fazowe (zerowe opóźnienie szczytów sygnału)",
+        "Zużywa o 50% mniej cykli procesora",
+        "Automatycznie oznacza wykryte awarie etykietami"
+      ],
+      "correctIndex": 1,
+      "explanationEn": "Filtfilt runs the filter forwards then backwards, perfectly canceling the phase delay introduced by the filter transfer function.",
+      "explanationPl": "Filtfilt filtruje sygnał w przód, a potem w tył, idealnie kompensując przesunięcie fazowe wprowadzone przez filtr."
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "3-2",
+  "module_id": "mod-3",
+  "module_number": 3,
+  "module_title_en": "Industrial Classification & Cost-Sensitive Learning",
+  "module_title_pl": "Klasyfikacja Przemysłowa i Modele Kosztowe",
+  "title_en": "Asymmetric Cost Matrices in Plant Economics",
+  "title_pl": "Asymetryczne Macierze Kosztów w Finansach Fabryki",
+  "summary_en": "Quantify real financial loss: why a missed defect costs 200x more than an operator false alarm.",
+  "summary_pl": "Policz realne straty finansowe: dlaczego przeoczenie wady kosztuje 200x więcej niż fałszywy alarm technika.",
+  "visual_widget": "cost_matrix_sandbox",
+  "colab_notebook": "03_02_cost_sensitive_learning.ipynb",
+  "estimated_minutes": 25,
+  "checklist": [
+    {
+      "id": "chk-3-2-1",
+      "textEn": "Define cost weights: Cost(FN) = $10,000 vs Cost(FP) = $50",
+      "textPl": "Zdefiniuj wagi kosztów: Koszt(FN) = 40 000 PLN vs Koszt(FP) = 200 PLN"
+    },
+    {
+      "id": "chk-3-2-2",
+      "textEn": "Calculate Expected Total Cost across all decision thresholds",
+      "textPl": "Wylicz całkowity oczekiwany koszt dla każdego progu decyzyjnego"
+    },
+    {
+      "id": "chk-3-2-3",
+      "textEn": "Pinpoint the cost-optimal operating threshold",
+      "textPl": "Wyznacz optymalny ekonomicznie próg decyzyjny"
+    }
+  ],
+  "sections": [
+    {
+      "id": "b1",
+      "type": "paragraph",
+      "en": "Academic machine learning treats all errors equally: a {{term:false_positive}} is penalized identically to a {{term:false_negative}}. In manufacturing, this is catastrophic. Missing a hairline crack in an engine crankshaft (FN) leads to a warranty recall costing $10,000. In contrast, a false alarm (FP) merely causes a quality inspector to spend 30 seconds manually scanning the part ($10).",
+      "pl": "Modele akademickie traktują wszystkie błędy równo: {{term:false_positive}} ma taką samą karę jak {{term:false_negative}}. W fabryce to przepis na bankructwo. Przeoczenie mikropęknięcia wału korbowego (FN) oznacza awarię silnika i koszty gwarancyjne rzędu 40 000 PLN. Z kolei fałszywy alarm (FP) to zaledwie 30 sekund pracy kontrolera (40 PLN)."
+    },
+    {
+      "id": "b2",
+      "type": "paragraph",
+      "en": "By encoding an {{term:asymmetric_cost_matrix}}, we transform the evaluation metric from abstract accuracy into real factory currency. The optimal {{term:decision_threshold}} is not 0.50, but typically shifts much lower to catch every possible failure.",
+      "pl": "Definiując {{term:asymmetric_cost_matrix}}, zamieniamy abstrakcyjną dokładność na realny zysk fabryki. Optymalny {{term:decision_threshold}} rzadko wynosi 0.50 – zazwyczaj przesuwamy go mocno w dół, aby wyłapać każdą potencjalną usterkę."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q-3-2-1",
+      "questionEn": "If Cost(FN) = $10,000 and Cost(FP) = $50, how should the decision threshold be adjusted relative to the default 0.50?",
+      "questionPl": "Jeśli Koszt(FN) = 40 000 PLN, a Koszt(FP) = 200 PLN, jak należy zmienić próg decyzyjny względem 0.50?",
+      "optionsEn": [
+        "Keep it exactly at 0.50 to maintain statistical purity",
+        "Increase it to 0.95 to reduce false alarms",
+        "Lower it to ~0.05 so the model aggressively flags even suspicious parts",
+        "Invert the classes so healthy parts become defects"
+      ],
+      "optionsPl": [
+        "Zostawić dokładnie 0.50 w imię symetrii statystycznej",
+        "Podnieść do 0.95, aby zmniejszyć liczbę fałszywych alarmów",
+        "Obniżyć do ~0.05, by model agresywnie wyłapywał nawet drobne podejrzenia wad",
+        "Odwrócić klasy tak, by dobre detale stały się wadliwymi"
+      ],
+      "correctIndex": 2,
+      "explanationEn": "Lowering the decision threshold ensures high recall, drastically reducing expensive False Negatives at the cost of a few cheap manual inspections.",
+      "explanationPl": "Obniżenie progu gwarantuje wysoką czułość (recall), eliminując skrajnie drogie przeoczenia wad kosztem tanich weryfikacji ręcznych."
+    }
+  ]
+}
