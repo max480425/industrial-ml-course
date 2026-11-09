@@ -1,0 +1,2 @@
+# Python dependencies for course validation and notebook generation
+nbformat>=5.9.0
